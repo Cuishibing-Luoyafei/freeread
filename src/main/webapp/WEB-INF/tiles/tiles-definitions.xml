@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+    "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name = "base_layout" template = "/WEB-INF/views/layout/base_layout.jsp">
+		<put-attribute name="header"  value= "/pageElement/navigation"/>
+		<put-attribute name="left" value= "/pageElement/novelRanking"/>
+		<put-attribute name="footer" value= "/WEB-INF/views/footer/footer.jsp"/>
+	</definition>
+	
+	<definition name="no_left_layout" template="/WEB-INF/views/layout/no_left_layout.jsp">
+		<put-attribute name="header"  value= "/pageElement/navigation"/>
+		<put-attribute name="footer" value= "/WEB-INF/views/footer/footer.jsp"/>
+	</definition>
+	
+	<definition name = "*/*.base_layout" extends = "base_layout">
+		<put-attribute name="main" value= "/{1}/{2}"/>
+	</definition>
+	
+	<definition name="*/*.no_left_layout" extends="no_left_layout">
+		<put-attribute name="main" value="/{1}/{2}"/>
+	</definition>
+	
+</tiles-definitions>

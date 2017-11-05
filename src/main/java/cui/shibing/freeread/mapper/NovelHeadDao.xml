@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cui.shibing.freeread.dao.NovelHeadDao">
+
+	<resultMap id="BaseResultMap" type="cui.shibing.freeread.model.NovelHead">
+		<id		column="novel_id" 					jdbcType="VARCHAR" property="novelId" />
+		<result column="novel_name" 				jdbcType="VARCHAR" property="novelName" />
+		<result column="novel_picture" 				jdbcType="VARCHAR" property="novelPicture" />
+		<result column="novel_desc"					jdbcType="VARCHAR" property="novelDesc"/>
+		<result column="novel_content_table_name" 	jdbcType="VARCHAR" property="novelContentTableName" />
+		<result column="novel_content_id" 			jdbcType="VARCHAR" property="novelContentId" />
+		<result column="novel_class_id_1" 			jdbcType="INTEGER" property="novelClassId1" />
+		<result column="novel_class_id_2" 			jdbcType="INTEGER" property="novelClassId2" />
+		<result column="novel_class_id_3" 			jdbcType="INTEGER" property="novelClassId3" />
+		<result column="novel_status" 				jdbcType="INTEGER" property="novelStatus" />
+		<result column="novel_chapter_num" 			jdbcType="INTEGER" property="novelChapterNum" />
+		<result column="novel_author" 				jdbcType="VARCHAR" property="novelAuthor" />
+		<result column="novel_access" 				jdbcType="INTEGER" property="novelAccess" />
+		<result column="novel_popularity" 			jdbcType="INTEGER" property="novelPopularity" />
+	</resultMap>
+
+	<select id="selectNovelHeadByNovelId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+			novel_id,
+			novel_name, 
+			novel_picture, 
+			novel_desc,
+			novel_content_table_name,
+			novel_content_id,
+			novel_class_id_1, 
+			novel_class_id_2,
+			novel_class_id_3,
+			novel_status, 
+			novel_chapter_num, 
+			novel_author, 
+			novel_access,
+			novel_popularity
+		from 
+			novel_head
+		where 
+			novel_id = #{novelId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteNovelHeadByNovelId" parameterType="java.lang.String">
+		delete from novel_head
+		where novel_id = #{novelId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insertNovelHead" parameterType="cui.shibing.freeread.model.NovelHead">
+		insert into novel_head (
+			novel_id,
+			novel_name, 
+			novel_picture, 
+			novel_desc,
+			novel_content_table_name,
+			novel_content_id,
+			novel_class_id_1, 
+			novel_class_id_2,
+			novel_class_id_3,
+			novel_status, 
+			novel_chapter_num, 
+			novel_author, 
+			novel_access,
+			novel_popularity
+		)
+		values (
+			#{novelId,              jdbcType=VARCHAR}, 
+			#{novelName,            jdbcType=VARCHAR},
+			#{novelPicture,         jdbcType=VARCHAR},
+			#{novelDesc,			jdbcType=VARCHAR},
+			#{novelContentTableName,jdbcType=VARCHAR},
+			#{novelContentId,       jdbcType=VARCHAR},
+			#{novelClassId1,        jdbcType=INTEGER},
+			#{novelClassId2,        jdbcType=INTEGER},
+			#{novelClassId3,        jdbcType=INTEGER}, 
+			#{novelStatus,          jdbcType=INTEGER}, 
+			#{novelChapterNum,      jdbcType=INTEGER},
+			#{novelAuthor,          jdbcType=VARCHAR}, 
+			#{novelAccess,          jdbcType=INTEGER},
+			#{novelPopularity,      jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<update id="updateNovelHeadByNovelId" parameterType="cui.shibing.freeread.model.NovelHead">
+		update 	
+			novel_head
+		set 
+			novel_name               = #{novelName,            jdbcType=VARCHAR},
+			novel_picture            = #{novelPicture,         jdbcType=VARCHAR},
+			novel_desc               = #{novelDesc,            jdbcType=VARCHAR},
+			novel_content_table_name = #{novelContentTableName,jdbcType=VARCHAR},
+			novel_content_id         = #{novelContentId,       jdbcType=VARCHAR},
+			novel_class_id_1         = #{novelClassId1,        jdbcType=INTEGER},
+			novel_class_id_2         = #{novelClassId2,        jdbcType=INTEGER},
+			novel_class_id_3         = #{novelClassId3,        jdbcType=INTEGER},
+			novel_status             = #{novelStatus,          jdbcType=INTEGER},
+			novel_chapter_num        = #{novelChapterNum,      jdbcType=INTEGER},
+			novel_author             = #{novelAuthor,          jdbcType=VARCHAR},
+			novel_access             = #{novelAccess,          jdbcType=INTEGER},
+			novel_popularity         = #{novelPopularity,      jdbcType=INTEGER}
+		where 
+			novel_id = #{novelId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectNovelHeadByNovelName" resultMap="BaseResultMap">
+		select
+			novel_id,
+			novel_name, 
+			novel_picture, 
+			novel_desc,
+			novel_content_table_name,
+			novel_content_id,
+			novel_class_id_1, 
+			novel_class_id_2,
+			novel_class_id_3,
+			novel_status, 
+			novel_chapter_num, 
+			novel_author, 
+			novel_access,
+			novel_popularity
+		from 
+			novel_head
+		where 
+			novel_name = #{novelName,jdbcType=VARCHAR} 
+		limit
+			#{pageable.offset},#{pageable.pageSize}
+	</select>
+
+	<select id="selectNovelHeadByNovelClassName" resultMap="BaseResultMap">
+		select
+			nh.novel_id,
+			nh.novel_name, 
+			nh.novel_picture, 
+			nh.novel_desc,
+			nh.novel_content_table_name,
+			nh.novel_content_id,
+			nh.novel_class_id_1, 
+			nh.novel_class_id_2,
+			nh.novel_class_id_3,
+			nh.novel_status, 
+			nh.novel_chapter_num, 
+			nh.novel_author, 
+			nh.novel_access,
+			nh.novel_popularity
+		from 
+			novel_head nh,
+			novel_class nc
+		where 
+			nc.novel_class_name = #{novelClassName,jdbcType=VARCHAR} 
+		and
+			(
+				nh.novel_class_id_1 = nc.novel_class_id
+				or
+				nh.novel_class_id_2 = nc.novel_class_id
+				or
+				nh.novel_class_id_3 = nc.novel_class_id
+			)
+		limit
+			#{pageable.offset},#{pageable.pageSize}
+	</select>
+
+	<select id="selectNovelHeadByPopularity" resultMap="BaseResultMap">
+		select
+			novel_id,
+			novel_name, 
+			novel_picture,
+			novel_desc, 
+			novel_content_table_name,
+			novel_content_id,
+			novel_class_id_1, 
+			novel_class_id_2,
+			novel_class_id_3,
+			novel_status, 
+			novel_chapter_num, 
+			novel_author, 
+			novel_access,
+			novel_popularity
+		from 
+			novel_head
+		order by 
+			novel_popularity desc 
+		limit
+			#{pageable.offset},#{pageable.pageSize}
+	</select>
+
+</mapper>

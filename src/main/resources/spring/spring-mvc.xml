@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+    ">
+	<mvc:tiles-configurer>
+		<mvc:definitions location="/WEB-INF/tiles/tiles-definitions.xml" />
+	</mvc:tiles-configurer>
+	
+	<mvc:annotation-driven>
+		<mvc:argument-resolvers>
+            <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
+        </mvc:argument-resolvers>
+	</mvc:annotation-driven>
+
+	<context:component-scan base-package="cui.shibing.freeread.app" />
+	<!-- <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" >
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/tiles/tiles-definitions.xml</value>
+            </list>
+        </property>
+    </bean> -->
+	
+	<mvc:default-servlet-handler />
+	
+	<mvc:resources mapping="/resources/**"
+        location="/resources/"
+        cache-period="#{60 * 60}" />
+	
+	<!-- 配置视图解析器 -->
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.tiles3.TilesView</value>
+		</property>
+	</bean>
+
+	<mvc:view-resolvers>
+		<mvc:tiles view-names = "tilesViewResolver"/>
+		<mvc:jsp prefix="/WEB-INF/views/" />
+		<mvc:jsp suffix=".jsp" />
+	</mvc:view-resolvers>
+
+</beans>
