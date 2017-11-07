@@ -2,5 +2,4 @@ target/
 generatorConfig.xml
 .project
 .classpath
-src/main/resources/mybatis/jdbc.properties
 
