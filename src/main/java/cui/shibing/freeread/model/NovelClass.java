@@ -1,6 +1,10 @@
 package cui.shibing.freeread.model;
 
-public class NovelClass {
+import java.io.Serializable;
+
+public class NovelClass implements Serializable{
+	
+	private static final long serialVersionUID = 5233685107867115305L;
 	private Integer novelClassId;
 	private String novelClassName;
 	public Integer getNovelClassId() {
