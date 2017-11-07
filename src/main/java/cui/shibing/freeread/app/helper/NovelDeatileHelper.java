@@ -3,7 +3,6 @@ package cui.shibing.freeread.app.helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 
 import cui.shibing.freeread.model.NovelHead;
 import cui.shibing.freeread.service.NovelHeadService;

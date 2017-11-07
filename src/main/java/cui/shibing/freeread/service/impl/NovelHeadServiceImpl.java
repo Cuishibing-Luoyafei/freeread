@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,13 +32,18 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 		}
 		return new PageImpl<NovelHead>(result);
 	}
-
+	
+	/*
+	 * 缓存小说排行榜
+	 * **/
+	@Cacheable(value="default",cacheManager="cacheManager",key="#root.methodName + #pageable.pageNumber")
 	public Page<NovelHead> searchByPopularity(Pageable pageable) {
 		List<NovelHead> result = null;
 
 		if (pageable == null) {
 			result = Collections.emptyList();
 		} else {
+			System.out.println("从数据库查询呢");
 			result = novelHeadMapper.selectNovelHeadByPopularity(pageable);
 		}
 		return new PageImpl<NovelHead>(result);

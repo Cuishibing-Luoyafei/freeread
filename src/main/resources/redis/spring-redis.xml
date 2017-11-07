@@ -11,30 +11,35 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
     	http://www.springframework.org/schema/cache   
         http://www.springframework.org/schema/cache/spring-cache-4.2.xsd">
-        
-	<context:property-placeholder location="classpath:redis/redis.properties" />
-	
+
 	<cache:annotation-driven cache-manager="cacheManager"/>
 	
 	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">  
         <property name="maxIdle" value="${redis.maxIdle}" />  
-        <property name="maxActive" value="${redis.maxActive}" />  
-        <property name="maxWait" value="${redis.maxWait}" />  
+        <!-- <property name="maxActive" value="${redis.maxActive}" />   -->
+        <!-- <property name="maxWait" value="${redis.maxWait}" />  --> 
         <property name="testOnBorrow" value="${redis.testOnBorrow}" />  
     </bean>  
     
    	<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-   		<property name="host-name" value="${redis.host}"/>
+   		<property name="hostName" value="${redis.host}"/>
    		<property name="port" value="${redis.port}"/>
    		<property name="password" value="${redis.pass}"/>
-   		<property name="pool-config-ref" ref="poolConfig"/>
+   		<property name="poolConfig" ref="poolConfig"/>
    	</bean>
+   	
+   	<bean id="jdkSerializationRedisSerializer" class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+   	
     <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">  
         <property name="connectionFactory"   ref="connectionFactory" />  
+        <property name="keySerializer" ref="jdkSerializationRedisSerializer"/>
+        <property name="valueSerializer" ref="jdkSerializationRedisSerializer"/>
     </bean> 
     <!-- <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
     	<property name="redisTemplate" ref="redisTemplate"/>
     </bean> -->
     <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+    	<constructor-arg name="redisOperations" ref="redisTemplate" />
+    	<!-- <property name="defaultExpireTime" value="600"/> -->
     </bean>
 </beans>

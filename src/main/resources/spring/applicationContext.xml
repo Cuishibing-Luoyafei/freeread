@@ -6,7 +6,20 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     "> 
+    
+    <bean name="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- <property name="locations" value="classpath:mybatis/jdbc.properties"></property> -->
+		<property name="locations">
+			<array>
+				<value>classpath:mybatis/jdbc.properties</value>
+				<value>classpath:redis/redis.properties</value>
+			</array>
+		</property>
+	</bean>
+    
     <context:component-scan base-package="cui.shibing.freeread.service"/>
     <!-- <import resource="classpath:spring/spring-security.xml" /> -->
-    <import resource="classpath:spring/spring-mybatis.xml"/>
+    <import resource="classpath:mybatis/spring-mybatis.xml"/>
+    <import resource="classpath:redis/spring-redis.xml"/>
 </beans>
