@@ -32,7 +32,7 @@
 										</div>
 										<div>
 											<label style="width: 150"><small><a
-													href="novelDeatil?novelId=aaa">${novel.novelName }</a></small></label>
+													href="novelDeatil?novelId=${novel.novelId }">${novel.novelName }</a></small></label>
 										</div>
 									</div>
 								</td>
