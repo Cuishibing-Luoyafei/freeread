@@ -1,7 +1,12 @@
 package cui.shibing.freeread.model;
 
-public class NovelHead {
-    private String novelId;
+import java.io.Serializable;
+
+public class NovelHead implements Serializable{
+
+	private static final long serialVersionUID = -8628870325251098944L;
+
+	private String novelId;
 
     private String novelName;
 
