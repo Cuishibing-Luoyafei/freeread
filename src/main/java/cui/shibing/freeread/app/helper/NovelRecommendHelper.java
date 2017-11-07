@@ -25,7 +25,7 @@ public class NovelRecommendHelper implements PageElementHelper {
 				pageable = new CustomPageable(1, 20);
 			}
 			Page<NovelHead> recommendNovels = novelHeadService.searchByPopularity(pageable);
-			model.addAttribute("recommendNovels", recommendNovels.getContent());
+			model.addAttribute("pageRecommendNovels", recommendNovels);
 		}
 		return PAGE;
 	}

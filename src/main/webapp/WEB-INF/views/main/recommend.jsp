@@ -3,6 +3,7 @@
 		<h3 class="panel-title">推荐</h3>
 	</div>
 	<div class="panel-body">
+		<c:set var="recommendNovels" value="${pageRecommendNovels.getContent()}"/>
 		<c:set var="startIndex" value="0" />
 		<c:set var="endIndex" value="${recommendNovels.size()-1}" />
 		<c:set var="step" value="4" />
@@ -47,12 +48,23 @@
 
 <div align="center">
 	<ul class="pagination">
-		<li><a href="#">&laquo;</a></li>
-		<li><a href="#">1</a></li>
-		<li><a href="#">2</a></li>
-		<li><a href="#">3</a></li>
-		<li><a href="#">4</a></li>
-		<li><a href="#">5</a></li>
-		<li><a href="#">&raquo;</a></li>
+		<c:if test="${pageRecommendNovels.hasPrevious()}">
+			<li><a href="#">&laquo;</a></li>
+		</c:if>
+		<c:set var="showPageRange" value="3"/><!-- 显示页的范围,当前页左边显示3页,右边显示3页 -->
+		<c:set var="startIndex" value="0"/>
+		<c:if test="${pageRecommendNovels.getNumber() - showPageRange >= 0}">
+			<c:set var="startIndex" value = "${pageRecommendNovels.getNumber() - showPageRange}"/>
+		</c:if>
+		<c:set var="endIndex" value="${pageRecommendNovels.getNumber() + showPageRange }"/>
+		<c:if test="${endIndex > pageRecommendNovels.getTotalPages() - 1}">
+			<c:set var="endIndex" value = "${pageRecommendNovels.getTotalPages() - 1}"/>
+		</c:if>
+		<c:forEach begin="${startIndex }" end="${endIndex }" step="1" varStatus="index">
+			<li><a href="#">${index.index + 1}</a></li>
+		</c:forEach>
+		<c:if test="${pageRecommendNovels.hasNext() }">
+			<li><a href="#">&raquo;</a></li>
+		</c:if>
 	</ul>
 </div>
