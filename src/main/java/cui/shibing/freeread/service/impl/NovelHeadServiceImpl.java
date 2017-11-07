@@ -35,6 +35,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	
 	/*
 	 * 缓存小说排行榜
+	 * key:searchByPopularity+当前页数
 	 * **/
 	@Cacheable(value="default",cacheManager="cacheManager",key="#root.methodName + #pageable.pageNumber")
 	public Page<NovelHead> searchByPopularity(Pageable pageable) {
@@ -43,7 +44,6 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 		if (pageable == null) {
 			result = Collections.emptyList();
 		} else {
-			System.out.println("从数据库查询呢");
 			result = novelHeadMapper.selectNovelHeadByPopularity(pageable);
 		}
 		return new PageImpl<NovelHead>(result);
@@ -65,7 +65,4 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			return null;
 		return novelHeadMapper.selectNovelHeadByNovelId(novelId);
 	}
-	
-	
-
 }

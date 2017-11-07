@@ -2,58 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cui.shibing.freeread.dao.NovelContentDao">
   <resultMap id="BaseResultMap" type="cui.shibing.freeread.model.NovelContent">
-    <id 	column="novel_content_id" 	 jdbcType="VARCHAR" 	property="novelContentId" />
-    <result column="novel_id" 		  	 jdbcType="VARCHAR" 	property="novelId" />
-    <result column="novel_chapter_index" jdbcType="INTEGER" 	property="novelChapterIndex" />
+    <id     column="novel_id" 		  	 jdbcType="VARCHAR" 	property="novelId" />
+    <id     column="novel_chapter_index" jdbcType="INTEGER" 	property="novelChapterIndex" />
     <result column="novel_chapter_path"  jdbcType="VARCHAR" 	property="novelChapterPath" />
   </resultMap>
   
-  <select id="selectNovelConentById" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    	novel_content_id, 
-    	novel_id, 
-    	novel_chapter_index, 
-    	novel_chapter_path
-    from 
-    	novel_content
-    where 
-    	novel_content_id = #{novelContentId,jdbcType=VARCHAR}
-  </select>
-  
-  <delete id="deleteNovelContentById" parameterType="java.lang.String">
-    delete from 
-    	novel_content
-    where 
-    	novel_content_id = #{novelContentId,jdbcType=VARCHAR}
-  </delete>
-  
   <insert id="insertNovelContent" parameterType="cui.shibing.freeread.model.NovelContent">
     insert into novel_content (
-    	novel_content_id,
     	novel_id, 
     	novel_chapter_index, 
       	novel_chapter_path)
     values (
-    	#{novelContentId,   jdbcType=VARCHAR}, 
     	#{novelId,	        jdbcType=VARCHAR}, 
     	#{novelChapterIndex,jdbcType=INTEGER}, 
       	#{novelChapterPath, jdbcType=VARCHAR})
   </insert>
   
-  <update id="updateNovelContentById" parameterType="cui.shibing.freeread.model.NovelContent">
-    update 
-    	novel_content
-    set 
-    	novel_id 			= #{novelId,         jdbcType=VARCHAR},
-      	novel_chapter_index = #{novelChapterIndex,    jdbcType=INTEGER},
-      	novel_chapter_path  = #{novelChapterPath,jdbcType=VARCHAR}
-    where 
-    	novel_content_id  = #{novelContentId,  jdbcType=VARCHAR}
-  </update>
-  
   <select id="selectNovleContentByNovelIdAndChapter" resultMap="BaseResultMap">
   	select 
-    	novel_content_id, 
     	novel_id, 
     	novel_chapter_index, 
     	novel_chapter_path

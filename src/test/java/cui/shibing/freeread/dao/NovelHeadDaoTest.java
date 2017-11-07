@@ -27,7 +27,6 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 		novelHead.setNovelId(UUID.randomUUID().toString());
 		novelHead.setNovelName("novel1");
 		novelHead.setNovelContentTableName("abcd");
-		novelHead.setNovelContentId("123");
 		novelHead.setNovelClassId1(1);
 		novelHead.setNovelStatus(12);
 		novelHead.setNovelChapterNum(123);

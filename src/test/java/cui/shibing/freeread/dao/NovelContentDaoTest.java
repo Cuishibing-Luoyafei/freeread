@@ -21,7 +21,6 @@ public class NovelContentDaoTest extends CustomDaoTest{
 	public void testInsertNovelContent01() {
 		NovelContent novelContent = new NovelContent();
 		novelContent.setNovelId(UUID.randomUUID().toString());
-		novelContent.setNovelContentId(UUID.randomUUID().toString());
 		novelContent.setNovelChapterPath(UUID.randomUUID().toString());
 		novelContent.setNovelChapterIndex(1);
 		assertTrue(novelContentDao.insertNovelContent(novelContent)==1);

@@ -16,8 +16,6 @@ public class NovelHead implements Serializable{
 
     private String novelContentTableName;
 
-    private String novelContentId;
-
     private Integer novelClassId1;
     
     private Integer novelClassId2;
@@ -72,14 +70,6 @@ public class NovelHead implements Serializable{
 
 	public void setNovelContentTableName(String novelContentTableName) {
 		this.novelContentTableName = novelContentTableName;
-	}
-
-	public String getNovelContentId() {
-		return novelContentId;
-	}
-
-	public void setNovelContentId(String novelContentId) {
-		this.novelContentId = novelContentId;
 	}
 
 	public Integer getNovelClassId1() {

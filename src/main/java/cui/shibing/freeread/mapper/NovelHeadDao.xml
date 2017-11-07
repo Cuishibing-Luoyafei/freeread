@@ -8,7 +8,6 @@
 		<result column="novel_picture" 				jdbcType="VARCHAR" property="novelPicture" />
 		<result column="novel_desc"					jdbcType="VARCHAR" property="novelDesc"/>
 		<result column="novel_content_table_name" 	jdbcType="VARCHAR" property="novelContentTableName" />
-		<result column="novel_content_id" 			jdbcType="VARCHAR" property="novelContentId" />
 		<result column="novel_class_id_1" 			jdbcType="INTEGER" property="novelClassId1" />
 		<result column="novel_class_id_2" 			jdbcType="INTEGER" property="novelClassId2" />
 		<result column="novel_class_id_3" 			jdbcType="INTEGER" property="novelClassId3" />
@@ -27,7 +26,6 @@
 			novel_picture, 
 			novel_desc,
 			novel_content_table_name,
-			novel_content_id,
 			novel_class_id_1, 
 			novel_class_id_2,
 			novel_class_id_3,
@@ -54,7 +52,6 @@
 			novel_picture, 
 			novel_desc,
 			novel_content_table_name,
-			novel_content_id,
 			novel_class_id_1, 
 			novel_class_id_2,
 			novel_class_id_3,
@@ -70,7 +67,6 @@
 			#{novelPicture,         jdbcType=VARCHAR},
 			#{novelDesc,			jdbcType=VARCHAR},
 			#{novelContentTableName,jdbcType=VARCHAR},
-			#{novelContentId,       jdbcType=VARCHAR},
 			#{novelClassId1,        jdbcType=INTEGER},
 			#{novelClassId2,        jdbcType=INTEGER},
 			#{novelClassId3,        jdbcType=INTEGER}, 
@@ -90,7 +86,6 @@
 			novel_picture            = #{novelPicture,         jdbcType=VARCHAR},
 			novel_desc               = #{novelDesc,            jdbcType=VARCHAR},
 			novel_content_table_name = #{novelContentTableName,jdbcType=VARCHAR},
-			novel_content_id         = #{novelContentId,       jdbcType=VARCHAR},
 			novel_class_id_1         = #{novelClassId1,        jdbcType=INTEGER},
 			novel_class_id_2         = #{novelClassId2,        jdbcType=INTEGER},
 			novel_class_id_3         = #{novelClassId3,        jdbcType=INTEGER},
@@ -110,7 +105,6 @@
 			novel_picture, 
 			novel_desc,
 			novel_content_table_name,
-			novel_content_id,
 			novel_class_id_1, 
 			novel_class_id_2,
 			novel_class_id_3,
@@ -134,7 +128,6 @@
 			nh.novel_picture, 
 			nh.novel_desc,
 			nh.novel_content_table_name,
-			nh.novel_content_id,
 			nh.novel_class_id_1, 
 			nh.novel_class_id_2,
 			nh.novel_class_id_3,
@@ -167,7 +160,6 @@
 			novel_picture,
 			novel_desc, 
 			novel_content_table_name,
-			novel_content_id,
 			novel_class_id_1, 
 			novel_class_id_2,
 			novel_class_id_3,
