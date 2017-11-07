@@ -12,14 +12,21 @@ import cui.shibing.freeread.service.NovelHeadService;
 @Component("novelRankingHelper")
 public class NovelRankingHelper implements PageElementHelper{
 	private static volatile String PAGE = "left/novel_ranking";
-	private static final int POPULARITY_NUM = 20;
 	@Autowired
 	private NovelHeadService novelHeadService;
 
 	public String getPage(Model model, Object... params) {
-		Pageable pageable = new CustomPageable(1, POPULARITY_NUM);
-		Page<NovelHead> leftPopularityNovels = novelHeadService.searchByPopularity(pageable);
-		model.addAttribute("leftPopularityNovels", leftPopularityNovels.getContent());
+		if (params != null && params.length > 0) {
+			Object param = params[0];
+			Pageable pageable = null;
+			if (param != null && param instanceof Pageable) {
+				pageable = (Pageable) param;
+			} else {
+				pageable = new CustomPageable(1, 20);
+			}
+			Page<NovelHead> novels = novelHeadService.searchByPopularity(pageable);
+			model.addAttribute("pagePopularityNovels", novels);
+		}
 		return PAGE;
 	}
 	

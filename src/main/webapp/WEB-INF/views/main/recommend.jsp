@@ -49,7 +49,7 @@
 <div align="center">
 	<ul class="pagination">
 		<c:if test="${pageRecommendNovels.hasPrevious()}">
-			<li><a href="/?page=${pageRecommendNovels.getNumber()-1 }">&laquo;</a></li>
+			<li><a href="?page=${pageRecommendNovels.getNumber()-1 }&size=3">&laquo;</a></li>
 		</c:if>
 		<c:set var="showPageRange" value="3"/><!-- 显示页的范围,当前页左边显示3页,右边显示3页 -->
 		<c:set var="startIndex" value="0"/>
@@ -61,10 +61,10 @@
 			<c:set var="endIndex" value = "${pageRecommendNovels.getTotalPages() - 1}"/>
 		</c:if>
 		<c:forEach begin="${startIndex }" end="${endIndex }" step="1" varStatus="index">
-			<li><a href="/?page=${index }">${index.index + 1}</a></li>
+			<li><a href="?page=${index.index }&size=3">${index.index + 1}</a></li>
 		</c:forEach>
 		<c:if test="${pageRecommendNovels.hasNext() }">
-			<li><a href="/?page=${pageRecommendNovels.getNumber()+1 }">&raquo;</a></li>
+			<li><a href="?page=${pageRecommendNovels.getNumber()+1 }&size=3">&raquo;</a></li>
 		</c:if>
 	</ul>
 </div>

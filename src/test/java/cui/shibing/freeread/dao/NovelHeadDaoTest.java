@@ -105,7 +105,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	
 	@Test
 	public void testSelectNovelHeadByPopularity01() {
-		Pageable pageable = new CustomPageable(1,5);
+		Pageable pageable = new CustomPageable(1,3);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByPopularity(pageable);
 		assertTrue(novelHeads.size()==5);
 		assertTrue(novelHeads.get(0).getNovelPopularity()==128);

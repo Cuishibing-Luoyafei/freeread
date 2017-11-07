@@ -21,8 +21,8 @@ public class PageElementController {
 	 * 小说排行榜页面
 	 * */
 	@RequestMapping("novelRanking")
-	public String novelRanking(Model model){
-		return novelRankingHelper.getPage(model,(Object[])null);
+	public String novelRanking(Model model,@PageableDefault(value = 20) Pageable pageable){
+		return novelRankingHelper.getPage(model,pageable);
 	}
 	
 	@Autowired
@@ -43,7 +43,7 @@ public class PageElementController {
 	 * 小说推荐页面
 	 * **/
 	@RequestMapping("recommend")
-	public String recommend(Model model,@PageableDefault(value = 15) Pageable pageable) {
+	public String recommend(Model model,@PageableDefault(value = 3) Pageable pageable) {
 		return novelRecommendHelper.getPage(model,pageable);
 	}
 	

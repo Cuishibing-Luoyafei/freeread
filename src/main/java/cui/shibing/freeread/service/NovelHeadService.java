@@ -12,6 +12,13 @@ public interface NovelHeadService {
 	Page<NovelHead> searchByNovelName(String novelName,Pageable pageable);
 	
 	/**
+	 * 查询小说名称对应记录的数量
+	 * @param novelName 小说名称
+	 * @return 对应的数量
+	 * */
+	long searchCountByNovelName(String novelName);
+	
+	/**
 	 * 根据小说类别查找小说
 	 * @param className 小说类别名
 	 * @param pageable 分页对象
@@ -25,6 +32,12 @@ public interface NovelHeadService {
 	 * @return 返回相应的小说
 	 * */
 	Page<NovelHead> searchByPopularity(Pageable pageable);
+	
+	/**
+	 * 查询小说总数
+	 * @return 小说数量
+	 * */
+	long searchNovelHeadCount();
 	
 	/**
 	 * 根据小说Id查找小说

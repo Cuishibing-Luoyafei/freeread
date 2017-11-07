@@ -120,6 +120,15 @@
 		limit
 			#{pageable.offset},#{pageable.pageSize}
 	</select>
+	
+	<select id="selectNovelHeadCountByNovelName" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		select 
+			count(novel_id)
+		from 
+			novel_head
+		where
+			novel_name = #{novelName,jdbcType=VARCHAR}
+	</select>
 
 	<select id="selectNovelHeadByNovelClassName" resultMap="BaseResultMap">
 		select
@@ -175,5 +184,10 @@
 		limit
 			#{pageable.offset},#{pageable.pageSize}
 	</select>
-
+	<select id="selectNovelHeadCountByPopularity" resultType="java.lang.Long">
+		select
+			count(novel_id)
+		from 
+			novel_head
+	</select>
 </mapper>

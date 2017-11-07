@@ -37,32 +37,42 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	 * 缓存小说排行榜
 	 * key:searchByPopularity+当前页数
 	 * **/
-	@Cacheable(value="default",cacheManager="cacheManager",key="#root.methodName + #pageable.pageNumber")
+	@Cacheable(value="default",cacheManager="cacheManager",key="#root.methodName +'_'+ #pageable.pageNumber + '_' + #pageable.pageSize")
 	public Page<NovelHead> searchByPopularity(Pageable pageable) {
 		List<NovelHead> result = null;
-
+		long count = 0;
 		if (pageable == null) {
 			result = Collections.emptyList();
 		} else {
 			result = novelHeadMapper.selectNovelHeadByPopularity(pageable);
+			count = searchNovelHeadCount();
 		}
-		return new PageImpl<NovelHead>(result);
+		return new PageImpl<NovelHead>(result,pageable,count);
 	}
 
 	public Page<NovelHead> searchByNovelName(String novelName, Pageable pageable) {
 		List<NovelHead> result = null;
-
+		long count = 0;
 		if (StringUtils.isEmpty(novelName) || pageable == null) {
 			result = Collections.emptyList();
 		} else {
 			result = novelHeadMapper.selectNovelHeadByNovelName(novelName, pageable);
+			count = searchCountByNovelName(novelName);
 		}
-		return new PageImpl<NovelHead>(result);
+		return new PageImpl<NovelHead>(result,pageable,count);
 	}
 
 	public NovelHead searchByNovelId(String novelId) {
 		if(StringUtils.isEmpty(novelId))
 			return null;
 		return novelHeadMapper.selectNovelHeadByNovelId(novelId);
+	}
+
+	public long searchCountByNovelName(String novelName) {
+		return novelHeadMapper.selectNovelHeadCountByNovelName(novelName);
+	}
+
+	public long searchNovelHeadCount() {
+		return novelHeadMapper.selectNovelHeadCountByPopularity();
 	}
 }

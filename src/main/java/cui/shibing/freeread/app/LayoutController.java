@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LayoutController {
 
-	@RequestMapping("/")
-	public String recommend(Model model) {
+	@RequestMapping(value="/")
+	public String index(Model model) {
+		return "pageElement/recommend.base_layout";
+	}
+	@RequestMapping(value="/",params= {"page","size"})
+	public String recommendPage() {
 		return "pageElement/recommend.base_layout";
 	}
 

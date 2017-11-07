@@ -1,9 +1,13 @@
 package cui.shibing.freeread.app.helper;
 
+import java.io.Serializable;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-public class CustomPageable implements Pageable{
+public class CustomPageable implements Pageable,Serializable{
+
+	private static final long serialVersionUID = 7631885712916589155L;
 
 	private int pageNumber;
 	

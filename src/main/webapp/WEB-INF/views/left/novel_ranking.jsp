@@ -4,7 +4,7 @@
 	</div>
 	<div class="panel-body">
 		<ul class="list-group">
-			<c:forEach items="${leftPopularityNovels }" var="novelHeads">
+			<c:forEach items="${pagePopularityNovels.getContent() }" var="novelHeads">
 				<li class="list-group-item">${novelHeads.novelName}</li>
 			</c:forEach>
 		</ul>
