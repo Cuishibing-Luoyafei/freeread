@@ -2,6 +2,7 @@ package cui.shibing.freeread.app.helper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ public class NovelRecommendHelper implements PageElementHelper {
 			if (param != null && param instanceof Pageable) {
 				pageable = (Pageable) param;
 			} else {
-				pageable = new CustomPageable(1, 20);
+				pageable = new PageRequest(1, 20);
 			}
 			Page<NovelHead> recommendNovels = novelHeadService.searchByPopularity(pageable);
 			model.addAttribute("pageRecommendNovels", recommendNovels);

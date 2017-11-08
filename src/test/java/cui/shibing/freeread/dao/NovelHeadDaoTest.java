@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import cui.shibing.freeread.CustomDaoTest;
-import cui.shibing.freeread.CustomPageable;
 import cui.shibing.freeread.model.NovelHead;
 
 public class NovelHeadDaoTest extends CustomDaoTest{
@@ -39,7 +39,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	@Test
 	public void testSelectNovelHeadByNovelName01() {
 		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new CustomPageable(1,5);
+		Pageable pageable = new PageRequest(1,5);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelName("1", pageable);
 		assertTrue(novelHeads.size()==0);
 	}
@@ -50,7 +50,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	@Test
 	public void testSelectNovelHeadByNovelName02() {
 		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new CustomPageable(1,5);
+		Pageable pageable = new PageRequest(1,5);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelName("zhe tian", pageable);
 		assertTrue(novelHeads.size()==1);
 		assertTrue(novelHeads.get(0).getNovelName().equals("zhe tian"));
@@ -62,7 +62,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	@Test
 	public void testSelectNovelHeadByNovelClassName01() {
 		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new CustomPageable(1,5);
+		Pageable pageable = new PageRequest(1,5);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("six", pageable);
 		assertTrue(novelHeads.size()==0);
 	}
@@ -73,7 +73,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	@Test
 	public void testSelectNovelHeadByNovelClassName02() {
 		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new CustomPageable(1,5);
+		Pageable pageable = new PageRequest(1,5);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("one", pageable);
 		assertTrue(novelHeads.size()==1);
 		assertTrue(novelHeads.get(0).getNovelClassId1() == 1);
@@ -85,7 +85,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	@Test
 	public void testSelectNovelHeadByNovelClassName03() {
 		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new CustomPageable(1,5);
+		Pageable pageable = new PageRequest(1,5);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("two", pageable);
 		assertTrue(novelHeads.size()==1);
 		assertTrue(novelHeads.get(0).getNovelClassId2() == 2);
@@ -97,7 +97,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	@Test
 	public void testSelectNovelHeadByNovelClassName04() {
 		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new CustomPageable(1,5);
+		Pageable pageable = new PageRequest(1,5);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("three", pageable);
 		assertTrue(novelHeads.size()==1);
 		assertTrue(novelHeads.get(0).getNovelClassId3() == 3);
@@ -105,7 +105,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 	
 	@Test
 	public void testSelectNovelHeadByPopularity01() {
-		Pageable pageable = new CustomPageable(1,3);
+		Pageable pageable = new PageRequest(1,3);
 		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByPopularity(pageable);
 		assertTrue(novelHeads.size()==5);
 		assertTrue(novelHeads.get(0).getNovelPopularity()==128);
@@ -113,7 +113,7 @@ public class NovelHeadDaoTest extends CustomDaoTest{
 		assertTrue(novelHeads.get(2).getNovelPopularity()==126);
 		assertTrue(novelHeads.get(3).getNovelPopularity()==125);
 		assertTrue(novelHeads.get(4).getNovelPopularity()==124);
-		Pageable pageable1 = new CustomPageable(2,5);
+		Pageable pageable1 = new PageRequest(2,5);
 		List<NovelHead> novelHeads1 = novelHeadMapper.selectNovelHeadByPopularity(pageable1);
 		assertTrue(novelHeads1.size()==1);
 		assertTrue(novelHeads1.get(0).getNovelPopularity()==123);
