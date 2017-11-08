@@ -35,7 +35,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	
 	/*
 	 * 缓存小说排行榜
-	 * key:searchByPopularity+当前页数
+	 * key:searchByPopularity_pageNumber_pageSize
 	 * **/
 	@Cacheable(value="default",cacheManager="cacheManager",key="#root.methodName +'_'+ #pageable.pageNumber + '_' + #pageable.pageSize")
 	public Page<NovelHead> searchByPopularity(Pageable pageable) {

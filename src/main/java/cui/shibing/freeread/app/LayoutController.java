@@ -11,7 +11,7 @@ public class LayoutController {
 	public String index(Model model) {
 		return "pageElement/recommend.base_layout";
 	}
-	@RequestMapping(value="/",params= {"page","size"})
+	@RequestMapping(value="/recomend",params= {"page","size"})
 	public String recommendPage() {
 		return "pageElement/recommend.base_layout";
 	}
