@@ -2,27 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cui.shibing.freeread.dao.NovelContentDao">
   <resultMap id="BaseResultMap" type="cui.shibing.freeread.model.NovelContent">
-    <id     column="novel_id" 		  	 jdbcType="VARCHAR" 	property="novelId" />
-    <id     column="novel_chapter_index" jdbcType="INTEGER" 	property="novelChapterIndex" />
-    <result column="novel_chapter_path"  jdbcType="VARCHAR" 	property="novelChapterPath" />
+    <id     column="novel_id" 		  	  jdbcType="VARCHAR" 	property="novelId" />
+    <id     column="novel_chapter_index"  jdbcType="INTEGER" 	property="novelChapterIndex" />
+    <result column="novel_chapter_name"   jdbcType="VARCHAR"    property="novelChapterName"/>
+    <result column="novel_chapter_content" jdbcType="VARCHAR" 	property="novelChapterContent"/>
   </resultMap>
   
   <insert id="insertNovelContent" parameterType="cui.shibing.freeread.model.NovelContent">
     insert into novel_content (
     	novel_id, 
-    	novel_chapter_index, 
-      	novel_chapter_path)
+    	novel_chapter_index,
+    	novel_chapter_name, 
+      	novel_chapter_content)
     values (
     	#{novelId,	        jdbcType=VARCHAR}, 
-    	#{novelChapterIndex,jdbcType=INTEGER}, 
-      	#{novelChapterPath, jdbcType=VARCHAR})
+    	#{novelChapterIndex,jdbcType=INTEGER},
+    	#{novelChapterName, jdbcType=VARCHAR}, 
+      	#{novelChapterContent, jdbcType=VARCHAR})
   </insert>
   
   <select id="selectNovleContentByNovelIdAndChapter" resultMap="BaseResultMap">
   	select 
     	novel_id, 
-    	novel_chapter_index, 
-    	novel_chapter_path
+    	novel_chapter_index,
+    	novel_chapter_name, 
+    	novel_chapter_content
     from 
     	novel_content
     where
@@ -33,10 +37,10 @@
   
   <select id="selectNovelContentByNovelId" resultMap="BaseResultMap">
   	select
-  		novel_content_id, 
     	novel_id, 
-    	novel_chapter_index, 
-    	novel_chapter_path
+    	novel_chapter_index,
+    	novel_chapter_name, 
+    	novel_chapter_content
     from 
     	novel_content
     where

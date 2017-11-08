@@ -1,5 +1,7 @@
 package cui.shibing.freeread.app;
 
+import javax.servlet.Servlet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +26,7 @@ public class PageElementController {
 	 */
 	@RequestMapping("novelRanking")
 	public String novelRanking(Model model) {
-		return novelRankingHelper.getPage(model, new PageRequest(0,20));
+		return novelRankingHelper.getPage(model, new PageRequest(0, 20));
 	}
 
 	@Autowired
@@ -47,8 +49,7 @@ public class PageElementController {
 	 * 小说推荐页面
 	 */
 	@RequestMapping("recommend")
-	public String recommend(Model model,
-			@PageableDefault(value = 3) Pageable pageable) {
+	public String recommend(Model model, @PageableDefault(value = 3) Pageable pageable) {
 		return novelRecommendHelper.getPage(model, pageable);
 	}
 
@@ -60,16 +61,20 @@ public class PageElementController {
 	 * 小说详情页面
 	 */
 	@RequestMapping("novelDeatil")
-	public String novelDetail(Model model,
-			@RequestParam("novelId") String novelId) {
+	public String novelDetail(Model model, @RequestParam("novelId") String novelId) {
 		return novelDeatileHelper.getPage(model, novelId);
 	}
-	
+
+	@Autowired
+	@Qualifier("novelChapterListHelper")
+	private PageElementHelper novelChapterListHelper;
+
 	/*
 	 * 小說章節列表頁面
-	 * **/
+	 **/
 	@RequestMapping("novelChapterList")
-	public String novelChapterList(Model model,@RequestParam("novelId")String novelId){
-		return "main/chapter_list";
+	public String novelChapterList(Model model, @RequestParam("novelId") String novelId,
+			@PageableDefault(value = 50) Pageable pageable) {
+		return novelChapterListHelper.getPage(model, novelId, pageable);
 	}
 }

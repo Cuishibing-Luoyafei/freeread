@@ -7,10 +7,12 @@ public class NovelContent implements Serializable{
 	private static final long serialVersionUID = 2197176711435078226L;
 
     private String novelId;
-
+    
     private Integer novelChapterIndex;
-
-    private String novelChapterPath;
+    
+    private String novelChapterName;
+    
+    private String novelChapterContent;
 
 	public String getNovelId() {
 		return novelId;
@@ -28,12 +30,19 @@ public class NovelContent implements Serializable{
 		this.novelChapterIndex = novelChapterIndex;
 	}
 
-	public String getNovelChapterPath() {
-		return novelChapterPath;
+	public String getNovelChapterName() {
+		return novelChapterName;
 	}
 
-	public void setNovelChapterPath(String novelChapterPath) {
-		this.novelChapterPath = novelChapterPath;
+	public void setNovelChapterName(String novelChapterName) {
+		this.novelChapterName = novelChapterName;
 	}
-	
+
+	public String getNovelChapterContent() {
+		return novelChapterContent;
+	}
+
+	public void setNovelChapterContent(String novelChapterContent) {
+		this.novelChapterContent = novelChapterContent;
+	}
 }
