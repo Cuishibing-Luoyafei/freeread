@@ -25,7 +25,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			Pageable pageable) {
 		List<NovelHead> result = null;
 
-		if (StringUtils.isEmpty(className) || pageable == null || pageable.getPageNumber()<1) {
+		if (StringUtils.isEmpty(className) || pageable == null) {
 			result = Collections.emptyList();
 		} else {
 			result = novelHeadMapper.selectNovelHeadByNovelClassName(className, pageable);

@@ -64,4 +64,12 @@ public class PageElementController {
 			@RequestParam("novelId") String novelId) {
 		return novelDeatileHelper.getPage(model, novelId);
 	}
+	
+	/*
+	 * 小說章節列表頁面
+	 * **/
+	@RequestMapping("novelChapterList")
+	public String novelChapterList(Model model,@RequestParam("novelId")String novelId){
+		return "main/chapter_list";
+	}
 }
