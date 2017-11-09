@@ -2,4 +2,4 @@ target/
 generatorConfig.xml
 .project
 .classpath
-
+.settings/
