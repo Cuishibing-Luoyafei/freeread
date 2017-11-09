@@ -43,5 +43,13 @@ public class LayoutController {
 		return "pageElement/novelChapterList"
 				+ NO_LEFT_LAYOUT;
 	}
+	
+	/*
+	 * 小说章节内容
+	 * **/
+	@RequestMapping(value="/novelContent",params= {"novelId","chapterIndex"})
+	public String novelContent() {
+		return "pageElement/novelContent"+NO_LEFT_LAYOUT;
+	}
 
 }
