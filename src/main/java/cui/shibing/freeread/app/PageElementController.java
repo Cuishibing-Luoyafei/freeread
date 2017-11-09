@@ -1,7 +1,5 @@
 package cui.shibing.freeread.app;
 
-import javax.servlet.Servlet;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cui.shibing.freeread.app.helper.PageElementHelper;
-
+/*
+ * 页面子页面Controller，该Controller返回的是一个具体的子页面
+ * **/
 @Controller
 @RequestMapping("pageElement")
 public class PageElementController {

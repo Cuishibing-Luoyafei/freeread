@@ -28,6 +28,8 @@ public class NovelChapterListHelper implements PageElementHelper {
 		if(pageable != null && !StringUtils.isEmpty(novelId)) {
 			Page<NovelContent> pageNovelContens = novelContentService.searchByNovelHeadId(novelId, pageable);
 			model.addAttribute("pageNovelContents",pageNovelContens);
+		}else{
+			//TODO:返回错误页面
 		}
 		return PAGE;
 	}

@@ -19,7 +19,7 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button class="btn btn-default"><a href="novelChapterList?novelId=${novelHead.novelId }">开始阅读</a></button>
+      <button class="btn btn-default"><a href="${pageContext.request.contextPath }/novelChapterList?novelId=${novelHead.novelId }">开始阅读</a></button>
     </div>
   </div>
 </form>

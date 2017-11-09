@@ -2,7 +2,6 @@ package cui.shibing.freeread.app.helper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -17,16 +16,17 @@ public class NovelRecommendHelper implements PageElementHelper {
 	private NovelHeadService novelHeadService;
 
 	public String getPage(Model model, Object... params) {
-		if (params != null && params.length > 0) {
-			Object param = params[0];
-			Pageable pageable = null;
-			if (param != null && param instanceof Pageable) {
-				pageable = (Pageable) param;
-			} else {
-				pageable = new PageRequest(1, 20);
+		Pageable pageable = null;
+		if (params != null && params.length == 1) {
+			if (params[0] instanceof Pageable) {
+				pageable = (Pageable) params[0];
 			}
+		}
+		if(pageable != null){
 			Page<NovelHead> recommendNovels = novelHeadService.searchByPopularity(pageable);
 			model.addAttribute("pageRecommendNovels", recommendNovels);
+		}else{
+			//TODO:返回错误页面
 		}
 		return PAGE;
 	}
