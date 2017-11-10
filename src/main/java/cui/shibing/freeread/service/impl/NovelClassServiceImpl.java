@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cui.shibing.freeread.dao.NovelClassDao;
+import cui.shibing.freeread.dto.NovelClassDto;
 import cui.shibing.freeread.model.NovelClass;
 import cui.shibing.freeread.service.NovelClassService;
+import cui.shibing.freeread.tools.MyBeanUtils;
 
 @Service
 public class NovelClassServiceImpl implements NovelClassService {
@@ -15,8 +17,15 @@ public class NovelClassServiceImpl implements NovelClassService {
 	@Autowired
 	private NovelClassDao novelClassDao;
 
-	public List<NovelClass> getallNovelClasses() {
+	public List<NovelClass> getAllNovelClasses() {
 		return novelClassDao.selectAllClass();
+	}
+
+	public NovelClassServiceOutputBean getAllNovelClasses(NovelClassServiceInputBean inputBean) {
+		NovelClassServiceOutputBean outputBean = new NovelClassServiceOutputBean();
+		List<NovelClass> classes = novelClassDao.selectAllClass();
+		MyBeanUtils.copyListProperties(classes, outputBean.getNovelClasses(),NovelClassDto.class);
+		return outputBean;
 	}
 
 }

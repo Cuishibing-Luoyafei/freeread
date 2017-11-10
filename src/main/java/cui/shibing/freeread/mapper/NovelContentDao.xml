@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cui.shibing.freeread.dao.NovelContentDao">
   <resultMap id="BaseResultMap" type="cui.shibing.freeread.model.NovelContent">
-    <id     column="novel_id" 		  	  jdbcType="VARCHAR" 	property="novelId" />
-    <id     column="novel_chapter_index"  jdbcType="INTEGER" 	property="novelChapterIndex" />
-    <result column="novel_chapter_name"   jdbcType="VARCHAR"    property="novelChapterName"/>
+    <id     column="novel_id" 		  	   jdbcType="VARCHAR" 	property="novelId" />
+    <id     column="novel_chapter_index"   jdbcType="INTEGER" 	property="novelChapterIndex" />
+    <result column="novel_chapter_name"    jdbcType="VARCHAR"   property="novelChapterName"/>
     <result column="novel_chapter_content" jdbcType="VARCHAR" 	property="novelChapterContent"/>
   </resultMap>
   
@@ -51,7 +51,7 @@
   
   <select id="selectNovelContentCountByNovelId" resultType="java.lang.Long">
   	select
-  		count(novel_id,novel_chapter_index)
+  		count(novel_id)
   	from
   		novel_content
   	where
