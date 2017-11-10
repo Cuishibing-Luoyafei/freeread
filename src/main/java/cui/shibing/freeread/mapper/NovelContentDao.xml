@@ -49,4 +49,13 @@
     	#{pageable.offset},#{pageable.pageSize}
   </select>
   
+  <select id="selectNovelContentCountByNovelId" resultType="java.lang.Long">
+  	select
+  		count(novel_id,novel_chapter_index)
+  	from
+  		novel_content
+  	where
+  		novel_id = #{novelId,jdbcType=VARCHAR}
+  </select>
+  
 </mapper>

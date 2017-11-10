@@ -51,5 +51,5 @@ public class LayoutController {
 	public String novelContent() {
 		return "pageElement/novelContent"+NO_LEFT_LAYOUT;
 	}
-
+	
 }

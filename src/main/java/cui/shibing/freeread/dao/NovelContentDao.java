@@ -15,4 +15,6 @@ public interface NovelContentDao {
     
     List<NovelContent> selectNovelContentByNovelId(@Param("novelId")String novelId,@Param("pageable")Pageable pageable);
     
+    long selectNovelContentCountByNovelId(@Param("novelId") String novelId);
+    
 }

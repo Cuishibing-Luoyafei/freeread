@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -15,7 +16,10 @@ import cui.shibing.freeread.model.NovelContent;
 import cui.shibing.freeread.service.NovelContentService;
 @Service
 public class NovelContentServiceImpl implements NovelContentService{
-
+	
+	@Autowired
+	private RedisTemplate<String,Object> redisTemplate;
+	
 	@Autowired
 	private NovelContentDao novelContentDao;
 	
@@ -27,11 +31,25 @@ public class NovelContentServiceImpl implements NovelContentService{
 
 	public Page<NovelContent> searchByNovelHeadId(String novelId, Pageable pageable) {
 		List<NovelContent> result = null;
+		long count = -1;
 		if(StringUtils.isEmpty(novelId) || pageable == null)
 			result = Collections.emptyList();
-		else
+		else{
+			count = searchNovelContentCountByNovelId(novelId);
 			result = novelContentDao.selectNovelContentByNovelId(novelId, pageable);
-		return new PageImpl<NovelContent>(result);
+		}
+		if(result.isEmpty()){
+			return new PageImpl<NovelContent>(result);
+		}else{
+			return new PageImpl<NovelContent>(result,pageable,count);
+		}
+	}
+
+	public long searchNovelContentCountByNovelId(String novelId) {
+		if(!StringUtils.isEmpty(novelId)){
+			return novelContentDao.selectNovelContentCountByNovelId(novelId);
+		}
+		return 0;
 	}
 
 }

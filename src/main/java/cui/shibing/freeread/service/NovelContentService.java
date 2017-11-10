@@ -21,4 +21,6 @@ public interface NovelContentService {
 	 * @return 返回相应分页的NovelContent
 	 * */
 	Page<NovelContent> searchByNovelHeadId(String novelId,Pageable pageable);
+	
+	long searchNovelContentCountByNovelId(String novelId);
 }
