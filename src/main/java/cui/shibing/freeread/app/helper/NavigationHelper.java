@@ -16,8 +16,8 @@ public class NavigationHelper implements PageElementHelper{
 	private NovelClassService novelClassService;
 
 	public String getPage(Model model, Object... params) {
-		List<NovelClass> allNovelClass = novelClassService.getAllNovelClass();
-		model.addAttribute("allNovelClass",allNovelClass);
+		List<NovelClass> allNovelClasses = novelClassService.getallNovelClasses();
+		model.addAttribute("allNovelClasses",allNovelClasses);
 		return PAGE;
 	}
 	

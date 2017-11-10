@@ -12,7 +12,7 @@
     </div>
     <div class="collapse navbar-collapse" id="example-navbar-collapse">
         <ul class="nav navbar-nav">
-            <c:forEach items="${allNovelClass}" var="classes">
+            <c:forEach items="${allNovelClasses}" var="classes">
 					<li><a href="#">${classes.novelClassName}</a></li>
 				</c:forEach>
         </ul>

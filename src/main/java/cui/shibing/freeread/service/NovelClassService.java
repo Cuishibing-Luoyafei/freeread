@@ -9,5 +9,5 @@ public interface NovelClassService {
 	 * 获取所有的小说类别
 	 * @return 当前所有的小说类别
 	 * */
-	List<NovelClass> getAllNovelClass();
+	List<NovelClass> getallNovelClasses();
 }

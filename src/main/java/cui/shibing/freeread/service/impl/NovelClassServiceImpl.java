@@ -10,11 +10,12 @@ import cui.shibing.freeread.model.NovelClass;
 import cui.shibing.freeread.service.NovelClassService;
 
 @Service
-public class NovelClassServiceImpl implements NovelClassService{
+public class NovelClassServiceImpl implements NovelClassService {
 
 	@Autowired
 	private NovelClassDao novelClassDao;
-	public List<NovelClass> getAllNovelClass() {
+
+	public List<NovelClass> getallNovelClasses() {
 		return novelClassDao.selectAllClass();
 	}
 

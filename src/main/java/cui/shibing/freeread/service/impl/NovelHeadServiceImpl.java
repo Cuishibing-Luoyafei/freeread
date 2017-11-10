@@ -19,34 +19,33 @@ import cui.shibing.freeread.service.NovelHeadService;
 public class NovelHeadServiceImpl implements NovelHeadService {
 
 	@Autowired
-	private NovelHeadDao novelHeadMapper;
+	private NovelHeadDao novelHeadDao;
 
 	public Page<NovelHead> searchByNovelClass(String className,
 			Pageable pageable) {
+		//TODO:没有查询总量
 		List<NovelHead> result = null;
 
 		if (StringUtils.isEmpty(className) || pageable == null) {
 			result = Collections.emptyList();
 		} else {
-			result = novelHeadMapper.selectNovelHeadByNovelClassName(className, pageable);
+			result = novelHeadDao.selectNovelHeadByNovelClassName(className, pageable);
 		}
 		return new PageImpl<NovelHead>(result);
 	}
 	
-	/*
-	 * 缓存小说排行榜
-	 * key:searchByPopularity_pageNumber_pageSize
-	 * **/
-	@Cacheable(value="default",cacheManager="cacheManager",key="#root.methodName +'_'+ #pageable.pageNumber + '_' + #pageable.pageSize")
+	@Cacheable(value="default",cacheManager="cacheManager",key="#root.targetClass+'.'+#root.methodName +'.'+ #pageable")
 	public Page<NovelHead> searchByPopularity(Pageable pageable) {
 		List<NovelHead> result = null;
 		long count = 0;
 		if (pageable == null) {
 			result = Collections.emptyList();
 		} else {
-			result = novelHeadMapper.selectNovelHeadByPopularity(pageable);
+			result = novelHeadDao.selectNovelHeadByPopularity(pageable);
 			count = searchNovelHeadCount();
 		}
+		if(result.isEmpty())
+			return new PageImpl<NovelHead>(result);
 		return new PageImpl<NovelHead>(result,pageable,count);
 	}
 
@@ -56,23 +55,25 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 		if (StringUtils.isEmpty(novelName) || pageable == null) {
 			result = Collections.emptyList();
 		} else {
-			result = novelHeadMapper.selectNovelHeadByNovelName(novelName, pageable);
+			result = novelHeadDao.selectNovelHeadByNovelName(novelName, pageable);
 			count = searchCountByNovelName(novelName);
 		}
+		if(result.isEmpty())
+			return new PageImpl<NovelHead>(result);
 		return new PageImpl<NovelHead>(result,pageable,count);
 	}
 
 	public NovelHead searchByNovelId(String novelId) {
 		if(StringUtils.isEmpty(novelId))
 			return null;
-		return novelHeadMapper.selectNovelHeadByNovelId(novelId);
+		return novelHeadDao.selectNovelHeadByNovelId(novelId);
 	}
 
 	public long searchCountByNovelName(String novelName) {
-		return novelHeadMapper.selectNovelHeadCountByNovelName(novelName);
+		return novelHeadDao.selectNovelHeadCountByNovelName(novelName);
 	}
 
 	public long searchNovelHeadCount() {
-		return novelHeadMapper.selectNovelHeadCountByPopularity();
+		return novelHeadDao.selectNovelHeadCountByPopularity();
 	}
 }
