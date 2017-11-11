@@ -1,9 +1,0 @@
-eclipse.preferences.version=1
-encoding//src/main/java/cui/shibing/freeread/service/impl/NovelHeadServiceImpl.java=UTF-8
-encoding//src/main/webapp/WEB-INF/views/header/navigation.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/views/left/novel_ranking.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/views/main/chapter_list.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/views/main/novel_detail.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/views/main/recommend.jsp=UTF-8
-encoding//src/test/java/cui/shibing/freeread/dao/NovelHeadDaoTest.java=UTF-8
-encoding/<project>=UTF-8
