@@ -44,8 +44,6 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			result = novelHeadDao.selectNovelHeadByPopularity(pageable);
 			count = searchNovelHeadCount();
 		}
-		if(result.isEmpty())
-			return new PageImpl<NovelHead>(result);
 		return new PageImpl<NovelHead>(result,pageable,count);
 	}
 
@@ -58,8 +56,6 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			result = novelHeadDao.selectNovelHeadByNovelName(novelName, pageable);
 			count = searchCountByNovelName(novelName);
 		}
-		if(result.isEmpty())
-			return new PageImpl<NovelHead>(result);
 		return new PageImpl<NovelHead>(result,pageable,count);
 	}
 

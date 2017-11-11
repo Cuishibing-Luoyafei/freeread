@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
-import cui.shibing.freeread.model.NovelContent;
-import cui.shibing.freeread.service.NovelContentService;
+import cui.shibing.freeread.dto.NovelChapterInfoDto;
+import cui.shibing.freeread.service.NovelChapterService;
 
 @Component("novelChapterListHelper")
 public class NovelChapterListHelper implements PageElementHelper {
 	private static final String PAGE = "main/chapter_list";
 	@Autowired
-	private NovelContentService novelContentService;
+	private NovelChapterService novelContentService;
 
 	public String getPage(Model model, Object... params) {
 		String novelId = null;
@@ -26,7 +26,7 @@ public class NovelChapterListHelper implements PageElementHelper {
 				pageable = (Pageable)params[1];
 		}
 		if(pageable != null && !StringUtils.isEmpty(novelId)) {
-			Page<NovelContent> pageNovelContens = novelContentService.searchByNovelHeadId(novelId, pageable);
+			Page<NovelChapterInfoDto> pageNovelContens = novelContentService.searchChapterInfoByNovelId(novelId, pageable);
 			model.addAttribute("pageNovelContents",pageNovelContens);
 		}else{
 			//TODO:返回错误页面

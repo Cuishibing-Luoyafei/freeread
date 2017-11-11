@@ -8,23 +8,23 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cui.shibing.freeread.CustomDaoTest;
-import cui.shibing.freeread.model.NovelContent;
+import cui.shibing.freeread.model.NovelChapter;
 
-public class NovelContentDaoTest extends CustomDaoTest{
+public class NovelChapterDaoTest extends CustomDaoTest{
 	@Autowired
-	private NovelContentDao novelContentDao;
+	private NovelChapterDao novelContentDao;
 	
 	/*
 	 * 插入成功
 	 * **/
 	@Test
 	public void testInsertNovelContent01() {
-		NovelContent novelContent = new NovelContent();
+		NovelChapter novelContent = new NovelChapter();
 		novelContent.setNovelId(UUID.randomUUID().toString());
 		novelContent.setNovelChapterName(UUID.randomUUID().toString());
 		novelContent.setNovelChapterContent(UUID.randomUUID().toString());
 		novelContent.setNovelChapterIndex(1);
-		assertTrue(novelContentDao.insertNovelContent(novelContent)==1);
+		assertTrue(novelContentDao.insertNovelChapter(novelContent)==1);
 	}
 	
 }
