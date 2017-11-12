@@ -22,8 +22,7 @@ public interface NovelHeadDao {
     
     List<NovelHead> selectNovelHeadByPopularity(@Param("pageable")Pageable pageable);
     
-    //TODO:根据pageable的查询都需要查询一次记录的总数量
     long selectNovelHeadCountByNovelName(@Param("novelName") String novelName);
-    
+    long selectNovelHeadCountByNovelClass(@Param("novelClassName")String novelCassName);
     long selectNovelHeadCountByPopularity();
 }

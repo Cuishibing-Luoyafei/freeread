@@ -21,20 +21,19 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	@Autowired
 	private NovelHeadDao novelHeadDao;
 
-	public Page<NovelHead> searchByNovelClass(String className,
-			Pageable pageable) {
-		//TODO:没有查询总量
+	public Page<NovelHead> searchByNovelClass(String className, Pageable pageable) {
 		List<NovelHead> result = null;
-
+		long count = 0;
 		if (StringUtils.isEmpty(className) || pageable == null) {
 			result = Collections.emptyList();
 		} else {
+			count = searchCountByClassName(className);
 			result = novelHeadDao.selectNovelHeadByNovelClassName(className, pageable);
 		}
-		return new PageImpl<NovelHead>(result);
+		return new PageImpl<NovelHead>(result,pageable,count);
 	}
-	
-	@Cacheable(value="default",cacheManager="cacheManager",key="#root.targetClass+'.'+#root.methodName +'.'+ #pageable")
+
+	@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #pageable")
 	public Page<NovelHead> searchByPopularity(Pageable pageable) {
 		List<NovelHead> result = null;
 		long count = 0;
@@ -44,7 +43,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			result = novelHeadDao.selectNovelHeadByPopularity(pageable);
 			count = searchNovelHeadCount();
 		}
-		return new PageImpl<NovelHead>(result,pageable,count);
+		return new PageImpl<NovelHead>(result, pageable, count);
 	}
 
 	public Page<NovelHead> searchByNovelName(String novelName, Pageable pageable) {
@@ -56,11 +55,11 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			result = novelHeadDao.selectNovelHeadByNovelName(novelName, pageable);
 			count = searchCountByNovelName(novelName);
 		}
-		return new PageImpl<NovelHead>(result,pageable,count);
+		return new PageImpl<NovelHead>(result, pageable, count);
 	}
 
 	public NovelHead searchByNovelId(String novelId) {
-		if(StringUtils.isEmpty(novelId))
+		if (StringUtils.isEmpty(novelId))
 			return null;
 		return novelHeadDao.selectNovelHeadByNovelId(novelId);
 	}
@@ -71,5 +70,12 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 
 	public long searchNovelHeadCount() {
 		return novelHeadDao.selectNovelHeadCountByPopularity();
+	}
+
+	@Override
+	public long searchCountByClassName(String className) {
+		if (StringUtils.isEmpty(className))
+			return 0;
+		return novelHeadDao.selectNovelHeadCountByNovelClass(className);
 	}
 }

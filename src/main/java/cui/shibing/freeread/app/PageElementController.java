@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cui.shibing.freeread.app.helper.NovelContentHelper;
+import cui.shibing.freeread.app.helper.NovelChapterHelper;
 import cui.shibing.freeread.app.helper.PageElementHelper;
 
 /*
@@ -76,13 +76,13 @@ public class PageElementController {
 	 **/
 	@RequestMapping("novelChapterList")
 	public String novelChapterList(Model model, @RequestParam("novelId") String novelId,
-			@PageableDefault(value = 50) Pageable pageable) {
+			@PageableDefault(value = 2) Pageable pageable) {
 		return novelChapterListHelper.getPage(model, novelId, pageable);
 	}
 
 	@Autowired
 	@Qualifier("novelContentHelper")
-	private NovelContentHelper novelContentHelper;
+	private NovelChapterHelper novelContentHelper;
 	/*
 	 * 小说章节内容页面
 	 * **/

@@ -40,6 +40,13 @@ public interface NovelHeadService {
 	long searchNovelHeadCount();
 	
 	/**
+	 * 查询某一类别小说的总数
+	 * @param className 类别名称
+	 * @return 该类别小说的数量
+	 * */
+	long searchCountByClassName(String className);
+	
+	/**
 	 * 根据小说Id查找小说
 	 * @param nonelId 小说Id
 	 * @return 返回相应的小说

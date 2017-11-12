@@ -21,7 +21,8 @@ public interface NovelClassService {
 	 */
 	List<NovelClassDto> getAllNovelClasses();
 
-	static class NovelClassServiceInputBean {
+	static class NovelClassServiceInputBean implements Serializable{
+		private static final long serialVersionUID = 8165993464523515253L;
 		
 	}
 

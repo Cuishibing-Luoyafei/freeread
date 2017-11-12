@@ -9,7 +9,7 @@ import cui.shibing.freeread.model.NovelChapter;
 import cui.shibing.freeread.service.NovelChapterService;
 
 @Component("novelContentHelper")
-public class NovelContentHelper implements PageElementHelper{
+public class NovelChapterHelper implements PageElementHelper{
 	private static final String PAGE = "main/novel_chapter_content";
 	@Autowired
 	private NovelChapterService  novelContentService;

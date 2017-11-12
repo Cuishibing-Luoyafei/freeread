@@ -162,6 +162,24 @@
 			#{pageable.offset},#{pageable.pageSize}
 	</select>
 
+	<select id="selectNovelHeadCountByNovelClass" resultType="java.lang.Long">
+		select
+			count(nh.novel_id)
+		from 
+			novel_head nh,
+			novel_class nc
+		where 
+			nc.novel_class_name = #{novelClassName,jdbcType=VARCHAR} 
+		and
+			(
+				nh.novel_class_id_1 = nc.novel_class_id
+				or
+				nh.novel_class_id_2 = nc.novel_class_id
+				or
+				nh.novel_class_id_3 = nc.novel_class_id
+			)
+	</select>
+
 	<select id="selectNovelHeadByPopularity" resultMap="BaseResultMap">
 		select
 			novel_id,

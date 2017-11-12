@@ -50,30 +50,40 @@
 	<ul class="pagination">
 		<c:set var="pageSize" value="3"/><!-- 暫時設定為3 -->
 		<c:set var="showPageRange" value="3"/><!-- 显示页的范围,当前页左边显示3页,右边显示3页 -->
-		<c:if test="${pageRecommendNovels.hasPrevious()}">
-			<li><a href="${pageContext.request.contextPath }/recomend?page=${pageRecommendNovels.getNumber()-1 }&size=${pageSize}">&laquo;</a></li>
-		</c:if>
-		<c:set var="startIndex" value="0"/>
-		<c:if test="${pageRecommendNovels.getNumber() - showPageRange >= 0}">
-			<c:set var="startIndex" value = "${pageRecommendNovels.getNumber() - showPageRange}"/>
-		</c:if>
-		<c:set var="endIndex" value="${pageRecommendNovels.getNumber() + showPageRange }"/>
-		<c:if test="${endIndex > pageRecommendNovels.getTotalPages() - 1}">
-			<c:set var="endIndex" value = "${pageRecommendNovels.getTotalPages() - 1}"/>
-		</c:if>
-		<c:forEach begin="${startIndex }" end="${endIndex }" step="1" varStatus="index">
-			<c:choose>
-				<c:when test="${index.index == pageRecommendNovels.getNumber()}">
-					<li class="active"><a href="${pageContext.request.contextPath }/recomend?page=${index.index }&size=${pageSize}">${index.index + 1}</a></li>
-				</c:when>
-				<c:otherwise>
-					<li><a href="${pageContext.request.contextPath }/recomend?page=${index.index }&size=${pageSize}">${index.index + 1}</a></li>
-				</c:otherwise>
-			</c:choose>
-			
-		</c:forEach>
-		<c:if test="${pageRecommendNovels.hasNext() }">
-			<li><a href="${pageContext.request.contextPath }/recomend?page=${pageRecommendNovels.getNumber()+1 }&size=${pageSize}">&raquo;</a></li>
+		<c:if test="${pageRecommendNovels.hasContent() == true }">
+			<c:if test="${pageRecommendNovels.hasPrevious()}">
+				<li><a
+					href="${pageContext.request.contextPath }/recomend?page=${pageRecommendNovels.getNumber()-1 }&size=${pageSize}">&laquo;</a></li>
+			</c:if>
+			<c:set var="startIndex" value="0" />
+			<c:if test="${pageRecommendNovels.getNumber() - showPageRange >= 0}">
+				<c:set var="startIndex"
+					value="${pageRecommendNovels.getNumber() - showPageRange}" />
+			</c:if>
+			<c:set var="endIndex"
+				value="${pageRecommendNovels.getNumber() + showPageRange }" />
+			<c:if test="${endIndex > pageRecommendNovels.getTotalPages() - 1}">
+				<c:set var="endIndex"
+					value="${pageRecommendNovels.getTotalPages() - 1}" />
+			</c:if>
+			<c:forEach begin="${startIndex }" end="${endIndex }" step="1"
+				varStatus="index">
+				<c:choose>
+					<c:when test="${index.index == pageRecommendNovels.getNumber()}">
+						<li class="active"><a
+							href="${pageContext.request.contextPath }/recomend?page=${index.index }&size=${pageSize}">${index.index + 1}</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a
+							href="${pageContext.request.contextPath }/recomend?page=${index.index }&size=${pageSize}">${index.index + 1}</a></li>
+					</c:otherwise>
+				</c:choose>
+
+			</c:forEach>
+			<c:if test="${pageRecommendNovels.hasNext() }">
+				<li><a
+					href="${pageContext.request.contextPath }/recomend?page=${pageRecommendNovels.getNumber()+1 }&size=${pageSize}">&raquo;</a></li>
+			</c:if>
 		</c:if>
 	</ul>
 </div>
