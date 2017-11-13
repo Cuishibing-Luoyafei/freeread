@@ -51,7 +51,7 @@ public class PageElementController {
 	 * 小说推荐页面
 	 */
 	@RequestMapping("recommend")
-	public String recommend(Model model, @PageableDefault(value = 3) Pageable pageable) {
+	public String recommend(Model model, @PageableDefault(value = 8) Pageable pageable) {
 		return novelRecommendHelper.getPage(model, pageable);
 	}
 
