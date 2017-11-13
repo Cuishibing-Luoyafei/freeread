@@ -1,5 +1,9 @@
 target/
-generatorConfig.xml
 .project
 .classpath
 .settings/
+
+*.iml
+out/
+.idea/
+
