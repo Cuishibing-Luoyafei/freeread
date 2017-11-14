@@ -11,6 +11,7 @@ import cui.shibing.freeread.service.NovelChapterService;
 @Component("novelContentHelper")
 public class NovelChapterHelper implements PageElementHelper{
 	private static final String PAGE = "main/novel_chapter_content";
+	private static final String PAGE_NO_CHAPTER = "main/no_chapter";
 	@Autowired
 	private NovelChapterService  novelContentService;
 	public String getPage(Model model, Object... params) {
@@ -24,7 +25,11 @@ public class NovelChapterHelper implements PageElementHelper{
 		}
 		if(!StringUtils.isEmpty(novelId) && chapterIndex != -1) {
 			NovelChapter novelContent = novelContentService.searchByNovelHeadAndChapter(novelId, chapterIndex);
-			model.addAttribute("novelContent", novelContent);
+			if(novelContent!=null){
+				model.addAttribute("novelContent", novelContent);
+				return PAGE;
+			}
+			return PAGE_NO_CHAPTER;
 		}else {
 			//TODO:返回错误页面
 		}

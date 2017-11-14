@@ -1,5 +1,6 @@
 package cui.shibing.freeread.app;
 
+import cui.shibing.freeread.app.helper.SearchNovelByNameHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
@@ -76,7 +77,7 @@ public class PageElementController {
 	 **/
 	@RequestMapping("novelChapterList")
 	public String novelChapterList(Model model, @RequestParam("novelId") String novelId,
-			@PageableDefault(value = 2) Pageable pageable) {
+								   @PageableDefault(value = 50) Pageable pageable) {
 		return novelChapterListHelper.getPage(model, novelId, pageable);
 	}
 
@@ -88,7 +89,19 @@ public class PageElementController {
 	 * **/
 	@RequestMapping("novelContent")
 	public String novelContent(Model model, @RequestParam("novelId") String novelId,
-			@RequestParam("chapterIndex") Integer chapterIndex) {
+							   @RequestParam("chapterIndex") Integer chapterIndex) {
 		return novelContentHelper.getPage(model, novelId,chapterIndex);
+	}
+
+	/*
+	 * 小说搜索结果页面
+	 * */
+	@Autowired
+	@Qualifier("searchNovelByNameHelper")
+	private SearchNovelByNameHelper searchNovelByNameHelper;
+	@RequestMapping("searchNovelByName")
+	public String searchNovelByName(Model model,@RequestParam("searchNovelName") String searchNovelName,
+									@PageableDefault(value=6) Pageable pageable){
+		return searchNovelByNameHelper.getPage(model,searchNovelName,pageable);
 	}
 }

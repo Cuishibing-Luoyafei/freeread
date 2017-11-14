@@ -51,5 +51,12 @@ public class LayoutController {
 	public String novelContent() {
 		return "pageElement/novelContent"+NO_LEFT_LAYOUT;
 	}
-	
+
+	/*
+	 * 根据小说名搜索小说
+	 * */
+	@RequestMapping(value="/searchNovelByName",params = {"searchNovelName"})
+	public String searchNovelByName(){
+		return "pageElement/searchNovelByName"+NO_LEFT_LAYOUT;
+	}
 }

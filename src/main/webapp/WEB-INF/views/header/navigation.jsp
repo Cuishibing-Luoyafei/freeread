@@ -17,11 +17,11 @@
                 </c:forEach>
             </ul>
             <div>
-                <form class="navbar-form navbar-right" role="search">
+                <form class="navbar-form navbar-right" role="search" action="${pageContext.request.contextPath}/searchNovelByName" method="post">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" placeholder="Search" name="searchNovelName">
                     </div>
-                    <button type="submit" class="btn btn-default">提交</button>
+                    <button type="submit" class="btn btn-default">搜索</button>
                 </form>
             </div>
         </div>

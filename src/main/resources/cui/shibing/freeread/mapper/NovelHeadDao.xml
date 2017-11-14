@@ -116,12 +116,12 @@
 		from 
 			novel_head
 		where 
-			novel_name = #{novelName,jdbcType=VARCHAR} 
+			novel_name = #{novelName,jdbcType=VARCHAR}
 		limit
 			#{pageable.offset},#{pageable.pageSize}
 	</select>
 	
-	<select id="selectNovelHeadCountByNovelName" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	<select id="selectNovelHeadCountByNovelName" parameterType="java.lang.String" resultType="java.lang.Long">
 		select 
 			count(novel_id)
 		from 
