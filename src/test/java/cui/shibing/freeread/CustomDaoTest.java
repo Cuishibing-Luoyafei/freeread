@@ -1,6 +1,8 @@
 package cui.shibing.freeread;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,5 +19,10 @@ public class CustomDaoTest extends AbstractTransactionalJUnit4SpringContextTests
 	protected void executeSqlScript(String sqlResourcePath,
 			boolean continueOnError) throws DataAccessException {
 		super.executeSqlScript(sqlResourcePath, continueOnError);
+	}
+
+	@Test
+	public void nullTestMethod(){
+
 	}
 }
