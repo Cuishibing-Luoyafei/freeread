@@ -15,9 +15,9 @@
     	novel_chapter_name, 
       	novel_chapter_content)
     values (
-    	#{novelId,	        jdbcType=VARCHAR}, 
-    	#{novelChapterIndex,jdbcType=INTEGER},
-    	#{novelChapterName, jdbcType=VARCHAR}, 
+    	#{novelId,	           jdbcType=VARCHAR},
+    	#{novelChapterIndex,   jdbcType=INTEGER},
+    	#{novelChapterName,    jdbcType=VARCHAR},
       	#{novelChapterContent, jdbcType=VARCHAR})
   </insert>
   
