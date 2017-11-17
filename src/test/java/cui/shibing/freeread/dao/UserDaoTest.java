@@ -1,6 +1,5 @@
 package cui.shibing.freeread.dao;
 
-import cui.shibing.freeread.CustomDaoTest;
 import cui.shibing.freeread.model.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

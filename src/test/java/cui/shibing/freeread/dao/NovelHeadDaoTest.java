@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import cui.shibing.freeread.CustomDaoTest;
 import cui.shibing.freeread.model.NovelHead;
 
 public class NovelHeadDaoTest extends CustomDaoTest{

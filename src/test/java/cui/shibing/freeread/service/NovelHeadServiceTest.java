@@ -3,7 +3,7 @@ package cui.shibing.freeread.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cui.shibing.freeread.CustomDaoTest;
+import cui.shibing.freeread.dao.CustomDaoTest;
 
 public class NovelHeadServiceTest extends CustomDaoTest{
 	@Autowired

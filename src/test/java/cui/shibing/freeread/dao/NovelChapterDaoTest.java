@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cui.shibing.freeread.CustomDaoTest;
 import cui.shibing.freeread.model.NovelChapter;
 
 public class NovelChapterDaoTest extends CustomDaoTest{
