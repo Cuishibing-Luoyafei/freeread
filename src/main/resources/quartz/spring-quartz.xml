@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- 设置具体执行的 job类	-->
-	<bean id="job" class="cui.shibing.freeread.tool.QuartzTest"></bean>
+	<bean id="job" class="cui.shibing.freeread.quartz.QuartzTest"></bean>
 
 	<!-- 将执行的job类注入到定时器的job容器中 -->
 	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
