@@ -13,107 +13,212 @@ import org.springframework.data.domain.Pageable;
 import cui.shibing.freeread.model.NovelHead;
 
 public class NovelHeadDaoTest extends CustomDaoTest{
-	
+
 	@Autowired
-	private NovelHeadDao novelHeadMapper;
+	private NovelHeadDao novelHeadDao;
 	
 	/*
-	 * 全条件满足
+	 * 测试NovelHeadDao.insertNovelHead()
+	 * 事前条件:全条件满足
 	 * **/
 	@Test
 	public void testInsertNovelHead01() {
+		String novelId = UUID.randomUUID().toString();
+
 		NovelHead novelHead = new NovelHead();
-		novelHead.setNovelId(UUID.randomUUID().toString());
-		novelHead.setNovelName("novel1");
-		novelHead.setNovelContentTableName("abcd");
+
+		novelHead.setNovelId(novelId);
+		novelHead.setNovelName(UUID.randomUUID().toString());
+		novelHead.setNovelContentTableName(UUID.randomUUID().toString());
 		novelHead.setNovelClassId1(1);
 		novelHead.setNovelStatus(12);
 		novelHead.setNovelChapterNum(123);
-		assertTrue(novelHeadMapper.insertNovelHead(novelHead) == 1);
+		assertTrue(novelHeadDao.insertNovelHead(novelHead) == 1);
+		NovelHead novelHead1 = novelHeadDao.selectNovelHeadByNovelId(novelId);
+		assertTrue(novelHead1!=null);
+		assertTrue(novelHead1.getNovelId().equals(novelId));
+	}
+
+	/*
+	 * 测试NovelHeadDao.insertNovelHead()
+	 * 事前条件:约束条件不满足(novelId为null)
+	 * **/
+	@Test
+	public void testInsertNovelHead02() {
+		NovelHead novelHead = new NovelHead();
+
+		novelHead.setNovelId(null);
+		novelHead.setNovelName(UUID.randomUUID().toString());
+		novelHead.setNovelContentTableName(UUID.randomUUID().toString());
+		novelHead.setNovelClassId1(1);
+		novelHead.setNovelStatus(12);
+		novelHead.setNovelChapterNum(123);
+		try{
+			novelHeadDao.insertNovelHead(novelHead);
+		}catch (Exception e) {
+			logger.info(e);
+		}
+	}
+
+	/*
+	 * 测试NovelHeadDao.insertNovelHead()
+	 * 事前条件:约束条件不满足(novelName为null)
+	 * **/
+	@Test
+	public void testInsertNovelHead03() {
+		NovelHead novelHead = new NovelHead();
+
+		novelHead.setNovelId(UUID.randomUUID().toString());
+		novelHead.setNovelName(null);
+		novelHead.setNovelContentTableName(UUID.randomUUID().toString());
+		novelHead.setNovelClassId1(1);
+		novelHead.setNovelStatus(12);
+		novelHead.setNovelChapterNum(123);
+		try{
+			novelHeadDao.insertNovelHead(novelHead);
+		}catch (Exception e) {
+			logger.info(e);
+		}
+	}
+
+	/*
+	 * 测试NovelHeadDao.insertNovelHead()
+	 * 事前条件:约束条件不满足(novelContentTableName为null)
+	 * **/
+	@Test
+	public void testInsertNovelHead04() {
+		NovelHead novelHead = new NovelHead();
+
+		novelHead.setNovelId(UUID.randomUUID().toString());
+		novelHead.setNovelName(UUID.randomUUID().toString());
+		novelHead.setNovelContentTableName(null);
+		novelHead.setNovelClassId1(1);
+		novelHead.setNovelStatus(12);
+		novelHead.setNovelChapterNum(123);
+		try{
+			novelHeadDao.insertNovelHead(novelHead);
+		}catch (Exception e) {
+			logger.info(e);
+		}
+	}
+
+	/*
+	 * 测试NovelHeadDao.insertNovelHead()
+	 * 事前条件:约束条件不满足(novelStatus为null)
+	 * **/
+	@Test
+	public void testInsertNovelHead05() {
+		NovelHead novelHead = new NovelHead();
+
+		novelHead.setNovelId(UUID.randomUUID().toString());
+		novelHead.setNovelName(UUID.randomUUID().toString());
+		novelHead.setNovelContentTableName(UUID.randomUUID().toString());
+		novelHead.setNovelClassId1(1);
+		novelHead.setNovelStatus(null);
+		novelHead.setNovelChapterNum(123);
+		try{
+			novelHeadDao.insertNovelHead(novelHead);
+		}catch (Exception e) {
+			logger.info(e);
+		}
+	}
+
+	/*
+	 * 测试NovelHeadDao.insertNovelHead()
+	 * 事前条件:约束条件不满足(novelChapterNum为null)
+	 * **/
+	@Test
+	public void testInsertNovelHead06() {
+		NovelHead novelHead = new NovelHead();
+
+		novelHead.setNovelId(UUID.randomUUID().toString());
+		novelHead.setNovelName(UUID.randomUUID().toString());
+		novelHead.setNovelContentTableName(UUID.randomUUID().toString());
+		novelHead.setNovelClassId1(1);
+		novelHead.setNovelStatus(1);
+		novelHead.setNovelChapterNum(null);
+		try{
+			novelHeadDao.insertNovelHead(novelHead);
+		}catch (Exception e) {
+			logger.info(e);
+		}
 	}
 	
 	/*
-	 * 对应的NovelHead不存在
+	 * 测试novelHeadDao.selectNovelHeadByNovelName
+	 * 事前条件:条件对应的记录不存在
 	 * **/
 	@Test
 	public void testSelectNovelHeadByNovelName01() {
-		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new PageRequest(1,5);
-		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelName("1", pageable);
+		executeSqlScript("sql/testSelectNovelHeadByNovelName01.sql",false);
+		Pageable pageable = new PageRequest(0,5);
+		List<NovelHead> novelHeads = novelHeadDao.selectNovelHeadByNovelName("1", pageable);
 		assertTrue(novelHeads.size()==0);
 	}
-	
+
 	/*
-	 * 对应的NovelHead存在
+	 * 测试novelHeadDao.selectNovelHeadByNovelName
+	 * 事前条件:条件对应的记录存在
 	 * **/
 	@Test
 	public void testSelectNovelHeadByNovelName02() {
-		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new PageRequest(1,5);
-		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelName("zhe tian", pageable);
+		executeSqlScript("sql/testSelectNovelHeadByNovelName02.sql",false);
+		Pageable pageable = new PageRequest(0,5);
+		List<NovelHead> novelHeads = novelHeadDao.selectNovelHeadByNovelName("zhe tian", pageable);
 		assertTrue(novelHeads.size()==1);
 		assertTrue(novelHeads.get(0).getNovelName().equals("zhe tian"));
 	}
 	
 	/*
-	 * 对应的NovleHead不存在
+	 * 测试novelHeadDao.selectNovelHeadByNovelClassName()
+	 * 条件对应的记录不存在
 	 * **/
 	@Test
 	public void testSelectNovelHeadByNovelClassName01() {
-		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new PageRequest(1,5);
-		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("six", pageable);
+		executeSqlScript("sql/testSelectNovelHeadByNovelClassName01.sql",false);
+		Pageable pageable = new PageRequest(0,5);
+		List<NovelHead> novelHeads = novelHeadDao.selectNovelHeadByNovelClassName("six", pageable);
 		assertTrue(novelHeads.size()==0);
 	}
-	
+
 	/*
-	 * 对应的NovleHead存在
+	 * 测试novelHeadDao.selectNovelHeadByNovelClassName()
+	 * 条件对应的记录存在
 	 * **/
 	@Test
 	public void testSelectNovelHeadByNovelClassName02() {
-		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new PageRequest(1,5);
-		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("one", pageable);
+		executeSqlScript("sql/testSelectNovelHeadByNovelClassName02.sql",false);
+		Pageable pageable = new PageRequest(0,5);
+		List<NovelHead> novelHeads = novelHeadDao.selectNovelHeadByNovelClassName("修真", pageable);
 		assertTrue(novelHeads.size()==1);
 		assertTrue(novelHeads.get(0).getNovelClassId1() == 1);
 	}
-	
+
 	/*
-	 * 对应的NovleHead存在
+	 * 测试novelHeadDao.selectNovelHeadByNovelClassName()
+	 * 条件对应的记录存在且有多条
 	 * **/
 	@Test
 	public void testSelectNovelHeadByNovelClassName03() {
-		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new PageRequest(1,5);
-		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("two", pageable);
-		assertTrue(novelHeads.size()==1);
-		assertTrue(novelHeads.get(0).getNovelClassId2() == 2);
-	}
-	
-	/*
-	 * 对应的NovleHead存在
-	 * **/
-	@Test
-	public void testSelectNovelHeadByNovelClassName04() {
-		executeSqlScript("novel_head_insert-1.sql",false);
-		Pageable pageable = new PageRequest(1,5);
-		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByNovelClassName("three", pageable);
-		assertTrue(novelHeads.size()==1);
-		assertTrue(novelHeads.get(0).getNovelClassId3() == 3);
+		executeSqlScript("sql/testSelectNovelHeadByNovelClassName03.sql",false);
+		Pageable pageable = new PageRequest(0,5);
+		List<NovelHead> novelHeads = novelHeadDao.selectNovelHeadByNovelClassName("修真", pageable);
+		assertTrue(novelHeads.size()==2);
 	}
 	
 	@Test
 	public void testSelectNovelHeadByPopularity01() {
-		Pageable pageable = new PageRequest(1,3);
-		List<NovelHead> novelHeads = novelHeadMapper.selectNovelHeadByPopularity(pageable);
+		executeSqlScript("sql/testSelectNovelHeadByPopularity01.sql",false);
+		Pageable pageable = new PageRequest(0,5);
+		List<NovelHead> novelHeads = novelHeadDao.selectNovelHeadByPopularity(pageable);
 		assertTrue(novelHeads.size()==5);
 		assertTrue(novelHeads.get(0).getNovelPopularity()==128);
 		assertTrue(novelHeads.get(1).getNovelPopularity()==127);
 		assertTrue(novelHeads.get(2).getNovelPopularity()==126);
 		assertTrue(novelHeads.get(3).getNovelPopularity()==125);
 		assertTrue(novelHeads.get(4).getNovelPopularity()==124);
-		Pageable pageable1 = new PageRequest(2,5);
-		List<NovelHead> novelHeads1 = novelHeadMapper.selectNovelHeadByPopularity(pageable1);
+		Pageable pageable1 = new PageRequest(1,5);
+		List<NovelHead> novelHeads1 = novelHeadDao.selectNovelHeadByPopularity(pageable1);
 		assertTrue(novelHeads1.size()==1);
 		assertTrue(novelHeads1.get(0).getNovelPopularity()==123);
 	}

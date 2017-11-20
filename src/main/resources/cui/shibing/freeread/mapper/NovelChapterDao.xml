@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cui.shibing.freeread.dao.NovelChapterDao">
-  <resultMap id="BaseResultMap" type="cui.shibing.freeread.model.NovelChapter">
+  <resultMap id="BaseResultMap" type="NovelChapter">
     <id     column="novel_id" 		  	   jdbcType="VARCHAR" 	property="novelId" />
     <id     column="novel_chapter_index"   jdbcType="INTEGER" 	property="novelChapterIndex" />
     <result column="novel_chapter_name"    jdbcType="VARCHAR"   property="novelChapterName"/>
     <result column="novel_chapter_content" jdbcType="VARCHAR" 	property="novelChapterContent"/>
   </resultMap>
   
-  <insert id="insertNovelChapter" parameterType="cui.shibing.freeread.model.NovelChapter">
+  <insert id="insertNovelChapter" parameterType="NovelChapter">
     insert into novel_content (
     	novel_id, 
     	novel_chapter_index,

@@ -2,6 +2,8 @@ package cui.shibing.freeread.app;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
+
 /*
  * 页面布局的Controller，该Controller返回的是某一个布局（布局由很多子页面构成）
  * **/

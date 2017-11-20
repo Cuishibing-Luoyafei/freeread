@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cui.shibing.freeread.dao.UserDao">
-    <resultMap id="BaseResultMap" type="cui.shibing.freeread.model.User">
+    <resultMap id="BaseResultMap" type="User">
         <id 	column="user_id" 	  jdbcType="VARCHAR" 	property="userId" />
         <id     column="user_name"    jdbcType="VARCHAR" 	property="userName" />
         <result column="user_pass"    jdbcType="VARCHAR"    property="userPass"/>

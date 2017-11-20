@@ -1,3 +1,0 @@
-delete from novel_head;
-insert into novel_head (novel_id,novel_name,novel_picture         ,novel_content_table_name,novel_content_id,novel_class_id_1,novel_class_id_2,novel_class_id_3,novel_status,novel_chapter_num,novel_author,novel_access,novel_popularity) 
-values (                '123323','zhe tian','http://www.baidu.com','content_table_1'       ,'22332323'      ,1               ,2               ,3               ,1           ,134              ,'1233434'   ,1           ,123);

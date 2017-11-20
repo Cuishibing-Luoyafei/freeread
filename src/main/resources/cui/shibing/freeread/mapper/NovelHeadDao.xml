@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cui.shibing.freeread.dao.NovelHeadDao">
 
-	<resultMap id="BaseResultMap" type="cui.shibing.freeread.model.NovelHead">
+	<resultMap id="BaseResultMap" type="NovelHead">
 		<id		column="novel_id" 					jdbcType="VARCHAR" property="novelId" />
 		<result column="novel_name" 				jdbcType="VARCHAR" property="novelName" />
 		<result column="novel_picture" 				jdbcType="VARCHAR" property="novelPicture" />
@@ -45,7 +45,7 @@
 		where novel_id = #{novelId,jdbcType=VARCHAR}
 	</delete>
 
-	<insert id="insertNovelHead" parameterType="cui.shibing.freeread.model.NovelHead">
+	<insert id="insertNovelHead" parameterType="NovelHead">
 		insert into novel_head (
 			novel_id,
 			novel_name, 
@@ -78,7 +78,7 @@
 		)
 	</insert>
 	
-	<update id="updateNovelHeadByNovelId" parameterType="cui.shibing.freeread.model.NovelHead">
+	<update id="updateNovelHeadByNovelId" parameterType="NovelHead">
 		update 	
 			novel_head
 		set 
@@ -132,7 +132,7 @@
 
 	<select id="selectNovelHeadByNovelClassName" resultMap="BaseResultMap">
 		select
-			nh.novel_id,
+			DISTINCT (nh.novel_id),
 			nh.novel_name, 
 			nh.novel_picture, 
 			nh.novel_desc,
@@ -146,8 +146,7 @@
 			nh.novel_access,
 			nh.novel_popularity
 		from 
-			novel_head nh,
-			novel_class nc
+			novel_head nh,novel_class nc
 		where 
 			nc.novel_class_name = #{novelClassName,jdbcType=VARCHAR} 
 		and
@@ -158,8 +157,7 @@
 				or
 				nh.novel_class_id_3 = nc.novel_class_id
 			)
-		limit
-			#{pageable.offset},#{pageable.pageSize}
+		limit #{pageable.offset},#{pageable.pageSize}
 	</select>
 
 	<select id="selectNovelHeadCountByNovelClass" resultType="java.lang.Long">
