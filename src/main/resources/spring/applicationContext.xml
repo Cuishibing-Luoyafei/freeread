@@ -18,7 +18,7 @@
 		</property>
 	</bean>
     <context:component-scan base-package="cui.shibing.freeread.service"/>
-    <!-- <import resource="classpath:spring/spring-security.xml" /> -->
+	<import resource="classpath:spring/spring-security.xml" />
     <import resource="classpath:mybatis/spring-mybatis.xml"/>
     <import resource="classpath:redis/spring-redis.xml"/>
     <import resource="classpath:quartz/spring-quartz.xml"/>
