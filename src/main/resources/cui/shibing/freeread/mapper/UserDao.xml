@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cui.shibing.freeread.dao.UserDao">
     <resultMap id="BaseResultMap" type="User">
-        <id 	column="user_id" 	  jdbcType="VARCHAR" 	property="userId" />
         <id     column="user_name"    jdbcType="VARCHAR" 	property="userName" />
         <result column="user_pass"    jdbcType="VARCHAR"    property="userPass"/>
         <result column="user_role"    jdbcType="INTEGER"    property="userRole"/>
@@ -12,14 +11,12 @@
     <insert id="insertUser" parameterType="cui.shibing.freeread.model.User">
         insert into
           novel_user(
-              user_id,
               user_name,
               user_pass,
               user_role,
               user_info_id
           )
           values(
-              #{userId,    jdbcType=VARCHAR},
               #{userName,  jdbcType=VARCHAR},
               #{userPass,  jdbcType=VARCHAR},
               #{userRole,  jdbcType=VARCHAR},
@@ -27,23 +24,22 @@
           )
     </insert>
 
-    <delete id="deleteUserById" parameterType="java.lang.String">
-        delete from novel_user where user_id = #{userId,jdbcType=VARCHAR}
+    <delete id="deleteUserByName" parameterType="java.lang.String">
+        delete from novel_user where user_name = #{userName,jdbcType=VARCHAR}
     </delete>
 
-    <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from novel_user where user_id = #{userId,jdbcType=VARCHAR}
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from novel_user where user_name = #{userName,jdbcType=VARCHAR}
     </select>
 
-    <update id="updateUser" parameterType="cui.shibing.freeread.model.User">
+    <update id="updateUser" parameterType="User">
         update
           novel_user
         set
-          user_name    = #{userName,  jdbcType=VARCHAR},
           user_pass    = #{user_pass, jdbcType=VARCHAR},
           user_role    = #{userRole,  jdbcType=INTEGER},
           user_info_id = #{userInfoId,jdbcType=INTEGER}
         where
-          user_id = #{userId,jdbcType=VARCHAR}
+          user_name = #{userName,jdbcType=VARCHAR}
     </update>
 </mapper>
