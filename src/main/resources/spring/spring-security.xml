@@ -2,12 +2,15 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.1.xsd">
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
     <http use-expressions="true"  auto-config="false">
-
-        <form-login login-page="/loginPage" default-target-url="/index"
+        <csrf disabled="true"/>
+        <form-login login-page="/loginPage" default-target-url="/"
                     login-processing-url="/login"/>
+        <intercept-url pattern="/loginPage" access="permitAll()"/>
+        <intercept-url pattern="/*" access="isAuthenticated()"/>
+
         <!--
         <intercept-url pattern="/" access="isAuthenticated()"/>
         <intercept-url pattern="/loginPage" access="permitAll()"/>
@@ -15,40 +18,28 @@
         <intercept-url pattern="/userPage" access="hasRole('ROLE_USER')" />
          -->
         <custom-filter ref="customAuthenticationLoginProcessFilter" before ="FORM_LOGIN_FILTER"/>
-        <custom-filter ref="customFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>
+        <!--<custom-filter ref="customFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>-->
 
     </http>
 
-    <beans:bean id="customFilterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
-        <beans:property name="securityMetadataSource" ref="customSecurityMetadataSource"></beans:property>
-        <beans:property name="accessDecisionManager"  ref=""/>
-    </beans:bean>
+    <!--<beans:bean id="customSecurityMetadataSource" class="cui.ssmtest.antenrization.CustomSecurityMetadataSource"/>-->
 
-    <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
-        <beans:constructor-arg name=""></beans:constructor-arg>
-    </beans:bean>
-
-    <beans:bean id="customSecurityMetadataSource" class="cui.ssmtest.antenrization.CustomSecurityMetadataSource"/>
-
-    <beans:bean id="mUserDeatilsService" class="cui.ssmtest.service.UserDetailsServiceImpl"/>
+    <beans:bean id="mUserDeatilsService" class="cui.shibing.freeread.security.UserDetailsServiceImpl"/>
 
     <authentication-manager id="mAuthenticationManager">
-        <authentication-provider ref="customAuthenticationProvider">
-        </authentication-provider>
+        <authentication-provider user-service-ref="mUserDeatilsService"/>
     </authentication-manager>
 
-    <beans:bean id="customAuthenticationProvider" class="cui.ssmtest.service.CustomAuthenticationProvider">
+    <!--<beans:bean id="customAuthenticationProvider" class="cui.shibing.freeread.security.CustomAuthenticationProvider">
         <beans:constructor-arg name="hideUserNotFoundExceptions" value="false"></beans:constructor-arg>
         <beans:property name="userDetailsService" ref="mUserDeatilsService"/>
+    </beans:bean>-->
+
+    <beans:bean id="customAuthenticationLoginProcessFilter" class="cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilter">
+        <beans:property name="authenticationManager" ref="mAuthenticationManager"/>
+        <beans:constructor-arg name="failureHandler" ref="customAuthenticationFailureHandler"/>
     </beans:bean>
 
-    <beans:bean id="customAuthenticationLoginProcessFilter" class="cui.ssmtest.service.CustomAuthenticationLoginProcessFilter">
-        <beans:property name="authenticationManager" ref="mAuthenticationManager"></beans:property>
-        <beans:constructor-arg name="failureHandler" ref="customAuthenticationFailureHandler"></beans:constructor-arg>
-    </beans:bean>
-
-    <beans:bean id="customAuthenticationFailureHandler" class="cui.ssmtest.service.CustomAuthenticationFailureHandler"/>
-
-    <beans:bean id="userDao" class="cui.ssmtest.dao.UserDaoImpl"/>
+    <beans:bean id="customAuthenticationFailureHandler" class="cui.shibing.freeread.security.CustomAuthenticationFailureHandler"/>
 
 </beans:beans>

@@ -61,4 +61,10 @@ public class LayoutController {
 	public String searchNovelByName(){
 		return "pageElement/searchNovelByName"+NO_LEFT_LAYOUT;
 	}
+
+
+	@RequestMapping(value="/loginPage")
+	public String loginLayout(){
+		return "login/loginPage"+NO_LEFT_LAYOUT;
+	}
 }
