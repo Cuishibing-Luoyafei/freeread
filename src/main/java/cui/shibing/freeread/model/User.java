@@ -1,19 +1,10 @@
 package cui.shibing.freeread.model;
 
 public class User {
-    private String userId;
     private String userName;
     private String userPass;
     private Integer userRole;
     private String userInfoId;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getUserName() {
         return userName;

@@ -15,7 +15,6 @@ public class UserDaoTest extends CustomDaoTest{
     @Test
     public void testInsertUser(){
         User user = new User();
-        user.setUserId(UUID.randomUUID().toString());
         user.setUserName(UUID.randomUUID().toString());
         user.setUserPass(UUID.randomUUID().toString());
         user.setUserRole(1);
@@ -26,15 +25,14 @@ public class UserDaoTest extends CustomDaoTest{
     @Test
     public void testDeleteUser(){
         User user = new User();
-        String userId = UUID.randomUUID().toString();
-        user.setUserId(userId);
-        user.setUserName(UUID.randomUUID().toString());
+        String userName = UUID.randomUUID().toString();
+        user.setUserName(userName);
         user.setUserPass(UUID.randomUUID().toString());
         user.setUserRole(1);
         user.setUserInfoId(UUID.randomUUID().toString());
         userDao.insertUser(user);
-        assertTrue(userDao.selectByUserId(userId)!=null);
-        assertTrue(userDao.deleteUserById(userId) == 1);
-        assertTrue(userDao.selectByUserId(userId)==null);
+        assertTrue(userDao.selectByUserName(userName)!=null);
+        assertTrue(userDao.deleteUserByName(userName) == 1);
+        assertTrue(userDao.selectByUserName(userName)==null);
     }
 }
