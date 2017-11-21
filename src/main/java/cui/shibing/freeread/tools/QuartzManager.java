@@ -3,18 +3,6 @@
  */
 package cui.shibing.freeread.tools;
 
-/**
- * 
- * 此处填写类简介
- * <p>
- * 此处填写类说明
- * </p>
- * @author luoyf
- * @since jdk1.6
- * 2017年11月17日
- *  
- */
-
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
