@@ -48,7 +48,7 @@ public interface NovelHeadService {
 	
 	/**
 	 * 根据小说Id查找小说
-	 * @param nonelId 小说Id
+	 * @param novelId 小说Id
 	 * @return 返回相应的小说
 	 * */
 	NovelHead searchByNovelId(String novelId);

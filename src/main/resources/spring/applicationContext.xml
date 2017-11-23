@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-    "> 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     
     <bean name="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -17,9 +15,12 @@
 			</array>
 		</property>
 	</bean>
+
     <context:component-scan base-package="cui.shibing.freeread.service"/>
+
 	<import resource="classpath:spring/spring-security.xml" />
     <import resource="classpath:mybatis/spring-mybatis.xml"/>
     <import resource="classpath:redis/spring-redis.xml"/>
-    <import resource="classpath:quartz/spring-quartz.xml"/>
+	<import resource="classpath:quartz/spring-quartz.xml"/>
+
 </beans>

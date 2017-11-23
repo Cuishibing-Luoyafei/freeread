@@ -4,26 +4,21 @@
              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
+    <global-method-security
+            pre-post-annotations="enabled"/>
     <http use-expressions="true"  auto-config="false">
         <csrf disabled="true"/>
         <form-login login-page="/loginPage" default-target-url="/"
                     login-processing-url="/login"/>
         <intercept-url pattern="/loginPage" access="permitAll()"/>
-        <intercept-url pattern="/*" access="isAuthenticated()"/>
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
 
-        <!--
-        <intercept-url pattern="/" access="isAuthenticated()"/>
-        <intercept-url pattern="/loginPage" access="permitAll()"/>
-        <intercept-url pattern="/adminPage" access="hasRole('ROLE_ADMIN')" />
-        <intercept-url pattern="/userPage" access="hasRole('ROLE_USER')" />
-         -->
         <custom-filter ref="customAuthenticationLoginProcessFilter" before ="FORM_LOGIN_FILTER"/>
         <!--<custom-filter ref="customFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>-->
 
     </http>
 
     <!--<beans:bean id="customSecurityMetadataSource" class="cui.ssmtest.antenrization.CustomSecurityMetadataSource"/>-->
-
     <beans:bean id="mUserDeatilsService" class="cui.shibing.freeread.security.UserDetailsServiceImpl"/>
 
     <authentication-manager id="mAuthenticationManager">

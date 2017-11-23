@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-    ">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--
+		为了能让spring security可以对Controller层的方法进行保护,所以在这里也引入该配置文件.
+	因为Controller层在spring mvc的子容器中,在父容器中无法访问到.(也可以改变配置把spring mvc
+	配置到父容器中)
+	 -->
+	<import resource="classpath:spring/spring-security.xml" />
+
 	<mvc:tiles-configurer>
 		<mvc:definitions location="/WEB-INF/tiles/tiles-definitions.xml" />
 	</mvc:tiles-configurer>
@@ -20,6 +25,7 @@
 	</mvc:annotation-driven>
 
 	<context:component-scan base-package="cui.shibing.freeread.app" />
+
 	<!-- <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" >
         <property name="definitions">
             <list>
@@ -37,9 +43,7 @@
 	<!-- 配置视图解析器 -->
 	<bean id="tilesViewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass">
-			<value>org.springframework.web.servlet.view.tiles3.TilesView</value>
-		</property>
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
 	</bean>
 
 	<mvc:view-resolvers>

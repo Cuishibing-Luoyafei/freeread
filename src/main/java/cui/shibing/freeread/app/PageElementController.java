@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,6 +88,7 @@ public class PageElementController {
 	/*
 	 * 小说章节内容页面
 	 * **/
+	@PreAuthorize("hasRole('ROLE_444')")
 	@RequestMapping("novelContent")
 	public String novelContent(Model model, @RequestParam("novelId") String novelId,
 							   @RequestParam("chapterIndex") Integer chapterIndex) {
