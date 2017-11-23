@@ -1,9 +1,13 @@
 package cui.shibing.freeread.model;
 
 public class User {
+
     private String userName;
+
     private String userPass;
+
     private Integer userRole;
+
     private String userInfoId;
 
     public String getUserName() {
