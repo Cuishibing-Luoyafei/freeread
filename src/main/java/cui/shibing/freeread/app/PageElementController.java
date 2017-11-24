@@ -88,7 +88,6 @@ public class PageElementController {
 	/*
 	 * 小说章节内容页面
 	 * **/
-	@PreAuthorize("hasRole('ROLE_444')")
 	@RequestMapping("novelContent")
 	public String novelContent(Model model, @RequestParam("novelId") String novelId,
 							   @RequestParam("chapterIndex") Integer chapterIndex) {
