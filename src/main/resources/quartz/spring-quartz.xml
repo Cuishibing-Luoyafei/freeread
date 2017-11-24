@@ -36,8 +36,8 @@
 				<ref bean="trigger" />
 			</list>
 		</property>
-		<!-- 设置为自动开启 -->
-		<property name="autoStartup" value="true"></property>
+		<!-- 设置是否自动开启 -->
+		<property name="autoStartup" value="false"></property>
 	</bean>
 
 </beans>  
