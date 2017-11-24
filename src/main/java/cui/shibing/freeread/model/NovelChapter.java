@@ -4,14 +4,24 @@ import java.io.Serializable;
 
 public class NovelChapter implements Serializable{
    
-	private static final long serialVersionUID = 2197176711435078226L;
+	/** 
+	  * {@inheritDoc}   
+	  * @see java.lang.Object#toString() 
+	  */
+	@Override
+	public String toString() {
+		return "NovelChapter [novelId=" + novelId + ", novelChapterIndex=" + novelChapterIndex + ", novelChapterName=" + novelChapterName
+				+ ", novelChapterContent=" + novelChapterContent + "]";
+	}
 
+	private static final long serialVersionUID = 2197176711435078226L;
+	/** 主键id */
     private String novelId;
-    
+    /** 章节 */
     private Integer novelChapterIndex;
-    
+    /** 章节名 */
     private String novelChapterName;
-    
+    /** 内容 */
     private String novelChapterContent;
 
 	public String getNovelId() {
