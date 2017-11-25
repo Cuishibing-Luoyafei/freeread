@@ -52,4 +52,11 @@ public interface NovelHeadService {
 	 * @return 返回相应的小说
 	 * */
 	NovelHead searchByNovelId(String novelId);
+
+	/**
+	 * 添加一部新的小说
+	 * @param head 要添加的小说
+	 * @return 是否成功
+	 * */
+	boolean addNovelHead(NovelHead head);
 }
