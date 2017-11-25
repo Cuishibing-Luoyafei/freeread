@@ -21,7 +21,9 @@
 			<div class="form-group">
 				<label class="col-sm-2 control-label">简介</label>
 				<div class="col-sm-10">
-					<lable class="form-control" id="desc">${novelHead.novelDesc }</lable>
+					<%--<lable class="form-control" id="desc">${novelHead.novelDesc }</lable>--%>
+					<textarea class="form-control" id="desc" rows="10">${novelHead.novelDesc}
+					</textarea>
 				</div>
 			</div>
 			<div class="form-group">
