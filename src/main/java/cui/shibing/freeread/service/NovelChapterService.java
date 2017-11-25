@@ -22,7 +22,12 @@ public interface NovelChapterService {
 	 * @return 返回相应分页的NovelChapter
 	 * */
 	Page<NovelChapter> searchByNovelHeadId(String novelId,Pageable pageable);
-	
+
+	/**
+	 * 查询一个小说的章节总数
+	 * @param novelId 小说id
+	 * @return 章节数目
+	 * */
 	long searchNovelChapterCountByNovelId(String novelId);
 	
 	/**
@@ -32,4 +37,11 @@ public interface NovelChapterService {
 	 * @return 相应分页的章节信息
 	 * */
 	Page<NovelChapterInfoDto> searchChapterInfoByNovelId(String novelId,Pageable pageable);
+
+	/**
+	 * 增加一个小说章节
+	 * @param novelChapter 要增加的小说章节
+	 * @return 是否成功
+	 * */
+	boolean addNovelChapter(NovelChapter novelChapter);
 }

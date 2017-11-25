@@ -70,4 +70,13 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 		return new PageImpl<NovelChapterInfoDto>(chapterInfos, pageable, count);
 	}
 
+	@Override
+	public boolean addNovelChapter(NovelChapter novelChapter) {
+		if(novelChapter != null && !StringUtils.isEmpty(novelChapter.getNovelId()) &&
+				!StringUtils.isEmpty(novelChapter.getNovelChapterIndex())){
+			return novelContentDao.insertNovelChapter(novelChapter) == 1;
+		}
+		return false;
+	}
+
 }
