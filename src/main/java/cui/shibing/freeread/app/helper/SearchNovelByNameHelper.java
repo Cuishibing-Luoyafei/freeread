@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+
 @Component("searchNovelByNameHelper")
 public class SearchNovelByNameHelper implements PageElementHelper{
     //TODO:返回了推荐页面,因为这两个页面比较相似
