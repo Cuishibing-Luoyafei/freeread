@@ -29,7 +29,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	public NovelChapter searchByNovelHeadAndChapter(String novelId, Integer chapterIndex) {
 		if (StringUtils.isEmpty(novelId) || chapterIndex == null)
 			return null;
-		return novelContentDao.selectNovleChapterByNovelIdAndChapterIndex(novelId, chapterIndex);
+		return novelContentDao.selectNovelChapterByNovelIdAndChapterIndex(novelId, chapterIndex);
 	}
 
 	@Override

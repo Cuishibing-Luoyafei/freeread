@@ -11,7 +11,7 @@ public interface NovelChapterDao {
     
     int insertNovelChapter(NovelChapter record);
     
-    NovelChapter selectNovleChapterByNovelIdAndChapterIndex(@Param("novelId")String novelId,@Param("chapterIndex")Integer chapterIndex);
+    NovelChapter selectNovelChapterByNovelIdAndChapterIndex(@Param("novelId")String novelId, @Param("chapterIndex")Integer chapterIndex);
     
     List<NovelChapter> selectNovelChapterByNovelId(@Param("novelId")String novelId,@Param("pageable")Pageable pageable);
     

@@ -36,7 +36,7 @@
         update
           novel_user
         set
-          user_pass    = #{user_pass, jdbcType=VARCHAR},
+          user_pass    = #{userPass, jdbcType=VARCHAR},
           user_role    = #{userRole,  jdbcType=INTEGER},
           user_info_id = #{userInfoId,jdbcType=INTEGER}
         where

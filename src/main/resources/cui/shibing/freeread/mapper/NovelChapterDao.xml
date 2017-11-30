@@ -21,7 +21,7 @@
       	#{novelChapterContent, jdbcType=VARCHAR})
   </insert>
   
-  <select id="selectNovleChapterByNovelIdAndChapterIndex" resultMap="BaseResultMap">
+  <select id="selectNovelChapterByNovelIdAndChapterIndex" resultMap="BaseResultMap">
   	select 
     	novel_id, 
     	novel_chapter_index,
