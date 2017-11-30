@@ -200,10 +200,44 @@
 		limit
 			#{pageable.offset},#{pageable.pageSize}
 	</select>
+
 	<select id="selectNovelHeadCountByPopularity" resultType="java.lang.Long">
 		select
 			count(novel_id)
 		from 
 			novel_head
 	</select>
+
+    <select id="selectNovelHeadByAuthor" resultMap="BaseResultMap">
+        select
+			novel_id,
+			novel_name,
+			novel_picture,
+			novel_desc,
+			novel_content_table_name,
+			novel_class_id_1,
+			novel_class_id_2,
+			novel_class_id_3,
+			novel_status,
+			novel_chapter_num,
+			novel_author,
+			novel_access,
+			novel_popularity
+		from
+			novel_head
+		where
+		    novel_author = #{userName,jdbcType=VARCHAR}
+		limit
+		    #{pageable.offset},#{pageable.pageSize}
+    </select>
+
+    <select id="selectNovelHeadCountByAuthor" resultType="java.lang.Long">
+        select
+            count(novel_id)
+        from
+            novel_head
+        where
+            novel_author = #{userName,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

@@ -20,9 +20,6 @@ import cui.shibing.freeread.service.NovelHeadService;
 public class NovelHeadServiceImpl implements NovelHeadService {
 
 	@Autowired
-	private StringRedisTemplate redisTemplate;
-
-	@Autowired
 	private NovelHeadDao novelHeadDao;
 
 	@Override
@@ -66,13 +63,6 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	}
 
 	@Override
-	public NovelHead searchByNovelId(String novelId) {
-		if (StringUtils.isEmpty(novelId))
-			return null;
-		return novelHeadDao.selectNovelHeadByNovelId(novelId);
-	}
-
-	@Override
 	public boolean addNovelHead(NovelHead head) {
 		if(head != null && !StringUtils.isEmpty(head.getNovelId())){
 			return novelHeadDao.insertNovelHead(head) == 1;
@@ -81,8 +71,33 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	}
 
 	@Override
+	public NovelHead searchByNovelId(String novelId) {
+		if (StringUtils.isEmpty(novelId))
+			return null;
+		return novelHeadDao.selectNovelHeadByNovelId(novelId);
+	}
+
+	@Override
+	public Page<NovelHead> searchByAuthor(String userName, Pageable pageable) {
+		List<NovelHead> result = null;
+		long count = 0;
+		if (StringUtils.isEmpty(userName) || pageable == null) {
+			result = Collections.emptyList();
+		} else {
+			result = novelHeadDao.selectNovelHeadByAuthor(userName,pageable);
+			count = searchCountByAuthor(userName);
+		}
+		return new PageImpl<NovelHead>(result, pageable, count);
+	}
+
+	@Override
 	public long searchCountByNovelName(String novelName) {
 		return novelHeadDao.selectNovelHeadCountByNovelName(novelName);
+	}
+
+	@Override
+	public long searchCountByAuthor(String userName) {
+		return novelHeadDao.selectNovelHeadCountByAuthor(userName);
 	}
 
 	@Override

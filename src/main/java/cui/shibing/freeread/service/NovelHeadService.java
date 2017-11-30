@@ -17,6 +17,20 @@ public interface NovelHeadService {
 	 * @return 对应的数量
 	 * */
 	long searchCountByNovelName(String novelName);
+
+	/**
+     * 根据小说作者查询小说
+     * @param userName 用户名称
+     * @return 该作者对应的小说
+     * */
+	Page<NovelHead> searchByAuthor(String userName,Pageable pageable);
+
+	/**
+     * 查询一个作者写的小说的数量
+     * @param userName 用户名称
+     * @return 该作者写的小说的数据
+     * */
+	long searchCountByAuthor(String userName);
 	
 	/**
 	 * 根据小说类别查找小说
