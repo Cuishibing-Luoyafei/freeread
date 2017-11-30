@@ -25,5 +25,5 @@ public class NovelChapterDaoTest extends CustomDaoTest{
 		novelContent.setNovelChapterIndex(1);
 		assertTrue(novelContentDao.insertNovelChapter(novelContent)==1);
 	}
-	
+
 }

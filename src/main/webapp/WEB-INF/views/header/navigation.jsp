@@ -24,6 +24,16 @@
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
             </div>
+            <%--登录后显示[用户名]和[个人中心]--%>
+            <sec:authorize access="isAuthenticated()">
+                <sec:authentication property="principal.user" var="user"/>
+                <div>
+                    <a href="#">${user.userName}</a>
+                </div>
+                <div>
+                    <button class="btn btn-default">个人中心</button>
+                </div>
+            </sec:authorize>
         </div>
     </div>
 </nav>
