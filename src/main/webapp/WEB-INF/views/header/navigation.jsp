@@ -15,24 +15,23 @@
                 <c:forEach items="${allNovelClasses}" var="classes">
                     <li><a href="#">${classes.novelClassName}</a></li>
                 </c:forEach>
+
             </ul>
+
+
+
             <div>
                 <form class="navbar-form navbar-right" role="search" action="${pageContext.request.contextPath}/searchNovelByName" method="post">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search" name="searchNovelName">
                     </div>
                     <button type="submit" class="btn btn-default">搜索</button>
+                    <%--登录后显示[用户名]和[个人中心]--%>
                 </form>
             </div>
-            <%--登录后显示[用户名]和[个人中心]--%>
             <sec:authorize access="isAuthenticated()">
                 <sec:authentication property="principal.user" var="user"/>
-                <div>
-                    <a href="#">${user.userName}</a>
-                </div>
-                <div>
-                    <button class="btn btn-default">个人中心</button>
-                </div>
+                <button type="button" class="btn btn-default navbar-btn">${user.userName}的个人中心</button>
             </sec:authorize>
         </div>
     </div>

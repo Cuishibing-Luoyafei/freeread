@@ -2,12 +2,21 @@ package cui.shibing.freeread.model;
 
 public class User {
 
+    /**
+     * 用户名,唯一
+     * */
     private String userName;
-
+    /**
+     * 用户密码
+     * */
     private String userPass;
-
+    /**
+     * 用户角色
+     * */
     private Integer userRole;
-
+    /**
+     * 用户信息的外键id
+     * */
     private String userInfoId;
 
     public String getUserName() {

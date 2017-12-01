@@ -1,9 +1,8 @@
 package cui.shibing.freeread.service;
 
-import java.io.Serializable;
-import java.util.List;
+import cui.shibing.freeread.model.NovelClass;
 
-import cui.shibing.freeread.dto.NovelClassDto;
+import java.util.List;
 
 public interface NovelClassService {
 	
@@ -12,31 +11,5 @@ public interface NovelClassService {
 	 * 
 	 * @return 当前所有的小说类别
 	 */
-	NovelClassServiceOutputBean getAllNovelClasses(NovelClassServiceInputBean inputBean);
-	
-	/**
-	 * 获取所有的小说类别
-	 * 
-	 * @return 当前所有的小说类别
-	 */
-	List<NovelClassDto> getAllNovelClasses();
-
-	static class NovelClassServiceInputBean implements Serializable{
-		private static final long serialVersionUID = 8165993464523515253L;
-		
-	}
-
-	static class NovelClassServiceOutputBean implements Serializable{
-
-		private static final long serialVersionUID = 1392089039250152991L;
-		private List<NovelClassDto> novelClasses;
-
-		public List<NovelClassDto> getNovelClasses() {
-			return novelClasses;
-		}
-
-		public void setNovelClasses(List<NovelClassDto> novelClasses) {
-			this.novelClasses = novelClasses;
-		}
-	}
+	List<NovelClass> getAllNovelClasses();
 }
