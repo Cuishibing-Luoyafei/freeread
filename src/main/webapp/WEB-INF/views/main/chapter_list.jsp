@@ -28,7 +28,9 @@
 									<div>
 										<div>
 											<label style="width: 150"><small><a
-													href="${pageContext.request.contextPath }/novelContent?novelId=${novelContent.novelId}&chapterIndex=${novelContent.novelChapterIndex}">${novelContent.novelChapterName }</a></small></label>
+                                                    href="${pageContext.request.contextPath }/novelChapter?novelId=${novelContent.novelId}&chapterIndex=${novelContent.novelChapterIndex}">${novelContent.novelChapterName }</a>
+                                            </small>
+                                            </label>
 										</div>
 									</div>
 								</td>

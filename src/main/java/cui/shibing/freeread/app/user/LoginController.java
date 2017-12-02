@@ -1,4 +1,4 @@
-package cui.shibing.freeread.app;
+package cui.shibing.freeread.app.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

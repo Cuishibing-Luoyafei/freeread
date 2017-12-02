@@ -33,7 +33,9 @@
 										</div>
 										<div>
 											<label style="width: 150"><small><a
-													href="${pageContext.request.contextPath }/novelDeatil?novelId=${novel.novelId }">${novel.novelName }</a></small></label>
+                                                    href="${pageContext.request.contextPath }/novelDetails?novelId=${novel.novelId }">${novel.novelName }</a>
+                                            </small>
+                                            </label>
 										</div>
 									</div>
 								</td>

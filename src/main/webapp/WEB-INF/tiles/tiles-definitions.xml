@@ -5,13 +5,13 @@
 
 <tiles-definitions>
 	<definition name = "base_layout" template = "/WEB-INF/views/layout/base_layout.jsp">
-		<put-attribute name="header"  value= "/pageElement/navigation"/>
-		<put-attribute name="left" value= "/pageElement/novelRanking"/>
+        <put-attribute name="header" value="/navigation/navigationBar"/>
+        <put-attribute name="left" value="/novelHead/novelRankingList"/>
 		<put-attribute name="footer" value= "/WEB-INF/views/footer/footer.jsp"/>
 	</definition>
 	
 	<definition name="no_left_layout" template="/WEB-INF/views/layout/no_left_layout.jsp">
-		<put-attribute name="header"  value= "/pageElement/navigation"/>
+        <put-attribute name="header" value="/navigation/navigationBar"/>
 		<put-attribute name="footer" value= "/WEB-INF/views/footer/footer.jsp"/>
 	</definition>
 	

@@ -1,6 +1,5 @@
 package cui.shibing.freeread.security;
 
-import cui.shibing.freeread.app.LoginController;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
