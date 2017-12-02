@@ -1,11 +1,10 @@
 package cui.shibing.freeread.dao;
 
-import java.util.List;
-
+import cui.shibing.freeread.model.NovelChapter;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 
-import cui.shibing.freeread.model.NovelChapter;
+import java.util.List;
 
 public interface NovelChapterDao {
 
@@ -46,6 +45,4 @@ public interface NovelChapterDao {
      * @return 小说的章节数目
      * */
     long selectNovelChapterCountByNovelId(@Param("novelId") String novelId);
-    
-    
 }
