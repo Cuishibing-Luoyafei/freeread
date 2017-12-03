@@ -1,6 +1,8 @@
 package cui.shibing.freeread.service.impl;
 
+import cui.shibing.freeread.dao.NovelHeadDao;
 import cui.shibing.freeread.dao.SecretNovelDao;
+import cui.shibing.freeread.model.NovelHead;
 import cui.shibing.freeread.model.SecretNovel;
 import cui.shibing.freeread.service.SecretNovelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,26 @@ public class SecretNovelServiceImpl implements SecretNovelService {
     @Autowired
     private SecretNovelDao secretNovelDao;
 
+    @Autowired
+    private NovelHeadDao novelHeadDao;
+
     @Override
-    public boolean addSecretNovel(SecretNovel secretNovel) {
+    public boolean addSecretNovel(String userName, String novelId) {
+        if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(novelId)) {
+            NovelHead novelHead = novelHeadDao.selectNovelHeadByNovelId(novelId);
+            if (novelHead != null) {
+                SecretNovel secretNovel = new SecretNovel();
+                secretNovel.setUserName(userName);
+                secretNovel.setNovelId(novelHead.getNovelId());
+                secretNovel.setNovelName(novelHead.getNovelName());
+                secretNovel.setLastReadChapter(0);
+                return addSecretNovel(secretNovel);
+            }
+        }
+        return false;
+    }
+
+    private boolean addSecretNovel(SecretNovel secretNovel) {
         return validateSecretNovel(secretNovel) &&
                 secretNovelDao.insertSecretNovel(secretNovel) == 1;
     }

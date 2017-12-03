@@ -15,10 +15,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("novelHead")
 public class NovelHeadController {
+    /**
+     * 小说推荐页面
+     */
     private static final String RECOMMEND_PAGE = "main/recommend";
+    /**
+     * 小说详情页面
+     */
     private static final String NOVEL_DETAILS_PAGE = "main/novel_detail";
+    /**
+     * 小说排行榜页面
+     */
     private static final String NOVEL_RANKLIST_PAGE = "left/novel_ranking";
+    /**
+     * 小说搜索页面
+     * */
     private static final String NOVEL_SEARCH_RESULT_PAGE = "main/recommend";
+
     @Autowired
     private NovelHeadService novelHeadService;
 

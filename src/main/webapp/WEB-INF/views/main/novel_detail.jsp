@@ -30,6 +30,12 @@
 				<div class="col-sm-offset-2 col-sm-10">
 					<a href="${pageContext.request.contextPath }/novelChapterList?novelId=${novelHead.novelId }">开始阅读</a>
 				</div>
+                <%--
+                    如果用户已经登录，则显示加入书架链接
+                --%>
+                <sec:authorize access="isAuthenticated()">
+                    <a href="#">加入书架</a>
+                </sec:authorize>
 			</div>
 		</form>
 	</div>

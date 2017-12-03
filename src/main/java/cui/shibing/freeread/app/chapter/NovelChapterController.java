@@ -17,9 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("novelChapter")
 public class NovelChapterController {
-
+    /**
+     * 小说章节内容页面
+     */
     private static final String NOVEL_CHAPTER_PAGE = "main/novel_chapter_content";
+    /**
+     * 小说章节内容不存在页面
+     */
     private static final String NO_CHAPTER_PAGE = "main/no_chapter";
+    /**
+     * 小说章节列表页面
+     */
     private static final String NOVEL_CHAPTERLIST_PAGE = "main/chapter_list";
     @Autowired
     private NovelChapterService chapterService;

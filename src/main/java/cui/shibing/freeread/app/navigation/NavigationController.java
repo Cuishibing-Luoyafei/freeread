@@ -12,7 +12,9 @@ import java.util.List;
 @Controller
 @RequestMapping("navigation")
 public class NavigationController {
-
+    /**
+     * 小说导航栏页面
+     */
     private static final String NAVIGATION_PAGE = "header/navigation";
 
     @Autowired

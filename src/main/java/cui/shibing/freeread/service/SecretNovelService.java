@@ -5,11 +5,10 @@ import cui.shibing.freeread.model.SecretNovel;
 import java.util.List;
 
 public interface SecretNovelService {
-
     /**
      * 添加一个小说到书架
      */
-    boolean addSecretNovel(SecretNovel secretNovel);
+    boolean addSecretNovel(String userName, String novelId);
 
     /**
      * 从书架移除一个小说
