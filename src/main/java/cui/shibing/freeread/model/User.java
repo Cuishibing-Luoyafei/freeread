@@ -1,6 +1,8 @@
 package cui.shibing.freeread.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     /**
      * 用户名,唯一

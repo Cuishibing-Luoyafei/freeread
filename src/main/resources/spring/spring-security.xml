@@ -11,6 +11,7 @@
         <form-login login-page="/loginPage" default-target-url="/"
                     login-processing-url="/login"/>
         <intercept-url pattern="/loginPage" access="permitAll()"/>
+        <intercept-url pattern="/user/loginFailPage" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
         <custom-filter ref="customAuthenticationLoginProcessFilter" before ="FORM_LOGIN_FILTER"/>

@@ -34,7 +34,7 @@
                     如果用户已经登录，则显示加入书架链接
                 --%>
                 <sec:authorize access="isAuthenticated()">
-                    <a href="#">加入书架</a>
+					<a href="${pageContext.request.contextPath}/secretNovel/addSecretNovel?novelId=${novelHead.novelId }">加入书架</a>
                 </sec:authorize>
 			</div>
 		</form>

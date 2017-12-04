@@ -31,7 +31,8 @@
             </div>
             <sec:authorize access="isAuthenticated()">
                 <sec:authentication property="principal.user" var="user"/>
-                <button type="button" class="btn btn-default navbar-btn">${user.userName}的个人中心</button>
+                <%--<button type="button" class="btn btn-default navbar-btn">${user.userName}的个人中心</button>--%>
+                <a href="${pageContext.request.contextPath}/user/userCenterPage">个人中心</a>
             </sec:authorize>
         </div>
     </div>

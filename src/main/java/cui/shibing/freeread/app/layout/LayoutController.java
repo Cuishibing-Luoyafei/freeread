@@ -66,6 +66,6 @@ public class LayoutController {
 	 **/
 	@RequestMapping(value="/loginPage")
 	public String loginLayout(){
-		return "login/loginPage"+NO_LEFT_LAYOUT;
+        return "user/loginPage" + NO_LEFT_LAYOUT;
 	}
 }
