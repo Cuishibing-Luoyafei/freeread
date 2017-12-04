@@ -68,4 +68,20 @@ public class LayoutController {
 	public String loginLayout(){
         return "user/loginPage" + NO_LEFT_LAYOUT;
 	}
+
+	/**
+	 * 用户个人中心
+	 * */
+	@RequestMapping("/userCenter")
+	public String userCenter(){
+		return "user/userCenterPage" + NO_LEFT_LAYOUT;
+	}
+
+	/**
+	 * 书架
+	 * */
+	@RequestMapping("/secretNovels")
+	public String secretNovels(){
+		return "secretNovel/listSecretNovels" + NO_LEFT_LAYOUT;
+	}
 }
