@@ -8,7 +8,7 @@
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 	<context:component-scan base-package="cui.shibing.freeread.dao" />
 	
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource_master" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="${driver}" />
 		<property name="url" value="${url}" />
@@ -25,6 +25,18 @@
 		<!-- 获取连接最大等待时间 -->
 		<property name="maxWait" value="${maxWait}"/>
 	</bean>
+
+	<bean id="dataSource" class="cui.shibing.freeread.datasource.DynamicDataSource">
+		<property name="targetDataSources">
+			<map>
+				<entry key="master_0" value-ref="dataSource_master"/>
+				<entry key="slaver_0" value-ref="dataSource_master"/>
+			</map>
+		</property>
+		<property name="masterDataSourceNum" value="1"/>
+		<property name="slaverDataSourceNum" value="1"/>
+	</bean>
+
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"/>

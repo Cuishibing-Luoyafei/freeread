@@ -21,13 +21,15 @@
 		</property>
 	</bean>
 
-    <context:component-scan base-package="cui.shibing.freeread.service"/>
+	<aop:aspectj-autoproxy/>
+
+    <context:component-scan base-package="cui.shibing.freeread"/>
+
+	<bean class="cui.shibing.freeread.datasource.DataSourceAdvisor"/>
 
 	<import resource="classpath:spring/spring-security.xml" />
     <import resource="classpath:mybatis/spring-mybatis.xml"/>
     <import resource="classpath:redis/spring-redis.xml"/>
 	<import resource="classpath:quartz/spring-quartz.xml"/>
-
-	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
 </beans>
