@@ -4,7 +4,7 @@ public enum DataSourceType {
     MASTER("master"),
     SLAVER("slaver");
 
-    private String dataSourceType;
+    private final String dataSourceType;
 
     DataSourceType(String dataSourceType){
         this.dataSourceType = dataSourceType;
