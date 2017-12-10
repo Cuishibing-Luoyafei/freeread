@@ -1,3 +1,4 @@
+
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">
@@ -36,7 +37,7 @@
             --%>
 				<sec:authorize access="isAuthenticated()">
 					<div class="col-sm-offset-2 col-sm-10">
-						<a href="${pageContext.request.contextPath}/secretNovel/addSecretNovel?novelId=${novelHead.novelId }">加入书架</a>
+						<a href="${pageContext.request.contextPath}/addSecretNovel?novelId=${novelHead.novelId }">加入书架</a>
 					</div>
 				</sec:authorize>
 

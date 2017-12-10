@@ -12,7 +12,7 @@
 			src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="container" class="container">
+<div id="container"><%-- 添加container类后会有很大的边距 --%>
 	<div id="header" class="row">
 		<div class="col">
 			<tiles:insertAttribute name="header" />

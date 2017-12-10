@@ -16,14 +16,6 @@
                     <li><a href="#">${classes.novelClassName}</a></li>
                 </c:forEach>
             </ul>
-            <sec:authorize access="isAuthenticated()">
-                <sec:authentication property="principal.user" var="user"/>
-                <%--<button type="button" class="btn btn-default navbar-btn">${user.userName}的个人中心</button>--%>
-                <ul class="nav navbar-nav">
-                    <li><button class="btn btn-default" onclick="location.href='${pageContext.request.contextPath}/userCenter'">个人中心</button></li>
-                </ul>
-            </sec:authorize>
-
             <div>
                 <form class="navbar-form navbar-right" role="search" action="${pageContext.request.contextPath}/searchNovelByName" method="post">
                     <div class="form-group">
@@ -33,7 +25,13 @@
                     <%--登录后显示[用户名]和[个人中心]--%>
                 </form>
             </div>
+            <sec:authorize access="isAuthenticated()">
+                <sec:authentication property="principal.user" var="user"/>
+                <%--<button type="button" class="btn btn-default navbar-btn">${user.userName}的个人中心</button>--%>
+                <button class="btn btn-default navbar-btn" onclick="location.href='${pageContext.request.contextPath}/userCenter'">个人中心</button>
 
+            </sec:authorize>
         </div>
     </div>
+
 </nav>

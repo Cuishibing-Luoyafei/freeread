@@ -3,15 +3,17 @@
 		<h3 class="panel-title">章节列表</h3>
 	</div>
 	<div class="panel-body">
-		<c:forEach items="${pageNovelContents.getContent()}" var="novelContent">
-			<span>
-				<label style="width: 300px">
+		<div class="row">
+			<c:forEach items="${pageNovelContents.getContent()}" var="novelContent">
+			<span class="col-md-4 col-sm-6">
+				<label style="min-width: 190px">
 					<small>
 						<a  href="${pageContext.request.contextPath }/novelChapter?novelId=${novelContent.novelId}&chapterIndex=${novelContent.novelChapterIndex}">${novelContent.novelChapterName }</a>
 					</small>
 				</label>
 			</span>
-		</c:forEach>
+			</c:forEach>
+		</div>
 	</div>
 </div>
 

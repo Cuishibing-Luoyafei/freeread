@@ -1,6 +1,5 @@
 package cui.shibing.freeread.app.secretnovel;
 
-import com.google.gson.Gson;
 import cui.shibing.freeread.model.SecretNovel;
 import cui.shibing.freeread.service.SecretNovelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,12 @@ public class SecretNovelController {
 
     private static final String SECRET_NOVELS_PAGE = "main/secretnovel/list_secret_novel";
 
-    @RequestMapping("addSecretNovel")
+    /**
+     * 用于异步添加收藏
+     * */
+    @RequestMapping("addSecretNovelAsyn")
     @ResponseBody
-    public String addSecretNovel(@RequestParam("novelId") String novelId, Authentication authentication) {
+    public JsonResponse addSecretNovel(@RequestParam("novelId") String novelId, Authentication authentication) {
         /* TODO:提示信息相关不应该硬编码 */
         JsonResponse response = new JsonResponse(false, "error");
         if (!StringUtils.isEmpty(novelId) && authentication != null) {
@@ -47,12 +49,21 @@ public class SecretNovelController {
                 }
             }
         }
-        return new Gson().toJson(response);
+        return response;
+    }
+
+    private static final String OPERATION_RESULT_PAGE = "main/operation_result";
+
+    @RequestMapping("addSecretNovel")
+    public String addSecretNovel(Model model,@RequestParam("novelId") String novelId, Authentication authentication){
+        JsonResponse response = addSecretNovel(novelId,authentication);
+        model.addAttribute("response",response);
+        return OPERATION_RESULT_PAGE;
     }
 
     @RequestMapping("removeSecretNovel")
     @ResponseBody
-    public String removeSecretNovel(@RequestParam("novelId") String novelId, Authentication authentication) {
+    public JsonResponse removeSecretNovel(@RequestParam("novelId") String novelId, Authentication authentication) {
         JsonResponse response = new JsonResponse(false, "error!");
         if (!StringUtils.isEmpty(novelId) && authentication != null) {
             String userName = getUserNameFromAuthentication(authentication);
@@ -64,7 +75,7 @@ public class SecretNovelController {
                 response.setMessage("删除失败!");
             }
         }
-        return new Gson().toJson(response);
+        return response;
     }
 
     @RequestMapping("listSecretNovels")
@@ -90,7 +101,7 @@ public class SecretNovelController {
         return false;
     }
 
-    private static class JsonResponse {
+    public static class JsonResponse {
         private boolean isSuccess;
         private String message;
         private Object data;

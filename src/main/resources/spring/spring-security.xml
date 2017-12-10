@@ -10,6 +10,7 @@
         <csrf disabled="true"/>
         <form-login login-page="/loginPage" default-target-url="/"
                     login-processing-url="/login"/>
+        <intercept-url pattern="/resources/**" access="permitAll()"/>
         <intercept-url pattern="/loginPage" access="permitAll()"/>
         <intercept-url pattern="/user/loginFailPage" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>

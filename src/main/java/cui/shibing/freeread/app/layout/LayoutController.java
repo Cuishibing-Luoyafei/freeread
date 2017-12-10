@@ -84,4 +84,9 @@ public class LayoutController {
 	public String secretNovels(){
 		return "secretNovel/listSecretNovels" + NO_LEFT_LAYOUT;
 	}
+
+	@RequestMapping("/addSecretNovel")
+	public String addSecretNovel(){
+		return "secretNovel/addSecretNovel" + NO_LEFT_LAYOUT;
+	}
 }

@@ -3,9 +3,10 @@
 		<h3 class="panel-title">推荐</h3>
 	</div>
 	<div class="panel-body">
-		<c:forEach items="${pageRecommendNovels.getContent()}" var="novel">
-			<span style="width: 170px;display:inline-block">
-				<div>
+		<div class="row">
+			<c:forEach items="${pageRecommendNovels.getContent()}" var="novel">
+			<span class="col-md-2" style="display:inline-block" >
+
 					<div>
 						<img alt=""
 							 src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2559880466,1764208247&fm=58"
@@ -17,9 +18,10 @@
 						</small>
 						</label>
 					</div>
-				</div>
+
 			</span>
-		</c:forEach>
+			</c:forEach>
+		</div>
 	</div>
 </div>
 

@@ -38,8 +38,8 @@
 	<mvc:default-servlet-handler />
 	
 	<mvc:resources mapping="/resources/**"
-        location="/resources/"
-        cache-period="#{60 * 60}" />
+        location="/WEB-INF/resources/"
+        cache-period="#{0}" />
 	
 	<!-- 配置视图解析器 -->
 	<bean id="tilesViewResolver"
