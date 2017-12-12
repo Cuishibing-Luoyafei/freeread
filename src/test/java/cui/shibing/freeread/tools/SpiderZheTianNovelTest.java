@@ -56,7 +56,7 @@ public class SpiderZheTianNovelTest extends CustomDaoTest {
 				CloseableHttpResponse httpResponse = httpClient.execute(hp);
 		) {
 			catalogHtml = EntityUtils.toString(httpResponse.getEntity(), charset);
-		}catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 //		System.out.println(catalogHtml);
@@ -91,6 +91,8 @@ public class SpiderZheTianNovelTest extends CustomDaoTest {
 		if(novelHeadDao.insertNovelHead(nh) == 0) {
 			System.out.println("保存小说" + nh + "时，失败！");
 			return;
+		} else {
+			System.out.println("目录成功保存");
 		}
 		List<String> aLabelHrefs = aLabel.eachAttr("href");
 		int i = skipChapter;
@@ -128,8 +130,9 @@ public class SpiderZheTianNovelTest extends CustomDaoTest {
 		Element chapterContent = chapterDocument.getElementById("content");
 //		章节页面中的小说内容
 		String content = "暂无内容";
-		if(chapterContent != null)
-			content = chapterContent.text();
+		if(chapterContent != null) {
+			content = chapterContent.html();
+		}
 		NovelChapter nc = new NovelChapter();
 		nc.setNovelId(UUID.randomUUID().toString().replaceAll("-", ""));
 		nc.setNovelId(novelId);
@@ -139,6 +142,8 @@ public class SpiderZheTianNovelTest extends CustomDaoTest {
 
 		if(novelChapterDao.insertNovelChapter(nc) == 0) {
 			System.out.println("保存" + nc + "时，失败！");
+		} else {
+			System.out.println("章节保存成功:" + title);
 		}
 	}
 }

@@ -6,6 +6,8 @@
 
 	<!-- 设置具体执行的 job类	-->
 	<bean id="job" class="cui.shibing.freeread.quartz.QuartzTest"></bean>
+	<!-- 爬取排行榜中小说的url -->
+	<bean id="spiderNovelAddress" class="cui.shibing.freeread.quartz.SpiderNovelAddressInExecQueue"></bean>
 
 	<!-- 将执行的job类注入到定时器的job容器中 -->
 	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -17,6 +19,15 @@
 			<value>quartz</value>
 		</property>
 	</bean>
+	<bean id="spiderNovelAddressJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="spiderNovelAddress" />
+		</property>
+		<!-- 具体执行调度任务的业务方法！ -->
+		<property name="targetMethod">
+			<value>exec</value>
+		</property>
+	</bean>
 
 	<!-- 将具体的调度任务注入，并设置定时器触发的corn表达式-->
 	<bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
@@ -24,8 +35,16 @@
 			<ref bean="jobDetail" />
 		</property>
 		<property name="cronExpression">
-			<value>0/3 * * * * ?</value>
-			<!-- 每3秒执行一次 -->
+			<value>0 42 20-23 * * ?</value>
+			<!-- 每天20:42/21:42/22:42/23:42执行  -->
+		</property>
+	</bean>
+	<bean id="spiderNovelAddressTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="spiderNovelAddressJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 20 * * ?</value>
 		</property>
 	</bean>
 
@@ -34,10 +53,11 @@
 		<property name="triggers">
 			<list>
 				<ref bean="trigger" />
+				<ref bean="spiderNovelAddressTrigger"/>
 			</list>
 		</property>
 		<!-- 设置是否自动开启 -->
-		<property name="autoStartup" value="false"></property>
+		<property name="autoStartup" value="true"></property>
 	</bean>
 
 </beans>  

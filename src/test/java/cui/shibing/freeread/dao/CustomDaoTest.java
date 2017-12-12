@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
-//@Rollback(value= true)
-//@Transactional(transactionManager = "transactionManager")
+@Rollback(value= true)
+@Transactional(transactionManager = "transactionManager")
 public class CustomDaoTest extends AbstractTransactionalJUnit4SpringContextTests{
 	@Override
 	protected void executeSqlScript(String sqlResourcePath,
