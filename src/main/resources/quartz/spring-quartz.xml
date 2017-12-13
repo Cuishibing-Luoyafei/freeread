@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- 设置具体执行的 job类	-->
-	<bean id="job" class="cui.shibing.freeread.quartz.QuartzTest"></bean>
+	<bean id="job" class="cui.shibing.freeread.quartz.SpiderNovelExecutor"></bean>
 	<!-- 爬取排行榜中小说的url -->
 	<bean id="spiderNovelAddress" class="cui.shibing.freeread.quartz.SpiderNovelAddressInExecQueue"></bean>
 
@@ -35,8 +35,8 @@
 			<ref bean="jobDetail" />
 		</property>
 		<property name="cronExpression">
-			<value>0 42 20-23 * * ?</value>
-			<!-- 每天20:42/21:42/22:42/23:42执行  -->
+			<value>0 0 7-23/2 * * ? </value>
+			<!-- 每天7-23点,每2小时执行一次 -->
 		</property>
 	</bean>
 	<bean id="spiderNovelAddressTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
@@ -44,12 +44,13 @@
 			<ref bean="spiderNovelAddressJobDetail" />
 		</property>
 		<property name="cronExpression">
-			<value>0 0 20 * * ?</value>
+			<value>11 11 11 11 11 ?</value>
+			<!-- 每年执行一次 -->
 		</property>
 	</bean>
 
 	<!-- 配置Quartz的调度工厂，调度工厂只能有一个，多个调度任务在list中添加 -->
-	<bean id="schedulerFactoryBean"	class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<bean id="schedulerFactoryBean" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="trigger" />

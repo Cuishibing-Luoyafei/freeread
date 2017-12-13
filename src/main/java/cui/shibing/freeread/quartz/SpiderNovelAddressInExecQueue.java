@@ -19,18 +19,17 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.util.CollectionUtils;
 
 /**
  * 
  * <p>
  * 爬取小说排行榜中的小说url,
  * <br/>
- * 存入执行爬取小说章节的队列中,
+ * 存入执行爬取小说章节的集合set中,
  * <br/>
- * 该队列在redis中存着
+ * 该集合在redis中存着
  * </p>
  * @author luoyf
  * @since jdk1.8
@@ -39,7 +38,7 @@ import org.springframework.util.CollectionUtils;
  */
 public class SpiderNovelAddressInExecQueue {
 	
-	private static final Logger log = LoggerFactory.getLogger(QuartzTest.class);
+	private static final Logger log = LoggerFactory.getLogger(SpiderNovelAddressInExecQueue.class);
 	
 	@Autowired
 	private StringRedisTemplate redisTemplate;
@@ -48,12 +47,11 @@ public class SpiderNovelAddressInExecQueue {
 	private static final String address_url = server_url + "paihangbang/";// 小说排行榜地址
 	private static final String charset = "gbk";// 网站中页面的编码
 	
-	private static final String spider_novel_address_redis = "spider_novel_address_redis";
+	private static final String spider_novel_address_set_redis = "spider_novel_address_set_redis";
 	
 	public void exec() {
 		log.debug(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ",开始将小说爬取地址,录入redis队列中==========");
-		ListOperations<String, String> addressListOps = redisTemplate.opsForList();
-		List<String> addressList = addressListOps.range(spider_novel_address_redis, 0, -1);
+		SetOperations<String, String> addressSetOps = redisTemplate.opsForSet();
 		String catalogHtml = "";// 获取目录的html源码
 		HttpPost hp = new HttpPost(address_url);
 		try (
@@ -71,12 +69,8 @@ public class SpiderNovelAddressInExecQueue {
 //		获取包含各个小说目录的所有a标签
 		Elements aLabel = rootDiv.select("a");
 		List<String> aLabelHrefs = aLabel.eachAttr("href");
-		if (CollectionUtils.isEmpty(addressList)) {
-			addressList = aLabelHrefs;
-		} else {
-			addressList.addAll(aLabelHrefs);
+		for (String href : aLabelHrefs) {
+			addressSetOps.add(spider_novel_address_set_redis, href);
 		}
-		System.out.println(addressList);
-		addressListOps.leftPushAll(spider_novel_address_redis, addressList);
 	}
 }

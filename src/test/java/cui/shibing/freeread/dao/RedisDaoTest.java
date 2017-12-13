@@ -3,11 +3,11 @@
 */
 package cui.shibing.freeread.dao;
 
-import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
@@ -25,12 +25,12 @@ public class RedisDaoTest extends CustomDaoTest {
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 	
-	private static final String spider_novel_address_redis = "spider_novel_address_redis";
+	private static final String spider_novel_address_set_redis = "spider_novel_address_set_redis";
 	
 	@Test
 	public void useRedisTest() {
-		ListOperations<String, String> list = redisTemplate.opsForList();
-		List<String> addressList = list.range(spider_novel_address_redis, 0, -1);
-		System.out.println(addressList);
+		SetOperations<String, String> addressSetOps = redisTemplate.opsForSet();
+		Set<String> setStr = addressSetOps.members(spider_novel_address_set_redis);
+		System.out.println(setStr);
 	}
 }

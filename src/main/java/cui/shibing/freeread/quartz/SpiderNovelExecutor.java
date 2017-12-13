@@ -5,7 +5,6 @@ package cui.shibing.freeread.quartz;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -22,9 +21,8 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import cui.shibing.freeread.dao.NovelChapterDao;
@@ -41,7 +39,7 @@ import cui.shibing.freeread.model.NovelHead;
  * @since jdk1.8 
  * 2017年12月12日
  */
-public class QuartzTest {
+public class SpiderNovelExecutor {
 	
 	public void quartz() {
 		log.debug(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ",开始执行爬虫抓取小说==========");
@@ -53,25 +51,15 @@ public class QuartzTest {
 	 * @return
 	 */
 	private String operAddressList() {
-		// 获取redis操作列表的对象
-		ListOperations<String, String> listOps = redisTemplate.opsForList();
-		// 爬取小说的列表
-		List<String> addressList = listOps.range(spider_novel_address_redis, 0, -1);
-		// 已经爬取过的小说的列表
-		List<String> addressListOld = listOps.range(spider_novel_address_redis_old, 0, -1);
-		if (CollectionUtils.isEmpty(addressList)) {
-			log.debug(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ",暂无可爬取的小说队列==========");
+		// 获取redis操作集合的对象
+		SetOperations<String, String> addressSetOps = redisTemplate.opsForSet();
+		// 移除操作列表中的一个,放入已执行的列表中
+		String spider_address = addressSetOps.pop(spider_novel_address_set_redis);
+		if (StringUtils.isEmpty(spider_address)) {
+			log.debug(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ",暂无可爬取的小说数据==========");
 			return null;
 		}
-		if (CollectionUtils.isEmpty(addressListOld)) {
-			addressListOld = new ArrayList<String>();
-		}
-		// 移除操作列表中的一个,放入已执行的列表中
-		String spider_address = addressList.remove(0);
-		addressListOld.add(spider_address);
-		// 更新redis
-		listOps.leftPushAll(spider_novel_address_redis, addressList);
-		listOps.leftPushAll(spider_novel_address_redis_old, addressList);
+		addressSetOps.add(spider_novel_address_set_redis_old, spider_address);
 		return spider_address;
 	}
 	
@@ -189,10 +177,10 @@ public class QuartzTest {
 	@Autowired
 	private NovelChapterDao novelChapterDao;
 	
-	private static final Logger log = LoggerFactory.getLogger(QuartzTest.class);
+	private static final Logger log = LoggerFactory.getLogger(SpiderNovelExecutor.class);
 	private static final String server_url = "http://www.biqukan.com";// 服务器地址
 	private static final String charset = "gbk";// 网站中页面的编码
 	private static int skipChapter = 0;// 目录页面进行录取时，要跳过的无效章节数
-	private static final String spider_novel_address_redis = "spider_novel_address_redis";// redis中小说地址队列
-	private static final String spider_novel_address_redis_old = "spider_novel_address_redis_old";// 已经爬取过的小说队列
+	private static final String spider_novel_address_set_redis = "spider_novel_address_set_redis";// redis中小说地址队列
+	private static final String spider_novel_address_set_redis_old = "spider_novel_address_set_redis_old";// 已经爬取过的小说队列
 }
