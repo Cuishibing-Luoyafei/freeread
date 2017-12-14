@@ -36,4 +36,10 @@ public class UserServiceImpl implements UserService {
         }
         return 0;
     }
+
+    @Override
+    public boolean registerUser(String userName, String password) {
+
+        return false;
+    }
 }

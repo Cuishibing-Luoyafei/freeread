@@ -5,47 +5,58 @@ import java.io.Serializable;
 public class NovelHead implements Serializable{
 
 	private static final long serialVersionUID = -8628870325251098944L;
-
-	/** 
-	  * {@inheritDoc}   
-	  * @see java.lang.Object#toString() 
-	  */
-	@Override
-	public String toString() {
-		return "NovelHead [novelId=" + novelId + ", novelName=" + novelName + ", novelPicture=" + novelPicture + ", novelDesc=" + novelDesc
-				+ ", novelContentTableName=" + novelContentTableName + ", novelClassId1=" + novelClassId1 + ", novelClassId2=" + novelClassId2
-				+ ", novelClassId3=" + novelClassId3 + ", novelStatus=" + novelStatus + ", novelChapterNum=" + novelChapterNum + ", novelAuthor=" + novelAuthor
-				+ ", novelAccess=" + novelAccess + ", novelPopularity=" + novelPopularity + "]";
-	}
-
-	/**	主键id */
-	private String novelId;
-	/**	小说名称*/
+    /**
+     * 小说id
+     */
+    private String novelId;
+    /**
+     * 小说名称
+     * */
     private String novelName;
-    /**	封面  */
+    /**
+     * 封面
+     * */
     private String novelPicture;
-    /**	简介 */
+    /**
+     * 简介
+     * */
     private String novelDesc;
-    
+    /**
+     * 小说内容所在的表名，为分表做准备
+     * */
     private String novelContentTableName;
-    
+    /**
+     * 小说类别1
+     * */
     private Integer novelClassId1;
-    
+    /**
+     * 小说类别2
+     * */
     private Integer novelClassId2;
-    
+    /**
+     * 小说类别3
+     * */
     private Integer novelClassId3;
     /**	
      * 小说状态
      * 0：未上架；1：更新中；2：已完结；
-     *  */
+     * */
     private Integer novelStatus;
-    /**	章节个数 */
+    /**
+     * 章节数量
+     * */
     private Integer novelChapterNum;
-    /**	作者 */
+    /**
+     * 作者
+     * */
     private String novelAuthor;
-    /**	留存量 */
+    /**
+     * 小说的权限，可以用来限制用户对小说的访问
+     * */
     private Integer novelAccess;
-    /**	点击量 */
+    /**
+     * 点击量，或者收藏量，还没想好
+     * */
     private Integer novelPopularity;
     
 	public String getNovelDesc() {

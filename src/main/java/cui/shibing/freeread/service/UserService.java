@@ -23,4 +23,6 @@ public interface UserService {
      * @return 更新记录的数量
      * */
     int updateUserByName(User user);
+
+    boolean registerUser(String userName, String password);
 }

@@ -4,6 +4,7 @@ import cui.shibing.freeread.model.NovelHead;
 import cui.shibing.freeread.service.NovelHeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class NovelHeadController {
     private NovelHeadService novelHeadService;
 
     @RequestMapping("recommend")
-    public String recommend(Model model, @PageableDefault(value = 8) Pageable pageable) {
+    public String recommend(Model model, @PageableDefault(value = 12) Pageable pageable) {
         if (pageable != null) {
             Page<NovelHead> recommendNovels = novelHeadService.searchByPopularity(pageable);
             model.addAttribute("pageRecommendNovels", recommendNovels);
@@ -54,7 +55,11 @@ public class NovelHeadController {
     }
 
     @RequestMapping("novelRankingList")
-    public String novelRankingList(Model model, @PageableDefault() Pageable pageable) {
+    public String novelRankingList(Model model) {
+        /**
+         * 排行榜默认显示10个
+         * */
+        Pageable pageable = new PageRequest(0, 10);
         if (pageable != null) {
             Page<NovelHead> novels = novelHeadService.searchByPopularity(pageable);
             model.addAttribute("pagePopularityNovels", novels);
