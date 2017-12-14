@@ -6,25 +6,8 @@
                         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
                         http://www.springframework.org/schema/context    
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-	<context:component-scan base-package="cui.shibing.freeread.dao" />
-	
-	<!--<bean id="dataSource_master" class="org.apache.commons.dbcp.BasicDataSource"-->
-		<!--destroy-method="close">-->
-		<!--<property name="driverClassName" value="${driver}" />-->
-		<!--<property name="url" value="${url}" />-->
-		<!--<property name="username" value="${username}" />-->
-		<!--<property name="password" value="${password}" />-->
-		<!--&lt;!&ndash; 初始化连接大小 &ndash;&gt;-->
-		<!--<property name="initialSize" value="${initialSize}"/>-->
-		<!--&lt;!&ndash; 连接池最大数量 &ndash;&gt;-->
-		<!--<property name="maxActive" value="${maxActive}"/>-->
-		<!--&lt;!&ndash; 连接池最大空闲 &ndash;&gt;-->
-		<!--<property name="maxIdle" value="${maxIdle}"/>-->
-		<!--&lt;!&ndash; 连接池最小空闲 &ndash;&gt;-->
-		<!--<property name="minIdle" value="${minIdle}"/>-->
-		<!--&lt;!&ndash; 获取连接最大等待时间 &ndash;&gt;-->
-		<!--<property name="maxWait" value="${maxWait}"/>-->
-	<!--</bean>-->
+
+    <context:component-scan base-package="cui.shibing.freeread.dao" />
 
 	<bean id="dataSource" class="cui.shibing.freeread.datasource.DynamicDataSource">
 		<property name="dataSourceDriver" value="${driver}" />
@@ -60,11 +43,13 @@
 		<!-- 自动扫描mapping.xml文件 -->
 		<property name="mapperLocations" value="classpath:cui/shibing/freeread/mapper/*.xml"/>
 	</bean>
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="cui.shibing.freeread.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
-	<bean id="transactionManager"
+
+    <bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>

@@ -4,6 +4,7 @@ import cui.shibing.freeread.dao.UserDao;
 import cui.shibing.freeread.model.User;
 import cui.shibing.freeread.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -39,7 +40,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean registerUser(String userName, String password) {
-
-        return false;
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+            return false;
+        }
+        User existUser = userDao.selectByUserName(userName);
+        if (existUser != null) {
+            return false;
+        }
+        User user = new User();
+        user.setUserName(userName);
+        user.setUserPass(BCrypt.hashpw(password, BCrypt.gensalt()));
+        user.setUserRole(UserService.DEFAULT_ROLE);
+        return userDao.insertUser(user) == 1;
     }
 }

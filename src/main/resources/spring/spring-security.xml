@@ -6,6 +6,7 @@
 
     <global-method-security
             pre-post-annotations="enabled"/>
+
     <http use-expressions="true"  auto-config="false">
         <csrf disabled="true"/>
         <form-login login-page="/loginPage" default-target-url="/"
@@ -16,16 +17,19 @@
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
         <custom-filter ref="customAuthenticationLoginProcessFilter" before ="FORM_LOGIN_FILTER"/>
-        <!--<custom-filter ref="customFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>-->
 
     </http>
 
-    <!--<beans:bean id="customSecurityMetadataSource" class="cui.ssmtest.antenrization.CustomSecurityMetadataSource"/>-->
     <beans:bean id="mUserDeatilsService" class="cui.shibing.freeread.security.UserDetailsServiceImpl"/>
 
     <authentication-manager id="mAuthenticationManager">
-        <authentication-provider user-service-ref="mUserDeatilsService"/>
+        <authentication-provider user-service-ref="mUserDeatilsService">
+            <!--<password-encoder ref="passwordEncoder"/>-->
+        </authentication-provider>
     </authentication-manager>
+
+    <beans:bean id="passwordEncoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
     <!--<beans:bean id="customAuthenticationProvider" class="cui.shibing.freeread.security.CustomAuthenticationProvider">
         <beans:constructor-arg name="hideUserNotFoundExceptions" value="false"></beans:constructor-arg>
