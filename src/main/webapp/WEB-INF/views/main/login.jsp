@@ -15,6 +15,9 @@
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default">登录</button>
+            <span>
+                <a href="${pageContext.request.contextPath}/registerUserPage">还没有帐号?去注册</a>
+            </span>
         </div>
     </div>
 </form>

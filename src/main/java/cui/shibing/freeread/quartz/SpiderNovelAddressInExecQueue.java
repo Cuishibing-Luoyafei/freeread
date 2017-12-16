@@ -3,24 +3,13 @@
 */
 package cui.shibing.freeread.quartz;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 
@@ -51,8 +40,8 @@ public class SpiderNovelAddressInExecQueue {
 	
 	public void exec() {
 		log.debug(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ",开始将小说爬取地址,录入redis队列中==========");
-		SetOperations<String, String> addressSetOps = redisTemplate.opsForSet();
-		String catalogHtml = "";// 获取目录的html源码
+        /*SetOperations<String, String> addressSetOps = redisTemplate.opsForSet();
+        String catalogHtml = "";// 获取目录的html源码
 		HttpPost hp = new HttpPost(address_url);
 		try (
 				CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -71,6 +60,6 @@ public class SpiderNovelAddressInExecQueue {
 		List<String> aLabelHrefs = aLabel.eachAttr("href");
 		for (String href : aLabelHrefs) {
 			addressSetOps.add(spider_novel_address_set_redis, href);
-		}
+		}*/
 	}
 }

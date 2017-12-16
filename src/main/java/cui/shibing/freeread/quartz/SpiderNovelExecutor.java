@@ -3,12 +3,10 @@
  */
 package cui.shibing.freeread.quartz;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
+import cui.shibing.freeread.dao.NovelChapterDao;
+import cui.shibing.freeread.dao.NovelHeadDao;
+import cui.shibing.freeread.model.NovelChapter;
+import cui.shibing.freeread.model.NovelHead;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -25,10 +23,11 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 
-import cui.shibing.freeread.dao.NovelChapterDao;
-import cui.shibing.freeread.dao.NovelHeadDao;
-import cui.shibing.freeread.model.NovelChapter;
-import cui.shibing.freeread.model.NovelHead;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * <ol>
@@ -43,7 +42,7 @@ public class SpiderNovelExecutor {
 	
 	public void quartz() {
 		log.debug(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ",开始执行爬虫抓取小说==========");
-		saveNovelHead();
+		/*saveNovelHead();*/
 	}
 	
 	/**
