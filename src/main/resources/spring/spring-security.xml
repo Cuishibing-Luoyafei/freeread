@@ -17,6 +17,7 @@
         <intercept-url pattern="/loginPage" access="permitAll()"/>
         <intercept-url pattern="/user/loginFailPage" access="permitAll()"/>
         <intercept-url pattern="/registerUserPage" access="permitAll()"/>
+        <intercept-url pattern="/registerUser" access="permitAll()"/>
 
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
@@ -28,7 +29,7 @@
 
     <authentication-manager id="mAuthenticationManager">
         <authentication-provider user-service-ref="mUserDeatilsService">
-            <!--<password-encoder ref="passwordEncoder"/>-->
+            <password-encoder ref="passwordEncoder"/>
         </authentication-provider>
     </authentication-manager>
 
