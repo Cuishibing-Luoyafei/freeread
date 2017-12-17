@@ -1,10 +1,9 @@
 package cui.shibing.freeread.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import cui.shibing.freeread.dto.NovelChapterInfoDto;
 import cui.shibing.freeread.model.NovelChapter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface NovelChapterService {
 	/**
@@ -44,4 +43,9 @@ public interface NovelChapterService {
 	 * @return 是否成功
 	 * */
 	boolean addNovelChapter(NovelChapter novelChapter);
+
+	/**
+	 * 根据小说id删除全部的小说章节
+	 */
+	boolean removeNovelChapter(String novelId);
 }

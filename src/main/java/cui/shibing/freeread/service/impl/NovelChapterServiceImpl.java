@@ -1,22 +1,22 @@
 package cui.shibing.freeread.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import cui.shibing.freeread.dao.NovelChapterDao;
+import cui.shibing.freeread.dto.NovelChapterInfoDto;
+import cui.shibing.freeread.model.NovelChapter;
+import cui.shibing.freeread.service.NovelChapterService;
+import cui.shibing.freeread.tools.MyBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import cui.shibing.freeread.dao.NovelChapterDao;
-import cui.shibing.freeread.dto.NovelChapterInfoDto;
-import cui.shibing.freeread.model.NovelChapter;
-import cui.shibing.freeread.service.NovelChapterService;
-import cui.shibing.freeread.tools.MyBeanUtils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class NovelChapterServiceImpl implements NovelChapterService {
@@ -71,12 +71,22 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	}
 
 	@Override
-	public boolean addNovelChapter(NovelChapter novelChapter) {
+    @Transactional
+    public boolean addNovelChapter(NovelChapter novelChapter) {
 		if(novelChapter != null && !StringUtils.isEmpty(novelChapter.getNovelId()) &&
 				!StringUtils.isEmpty(novelChapter.getNovelChapterIndex())){
 			return novelContentDao.insertNovelChapter(novelChapter) == 1;
 		}
 		return false;
 	}
+
+    @Override
+    @Transactional
+    public boolean removeNovelChapter(String novelId) {
+        if (!StringUtils.isEmpty(novelId)) {
+            return novelContentDao.deleteNovelChapterByNovelId(novelId) > 0;
+        }
+        return false;
+    }
 
 }

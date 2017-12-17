@@ -1,8 +1,8 @@
 package cui.shibing.freeread.service.impl;
 
-import cui.shibing.freeread.dao.NovelChapterDao;
 import cui.shibing.freeread.dao.NovelHeadDao;
 import cui.shibing.freeread.model.NovelHead;
+import cui.shibing.freeread.service.NovelChapterService;
 import cui.shibing.freeread.service.NovelHeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
@@ -22,7 +23,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	private NovelHeadDao novelHeadDao;
 
 	@Autowired
-	private NovelChapterDao novelChapterDao;
+	private NovelChapterService novelChapterService;
 
 	@Override
 	public Page<NovelHead> searchByNovelClass(String className, Pageable pageable) {
@@ -65,6 +66,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	}
 
 	@Override
+	@Transactional
 	public boolean addNovelHead(NovelHead head) {
 		if(head != null && !StringUtils.isEmpty(head.getNovelId())){
 			return novelHeadDao.insertNovelHead(head) == 1;
@@ -73,6 +75,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	}
 
 	@Override
+	@Transactional
 	public boolean removeNovelHead(String novelId) {
 		if (StringUtils.isEmpty(novelId)) {
 			return false;
@@ -82,12 +85,13 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			return false;
 		}
 		novelHeadDao.deleteNovelHeadByNovelId(novelId);
-		novelChapterDao.deleteNovelChapterByNovelId(novelId);
+		novelChapterService.removeNovelChapter(novelId);
 		return true;
 	}
 
     @Override
-    public boolean updateNovelHead(NovelHead novelHead) {
+	@Transactional
+	public boolean updateNovelHead(NovelHead novelHead) {
         if (novelHead != null) {
             return novelHeadDao.updateNovelHeadByNovelId(novelHead) == 1;
         }

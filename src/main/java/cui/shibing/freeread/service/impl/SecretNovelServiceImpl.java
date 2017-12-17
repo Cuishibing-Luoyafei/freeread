@@ -7,6 +7,7 @@ import cui.shibing.freeread.service.NovelHeadService;
 import cui.shibing.freeread.service.SecretNovelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class SecretNovelServiceImpl implements SecretNovelService {
     private NovelHeadService novelHeadService;
 
     @Override
+    @Transactional
     public boolean addSecretNovel(String userName, String novelId) {
         if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(novelId)) {
             NovelHead novelHead = novelHeadService.searchByNovelId(novelId);
@@ -63,6 +65,7 @@ public class SecretNovelServiceImpl implements SecretNovelService {
     }
 
     @Override
+    @Transactional
     public boolean removeSecretNovel(String userName, String novelId) {
         if (!StringUtils.isEmpty(userName) &&
                 !StringUtils.isEmpty(novelId) &&
@@ -77,6 +80,7 @@ public class SecretNovelServiceImpl implements SecretNovelService {
     }
 
     @Override
+    @Transactional
     public boolean removeSecretNovel(SecretNovel secretNovel) {
         return validateSecretNovel(secretNovel) &&
                 removeSecretNovel(secretNovel.getUserName(), secretNovel.getNovelId());

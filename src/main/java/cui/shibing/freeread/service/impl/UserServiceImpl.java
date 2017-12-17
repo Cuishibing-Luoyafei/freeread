@@ -6,6 +6,7 @@ import cui.shibing.freeread.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public int deleteUserByName(String userName) {
         if(!StringUtils.isEmpty(userName)){
             return userDao.deleteUserByName(userName);
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public int updateUserByName(User user) {
         if(user != null && !StringUtils.isEmpty(user.getUserName())){
             return userDao.updateUser(user);
@@ -39,6 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean registerUser(String userName, String password) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return false;
