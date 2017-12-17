@@ -30,28 +30,56 @@ public class SecretNovelServiceImpl implements SecretNovelService {
                 secretNovel.setNovelId(novelHead.getNovelId());
                 secretNovel.setNovelName(novelHead.getNovelName());
                 secretNovel.setLastReadChapter(0);
-                return addSecretNovel(secretNovel);
+                return addSecretNovel(secretNovel, novelHead);
             }
         }
         return false;
     }
 
-    private boolean addSecretNovel(SecretNovel secretNovel) {
-        return validateSecretNovel(secretNovel) &&
-                secretNovelDao.insertSecretNovel(secretNovel) == 1;
+    private boolean addSecretNovel(SecretNovel secretNovel, NovelHead novelHead) {
+        if (validateSecretNovel(secretNovel) &&
+                secretNovelDao.insertSecretNovel(secretNovel) == 1) {
+            changeNovelPopularity(novelHead, true);
+            return true;
+        }
+        return false;
+    }
+
+    private void changeNovelPopularity(NovelHead novelHead, boolean isAdd) {
+        Integer popularity = novelHead.getNovelPopularity();
+        if (popularity == null) {
+            popularity = 0;
+        }
+        if (isAdd) {
+            popularity += 1;
+        } else {
+            popularity -= 1;
+            if (popularity < 0) {
+                popularity = 0;
+            }
+        }
+        novelHead.setNovelPopularity(popularity);
+        novelHeadService.updateNovelHead(novelHead);
     }
 
     @Override
     public boolean removeSecretNovel(String userName, String novelId) {
-        return !StringUtils.isEmpty(userName) &&
+        if (!StringUtils.isEmpty(userName) &&
                 !StringUtils.isEmpty(novelId) &&
-                secretNovelDao.deleteSecretNovel(userName, novelId) == 1;
+                secretNovelDao.deleteSecretNovel(userName, novelId) == 1) {
+            NovelHead novelHead = novelHeadService.searchByNovelId(novelId);
+            if (novelHead != null) {
+                changeNovelPopularity(novelHead, false);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean removeSecretNovel(SecretNovel secretNovel) {
         return validateSecretNovel(secretNovel) &&
-                secretNovelDao.deleteSecretNovel(secretNovel.getUserName(), secretNovel.getNovelId()) == 1;
+                removeSecretNovel(secretNovel.getUserName(), secretNovel.getNovelId());
     }
 
     @Override

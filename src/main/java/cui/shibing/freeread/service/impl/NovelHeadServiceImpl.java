@@ -86,6 +86,14 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 		return true;
 	}
 
+    @Override
+    public boolean updateNovelHead(NovelHead novelHead) {
+        if (novelHead != null) {
+            return novelHeadDao.updateNovelHeadByNovelId(novelHead) == 1;
+        }
+        return false;
+    }
+
 	@Override
 	public NovelHead searchByNovelId(String novelId) {
 		if (StringUtils.isEmpty(novelId))

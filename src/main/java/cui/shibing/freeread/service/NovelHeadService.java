@@ -82,4 +82,13 @@ public interface NovelHeadService {
      * @return 删除是否成功
      */
     boolean removeNovelHead(String novelId);
+
+	/**
+	 * 更新一本小说
+	 *
+	 * @param novelHead 要更新的小说
+	 *
+	 * @return 是否成功
+	 */
+	boolean updateNovelHead(NovelHead novelHead);
 }
