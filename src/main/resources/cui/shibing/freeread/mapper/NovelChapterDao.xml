@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress ALL -->
 <mapper namespace="cui.shibing.freeread.dao.NovelChapterDao">
   <resultMap id="BaseResultMap" type="NovelChapter">
     <id     column="novel_id" 		  	   jdbcType="VARCHAR" 	property="novelId" />
@@ -70,5 +71,9 @@
   	where
   		novel_id = #{novelId,jdbcType=VARCHAR}
   </select>
+
+	<delete id="deleteNovelChapterByNovelId">
+		delete from novel_content where novel_id = #{novelId,jdbcType=VARCHAR}
+	</delete>
   
 </mapper>

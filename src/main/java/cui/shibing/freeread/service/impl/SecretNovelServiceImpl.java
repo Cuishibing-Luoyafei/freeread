@@ -1,9 +1,9 @@
 package cui.shibing.freeread.service.impl;
 
-import cui.shibing.freeread.dao.NovelHeadDao;
 import cui.shibing.freeread.dao.SecretNovelDao;
 import cui.shibing.freeread.model.NovelHead;
 import cui.shibing.freeread.model.SecretNovel;
+import cui.shibing.freeread.service.NovelHeadService;
 import cui.shibing.freeread.service.SecretNovelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ public class SecretNovelServiceImpl implements SecretNovelService {
     private SecretNovelDao secretNovelDao;
 
     @Autowired
-    private NovelHeadDao novelHeadDao;
+    private NovelHeadService novelHeadService;
 
     @Override
     public boolean addSecretNovel(String userName, String novelId) {
         if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(novelId)) {
-            NovelHead novelHead = novelHeadDao.selectNovelHeadByNovelId(novelId);
+            NovelHead novelHead = novelHeadService.searchByNovelId(novelId);
             if (novelHead != null) {
                 SecretNovel secretNovel = new SecretNovel();
                 secretNovel.setUserName(userName);
@@ -57,7 +57,14 @@ public class SecretNovelServiceImpl implements SecretNovelService {
     @Override
     public List<SecretNovel> getSecretNovels(String userName) {
         if (!StringUtils.isEmpty(userName)) {
-            return secretNovelDao.selectSecretNovelByUserName(userName);
+            List<SecretNovel> secretNovels = secretNovelDao.selectSecretNovelByUserName(userName);
+            for (SecretNovel secretNovel : secretNovels) {
+                //如果小说不存在了，就设置下架标志
+                if (novelHeadService.searchByNovelId(secretNovel.getNovelId()) == null) {
+                    secretNovel.setOutOfStock(true);
+                }
+            }
+            return secretNovels;
         }
         return null;
     }

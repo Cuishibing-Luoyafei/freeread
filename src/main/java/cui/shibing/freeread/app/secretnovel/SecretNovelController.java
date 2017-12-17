@@ -61,7 +61,7 @@ public class SecretNovelController {
         return OPERATION_RESULT_PAGE;
     }
 
-    @RequestMapping("removeSecretNovel")
+    @RequestMapping("removeSecretNovelAsyn")
     @ResponseBody
     public JsonResponse removeSecretNovel(@RequestParam("novelId") String novelId, Authentication authentication) {
         JsonResponse response = new JsonResponse(false, "error!");
@@ -76,6 +76,13 @@ public class SecretNovelController {
             }
         }
         return response;
+    }
+
+    @RequestMapping("removeSecretNovel")
+    public String removelSecretNovel(Model model, @RequestParam("novelId") String novelId, Authentication authentication) {
+        JsonResponse response = removeSecretNovel(novelId, authentication);
+        model.addAttribute("response", response);
+        return OPERATION_RESULT_PAGE;
     }
 
     @RequestMapping("listSecretNovels")

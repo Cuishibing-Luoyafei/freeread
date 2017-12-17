@@ -94,6 +94,14 @@ public class LayoutController {
     }
 
     /**
+     * 从书架中删除一本小说
+     */
+    @RequestMapping("/removeSecretNovel")
+    public String removeSecretNovel() {
+        return "secretNovel/removeSecretNovel" + NO_LEFT_LAYOUT;
+    }
+
+    /**
      * 用户注册页面
      */
     @RequestMapping("/registerUserPage")

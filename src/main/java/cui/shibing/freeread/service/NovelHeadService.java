@@ -1,8 +1,8 @@
 package cui.shibing.freeread.service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import cui.shibing.freeread.model.NovelHead;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 public interface NovelHeadService {
 	/**
 	 * 根据小说名称查找小说
@@ -73,4 +73,13 @@ public interface NovelHeadService {
 	 * @return 是否成功
 	 * */
 	boolean addNovelHead(NovelHead head);
+
+    /**
+     * 删除一个小说
+     *
+     * @param novelId 小说id
+     *
+     * @return 删除是否成功
+     */
+    boolean removeNovelHead(String novelId);
 }

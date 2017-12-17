@@ -1,26 +1,28 @@
 package cui.shibing.freeread.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-
+import cui.shibing.freeread.dao.NovelChapterDao;
+import cui.shibing.freeread.dao.NovelHeadDao;
+import cui.shibing.freeread.model.NovelHead;
+import cui.shibing.freeread.service.NovelHeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import cui.shibing.freeread.dao.NovelHeadDao;
-import cui.shibing.freeread.model.NovelHead;
-import cui.shibing.freeread.service.NovelHeadService;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class NovelHeadServiceImpl implements NovelHeadService {
 
 	@Autowired
 	private NovelHeadDao novelHeadDao;
+
+	@Autowired
+	private NovelChapterDao novelChapterDao;
 
 	@Override
 	public Page<NovelHead> searchByNovelClass(String className, Pageable pageable) {
@@ -71,6 +73,20 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 	}
 
 	@Override
+	public boolean removeNovelHead(String novelId) {
+		if (StringUtils.isEmpty(novelId)) {
+			return false;
+		}
+		NovelHead novelHead = novelHeadDao.selectNovelHeadByNovelId(novelId);
+		if (novelHead == null) {
+			return false;
+		}
+		novelHeadDao.deleteNovelHeadByNovelId(novelId);
+		novelChapterDao.deleteNovelChapterByNovelId(novelId);
+		return true;
+	}
+
+	@Override
 	public NovelHead searchByNovelId(String novelId) {
 		if (StringUtils.isEmpty(novelId))
 			return null;
@@ -111,4 +127,5 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 			return 0;
 		return novelHeadDao.selectNovelHeadCountByNovelClass(className);
 	}
+
 }

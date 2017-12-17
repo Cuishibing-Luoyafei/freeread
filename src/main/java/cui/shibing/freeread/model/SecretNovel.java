@@ -1,10 +1,12 @@
 package cui.shibing.freeread.model;
 
+import java.io.Serializable;
+
 /**
  * 个人书架对应的model类
  * 保存userId <---> novelId的对应关系
  * */
-public class SecretNovel {
+public class SecretNovel implements Serializable {
     /**
      * 用户名
      * */
@@ -22,6 +24,19 @@ public class SecretNovel {
      * 最后阅读的章节
      * */
     private Integer lastReadChapter;
+
+    /**
+     * 是否下架
+     */
+    private boolean isOutOfStock;
+
+    public boolean isOutOfStock() {
+        return isOutOfStock;
+    }
+
+    public void setOutOfStock(boolean outOfStock) {
+        isOutOfStock = outOfStock;
+    }
 
     public String getUserName() {
         return userName;

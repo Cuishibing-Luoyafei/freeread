@@ -53,4 +53,11 @@ public interface NovelChapterDao {
      * */
     @DataSourceTypeSetter(SLAVER)
     long selectNovelChapterCountByNovelId(@Param("novelId") String novelId);
+
+    /**
+     * 删除小说章节
+     *
+     * @param novelId 小说id
+     */
+    long deleteNovelChapterByNovelId(@Param("novelId") String novelId);
 }
