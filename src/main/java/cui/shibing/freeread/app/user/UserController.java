@@ -22,6 +22,7 @@ public class UserController {
 
     private static final String USER_REGISTER_SUCCESS_PAGE = "main/user/user_register_success";
 
+
     @Autowired
     private UserService userService;
 

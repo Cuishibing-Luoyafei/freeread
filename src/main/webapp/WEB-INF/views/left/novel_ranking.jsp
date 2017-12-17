@@ -5,7 +5,9 @@
 	<div class="panel-body">
 		<ul class="list-group">
 			<c:forEach items="${pagePopularityNovels.getContent() }" var="novelHeads">
-				<li class="list-group-item">${novelHeads.novelName}</li>
+				<li class="list-group-item">
+					<a href="${pageContext.request.contextPath}/novelDetails?novelId=${novelHeads.novelId }">${novelHeads.novelName}</a>
+				</li>
 			</c:forEach>
 		</ul>
 	</div>

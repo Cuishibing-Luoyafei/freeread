@@ -40,5 +40,5 @@ public interface UserService {
     /**
      * 管理员用户权限
      */
-    int ADMIN_ROLE = 1<<2;
+    int ADMIN_ROLE = 1 << 2;
 }
