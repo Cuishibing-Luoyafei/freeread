@@ -3,15 +3,19 @@ package cui.shibing.freeread.app.chapter;
 import cui.shibing.freeread.dto.NovelChapterInfoDto;
 import cui.shibing.freeread.model.NovelChapter;
 import cui.shibing.freeread.service.NovelChapterService;
+import cui.shibing.freeread.service.SecretNovelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilter.getUserNameFromAuthentication;
 
 
 @Controller
@@ -29,22 +33,26 @@ public class NovelChapterController {
      * 小说章节列表页面
      */
     private static final String NOVEL_CHAPTERLIST_PAGE = "main/chapter_list";
+
     @Autowired
     private NovelChapterService chapterService;
+
+    @Autowired
+    private SecretNovelService secretNovelService;
 
     /**
      * 小说章节内容页面
      **/
     @RequestMapping("novelChapter")
     public String novelChapter(Model model, @RequestParam("novelId") String novelId,
-                               @RequestParam("chapterIndex") Integer chapterIndex) {
+                               @RequestParam("chapterIndex") Integer chapterIndex,
+                               Authentication authentication) {
         if (!StringUtils.isEmpty(novelId) && chapterIndex != -1) {
-            NovelChapter novelChapter = chapterService.searchByNovelHeadAndChapter(novelId, chapterIndex);
+            NovelChapter novelChapter = chapterService.getChapterByNovelIdAndIndex(novelId, chapterIndex, getUserNameFromAuthentication(authentication));
             if (novelChapter != null) {
                 model.addAttribute("novelChapter", novelChapter);
                 return NOVEL_CHAPTER_PAGE;
             }
-            return NO_CHAPTER_PAGE;
         }
         return NO_CHAPTER_PAGE;
     }

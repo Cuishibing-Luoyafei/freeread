@@ -22,6 +22,8 @@
                             <a href="${pageContext.request.contextPath}/novelDetails?novelId=${secretNovel.novelId}">${secretNovel.novelName}</a>
                             <a style="float:right"
                                href="${pageContext.request.contextPath}/removeSecretNovel?novelId=${secretNovel.novelId}">删除</a>
+                            <a style="float:right;margin-right:30px"
+                               href="${pageContext.request.contextPath }/novelChapter?novelId=${secretNovel.novelId}&chapterIndex=${secretNovel.lastReadChapter}">继续阅读</a>
                         </li>
 
                     </c:otherwise>

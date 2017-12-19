@@ -7,14 +7,24 @@ import org.springframework.data.domain.Pageable;
 
 public interface NovelChapterService {
 	/**
-	 * 根据小说Id和章节数查找
-	 * @param novelId 小说Id
+     * 根据小说Id和章节索引查找章节
+     * @param novelId 小说Id
 	 * @param chapterIndex 章节数
 	 * @return 返回相应的NovelChapter
 	 * */
-	NovelChapter searchByNovelHeadAndChapter(String novelId,Integer chapterIndex);
-	
-	/**
+    NovelChapter getChapterByNovelIdAndIndex(String novelId, Integer chapterIndex);
+
+    /**
+     * 根据小说Id和章节索引查找章节,可以保存最后阅读章节
+     *
+     * @param novelId 小说Id
+     * @param chapterIndex 章节数
+     *
+     * @return 返回相应的NovelChapter
+     */
+    NovelChapter getChapterByNovelIdAndIndex(String novelId, Integer chapterIndex, String userName);
+
+    /**
 	 * 根据小说Id查找所有的章节
 	 * @param novelId 小说Id
 	 * @param pageable 分页对象

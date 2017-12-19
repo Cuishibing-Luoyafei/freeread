@@ -27,4 +27,9 @@ public interface SecretNovelService {
      * 查询一个用户书架内的所有书籍
      */
     List<SecretNovel> getSecretNovels(String userName);
+
+    /**
+     * 更新最后阅读状态
+     */
+    boolean updateLastReadIndex(String userName, String novelId, Integer chapter);
 }

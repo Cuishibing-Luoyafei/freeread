@@ -4,7 +4,6 @@ import cui.shibing.freeread.model.SecretNovel;
 import cui.shibing.freeread.service.SecretNovelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+
+import static cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilter.getUserNameFromAuthentication;
 
 /**
  * 书架相关的Controller
@@ -92,10 +93,6 @@ public class SecretNovelController {
             model.addAttribute("secretNovels", secretNovels);
         }
         return SECRET_NOVELS_PAGE;
-    }
-
-    private String getUserNameFromAuthentication(Authentication authentication) {
-        return ((UserDetails) authentication.getPrincipal()).getUsername();
     }
 
     private boolean containSecretNovel(String novelId, List<SecretNovel> novelList) {

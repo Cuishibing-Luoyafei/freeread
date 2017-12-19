@@ -3,7 +3,9 @@ package cui.shibing.freeread.service.impl;
 import cui.shibing.freeread.dao.NovelChapterDao;
 import cui.shibing.freeread.dto.NovelChapterInfoDto;
 import cui.shibing.freeread.model.NovelChapter;
+import cui.shibing.freeread.model.SecretNovel;
 import cui.shibing.freeread.service.NovelChapterService;
+import cui.shibing.freeread.service.SecretNovelService;
 import cui.shibing.freeread.tools.MyBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,12 +26,35 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	@Autowired
 	private NovelChapterDao novelContentDao;
 
+	@Autowired
+	private SecretNovelService secretNovelService;
+
 	@Override
 	@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+#novelId+'.'+#chapterIndex")
-	public NovelChapter searchByNovelHeadAndChapter(String novelId, Integer chapterIndex) {
+	public NovelChapter getChapterByNovelIdAndIndex(String novelId, Integer chapterIndex) {
 		if (StringUtils.isEmpty(novelId) || chapterIndex == null)
 			return null;
-		return novelContentDao.selectNovelChapterByNovelIdAndChapterIndex(novelId, chapterIndex);
+		NovelChapter novelChapter = novelContentDao.selectNovelChapterByNovelIdAndChapterIndex(novelId, chapterIndex);
+
+
+		return novelChapter;
+	}
+
+	@Override
+	public NovelChapter getChapterByNovelIdAndIndex(String novelId, Integer chapterIndex, String userName) {
+		NovelChapter novelChapter = getChapterByNovelIdAndIndex(novelId, chapterIndex);
+		if (novelChapter != null && !StringUtils.isEmpty(userName)) {
+			//TODO:应该把设置最后阅读章节的操作放到一个计划任务队列中
+			List<SecretNovel> secretNovels = secretNovelService.getSecretNovels(userName);
+			for (SecretNovel secretNovel : secretNovels) {
+				if (secretNovel.getNovelId().equals(novelId) && !secretNovel.getLastReadChapter().equals(chapterIndex)) {
+					secretNovel.setLastReadChapter(chapterIndex);
+					secretNovelService.updateLastReadIndex(userName, novelId, chapterIndex);
+					break;
+				}
+			}
+		}
+		return novelChapter;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -98,7 +99,17 @@ public class SecretNovelServiceImpl implements SecretNovelService {
             }
             return secretNovels;
         }
-        return null;
+        return Collections.emptyList();
+    }
+
+    @Override
+    public boolean updateLastReadIndex(String userName, String novelId, Integer chapter) {
+        if (StringUtils.isEmpty(userName) ||
+                StringUtils.isEmpty(novelId)) {
+            return false;
+        }
+        return secretNovelDao.updateSecretNovelLastReadIndex(userName,
+                novelId, chapter) == 1;
     }
 
     private boolean validateSecretNovel(SecretNovel secretNovel) {
