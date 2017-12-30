@@ -13,7 +13,9 @@
         <div class="collapse navbar-collapse" id="example-navbar-collapse">
             <ul class="nav navbar-nav">
                 <c:forEach items="${allNovelClasses}" var="classes">
-                    <li><a href="#">${classes.novelClassName}</a></li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/recommend?className=${classes.novelClassName}">${classes.novelClassName}</a>
+                    </li>
                 </c:forEach>
             </ul>
             <div>

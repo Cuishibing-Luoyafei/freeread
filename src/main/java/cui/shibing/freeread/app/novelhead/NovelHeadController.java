@@ -37,11 +37,16 @@ public class NovelHeadController {
     private NovelHeadService novelHeadService;
 
     @RequestMapping("recommend")
-    public String recommend(Model model, @PageableDefault(value = 12) Pageable pageable) {
-        if (pageable != null) {
-            Page<NovelHead> recommendNovels = novelHeadService.searchByPopularity(pageable);
-            model.addAttribute("pageRecommendNovels", recommendNovels);
+    public String recommend(Model model, @PageableDefault(value = 12) Pageable pageable,
+                            @RequestParam(value = "className", required = false) String className) {
+        Page<NovelHead> recommendNovels;
+        if (!StringUtils.isEmpty(className)) {
+            model.addAttribute("className", className);
+            recommendNovels = novelHeadService.searchByNovelClass(className, pageable);
+        } else {
+            recommendNovels = novelHeadService.searchByPopularity(pageable);
         }
+        model.addAttribute("pageRecommendNovels", recommendNovels);
         return RECOMMEND_PAGE;
     }
 
