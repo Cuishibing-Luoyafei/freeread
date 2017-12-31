@@ -194,7 +194,14 @@
 			<version>4.3.2.RELEASE</version>
 		</dependency>
 
-	</dependencies>
+        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<finalName>freeread</finalName>

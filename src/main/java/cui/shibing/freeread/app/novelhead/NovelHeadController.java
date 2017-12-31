@@ -31,7 +31,7 @@ public class NovelHeadController {
     /**
      * 小说搜索页面
      * */
-    private static final String NOVEL_SEARCH_RESULT_PAGE = "main/recommend";
+    private static final String NOVEL_SEARCH_RESULT_PAGE = "main/novelhead/novel_search_result";
 
     @Autowired
     private NovelHeadService novelHeadService;
@@ -76,7 +76,8 @@ public class NovelHeadController {
     public String novelSearchResult(Model model, @RequestParam("searchNovelName") String searchNovelName,
                                     @PageableDefault(value = 6) Pageable pageable) {
         if (pageable != null && !StringUtils.isEmpty(searchNovelName)) {
-            model.addAttribute("pageRecommendNovels", novelHeadService.searchByNovelName(searchNovelName, pageable));
+            Page<NovelHead> novelHeads = novelHeadService.searchByNovelName(searchNovelName, pageable);
+            model.addAttribute("searchResult", novelHeads);
         }
         return NOVEL_SEARCH_RESULT_PAGE;
     }

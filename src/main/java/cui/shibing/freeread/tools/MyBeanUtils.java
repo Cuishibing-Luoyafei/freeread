@@ -1,21 +1,19 @@
 package cui.shibing.freeread.tools;
 
-import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 
+import java.util.List;
+
 public class MyBeanUtils extends BeanUtils{
-	/*public static void copyListProperties(List source,List target) {
-		if(source == null || target == null)
-			return;
-		for(Object s:source) {
-			Object t =  new Object();
-			copyProperties(s, t);
-			target.add(t);
-		}
-	}*/
-	
-	public static <T, E> void copyListProperties(List<T> source,List<E> target,Class<E> targetEleClass) {
+
+    /**
+     * 复制List对象,对源List中的对象依次执行copyProperties操作
+     *
+     * @param source 源List对象
+     * @param target 目标List对象
+     * @param targetEleClass List中对象的Class对象
+     */
+    public static <T, E> void copyListProperties(List<T> source,List<E> target,Class<E> targetEleClass) {
 		if(source == null || target == null)
 			return;
 		for(T s:source) {

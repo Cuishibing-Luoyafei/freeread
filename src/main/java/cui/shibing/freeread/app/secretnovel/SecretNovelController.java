@@ -1,5 +1,6 @@
 package cui.shibing.freeread.app.secretnovel;
 
+import cui.shibing.freeread.dto.JsonResponse;
 import cui.shibing.freeread.model.SecretNovel;
 import cui.shibing.freeread.service.SecretNovelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,43 +105,4 @@ public class SecretNovelController {
         }
         return false;
     }
-
-    public static class JsonResponse {
-        private boolean isSuccess;
-        private String message;
-        private Object data;
-
-        public JsonResponse() {
-        }
-
-        public JsonResponse(boolean isSuccess, String message) {
-            this.isSuccess = isSuccess;
-            this.message = message;
-        }
-
-        public boolean getIsSuccess() {
-            return isSuccess;
-        }
-
-        public void setIsSuccess(boolean isSuccess) {
-            this.isSuccess = isSuccess;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public Object getData() {
-            return data;
-        }
-
-        public void setData(Object data) {
-            this.data = data;
-        }
-    }
-
 }
