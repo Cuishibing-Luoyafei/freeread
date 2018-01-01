@@ -26,14 +26,6 @@
 	</mvc:annotation-driven>
 
 	<context:component-scan base-package="cui.shibing.freeread.app" />
-
-	<!-- <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" >
-        <property name="definitions">
-            <list>
-                <value>/WEB-INF/tiles/tiles-definitions.xml</value>
-            </list>
-        </property>
-    </bean> -->
 	
 	<mvc:default-servlet-handler />
 	
