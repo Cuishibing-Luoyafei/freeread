@@ -8,7 +8,7 @@
 			<span class="col-md-4 col-sm-6">
 				<label style="min-width: 190px">
 					<small>
-						<a  href="${pageContext.request.contextPath }/novelChapter?novelId=${novelContent.novelId}&chapterIndex=${novelContent.novelChapterIndex}">${novelContent.novelChapterName }</a>
+						<a href="${pageContext.request.contextPath }/novelChapter/novelChapter?novelId=${novelContent.novelId}&chapterIndex=${novelContent.novelChapterIndex}">${novelContent.novelChapterName }</a>
 					</small>
 				</label>
 			</span>
@@ -47,14 +47,16 @@
 					</c:when>
 					<c:otherwise>
 						<li><a
-								href="novelChapterList?novelId=${pageNovelContents.getContent().get(0).novelId }&page=${index.index }&size=${pageNovelContents.getSize()}">${index.index + 1}</a></li>
+                                href="${pageContext.request.contextPath}/novelChapter/novelChapterList?novelId=${pageNovelContents.getContent().get(0).novelId }&page=${index.index }&size=${pageNovelContents.getSize()}">${index.index + 1}</a>
+                        </li>
 					</c:otherwise>
 				</c:choose>
 
 			</c:forEach>
 			<c:if test="${pageNovelContents.hasNext() }">
 				<li><a
-						href="novelChapterList?novelId=${pageNovelContents.getContent().get(0).novelId }&page=${pageNovelContents.getNumber()+1 }&size=${pageNovelContents.getSize()}">&raquo;</a></li>
+                        href="${pageContext.request.contextPath}/novelChapter/novelChapterList?novelId=${pageNovelContents.getContent().get(0).novelId }&page=${pageNovelContents.getNumber()+1 }&size=${pageNovelContents.getSize()}">&raquo;</a>
+                </li>
 			</c:if>
 		</c:if>
 	</ul>

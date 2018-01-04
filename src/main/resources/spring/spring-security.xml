@@ -10,14 +10,15 @@
     <http use-expressions="true"  auto-config="false">
         <csrf disabled="true"/>
 
-        <form-login login-page="/loginPage" default-target-url="/"
+        <form-login login-page="/user/loginPage"
+                    default-target-url="/novelHead/"
                     login-processing-url="/login"/>
 
         <intercept-url pattern="/resources/**" access="permitAll()"/>
-        <intercept-url pattern="/loginPage" access="permitAll()"/>
+        <intercept-url pattern="/user/loginPage" access="permitAll()"/>
         <intercept-url pattern="/user/loginFailPage" access="permitAll()"/>
-        <intercept-url pattern="/registerUserPage" access="permitAll()"/>
-        <intercept-url pattern="/registerUser" access="permitAll()"/>
+        <intercept-url pattern="/user/registerUserPage" access="permitAll()"/>
+        <intercept-url pattern="/user/registerUser" access="permitAll()"/>
 
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 

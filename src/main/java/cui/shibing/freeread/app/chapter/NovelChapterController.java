@@ -1,5 +1,6 @@
 package cui.shibing.freeread.app.chapter;
 
+import cui.shibing.freeread.common.Constant;
 import cui.shibing.freeread.dto.NovelChapterInfoDto;
 import cui.shibing.freeread.model.NovelChapter;
 import cui.shibing.freeread.service.NovelChapterService;
@@ -24,15 +25,15 @@ public class NovelChapterController {
     /**
      * 小说章节内容页面
      */
-    private static final String NOVEL_CHAPTER_PAGE = "main/novel_chapter_content";
+    private static final String NOVEL_CHAPTER_PAGE = "main/novel_chapter_content" + Constant.NO_LEFT_LAYOUT;
     /**
      * 小说章节内容不存在页面
      */
-    private static final String NO_CHAPTER_PAGE = "main/no_chapter";
+    private static final String NO_CHAPTER_PAGE = "main/no_chapter" + Constant.NO_LEFT_LAYOUT;
     /**
      * 小说章节列表页面
      */
-    private static final String NOVEL_CHAPTERLIST_PAGE = "main/chapter_list";
+    private static final String NOVEL_CHAPTERLIST_PAGE = "main/chapter_list" + Constant.NO_LEFT_LAYOUT;
 
     @Autowired
     private NovelChapterService chapterService;
@@ -57,6 +58,9 @@ public class NovelChapterController {
         return NO_CHAPTER_PAGE;
     }
 
+    /**
+     * 小说章节列表
+     **/
     @RequestMapping("novelChapterList")
     public String novelChapterList(Model model, @RequestParam("novelId") String novelId,
                                    @PageableDefault(value = 50) Pageable pageable) {

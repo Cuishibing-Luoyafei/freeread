@@ -6,7 +6,7 @@
 	<display-name>Archetype Created Web Application</display-name>
 
     <welcome-file-list>
-        <welcome-file>/freeread</welcome-file>
+        <welcome-file>/freeread/novelHead</welcome-file>
     </welcome-file-list>
 
 	<context-param>

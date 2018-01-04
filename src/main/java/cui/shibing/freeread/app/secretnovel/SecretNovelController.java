@@ -1,5 +1,6 @@
 package cui.shibing.freeread.app.secretnovel;
 
+import cui.shibing.freeread.common.Constant;
 import cui.shibing.freeread.dto.JsonResponse;
 import cui.shibing.freeread.model.SecretNovel;
 import cui.shibing.freeread.service.SecretNovelService;
@@ -27,7 +28,7 @@ public class SecretNovelController {
     @Autowired
     private SecretNovelService secretNovelService;
 
-    private static final String SECRET_NOVELS_PAGE = "main/secretnovel/list_secret_novel";
+    private static final String SECRET_NOVELS_PAGE = "main/secretnovel/list_secret_novel" + Constant.NO_LEFT_LAYOUT;
 
     /**
      * 用于异步添加收藏
@@ -54,10 +55,13 @@ public class SecretNovelController {
         return response;
     }
 
-    private static final String OPERATION_RESULT_PAGE = "main/operation_result";
+    private static final String OPERATION_RESULT_PAGE = "main/operation_result" + Constant.NO_LEFT_LAYOUT;
 
+    /**
+     * 添加一本书到我的书架
+     */
     @RequestMapping("addSecretNovel")
-    public String addSecretNovel(Model model,@RequestParam("novelId") String novelId, Authentication authentication){
+    public String addSecretNovel(Model model, @RequestParam("novelId") String novelId, Authentication authentication){
         JsonResponse response = addSecretNovel(novelId,authentication);
         model.addAttribute("response",response);
         return OPERATION_RESULT_PAGE;
@@ -80,6 +84,9 @@ public class SecretNovelController {
         return response;
     }
 
+    /**
+     * 从书架中删除一本小说
+     */
     @RequestMapping("removeSecretNovel")
     public String removelSecretNovel(Model model, @RequestParam("novelId") String novelId, Authentication authentication) {
         JsonResponse response = removeSecretNovel(novelId, authentication);

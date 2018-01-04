@@ -10,7 +10,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class JavaMailHelper {
-    private static final String EMAIL_NAME = "shibing.cui@wooread.com";
+    private static final String EMAIL_NAME = "wooread_email_code@wooread.com";
 
     private static final String EMAIL_PASS = "MyPassword3+";
 

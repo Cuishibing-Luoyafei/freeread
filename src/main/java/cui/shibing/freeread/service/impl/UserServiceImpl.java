@@ -2,6 +2,7 @@ package cui.shibing.freeread.service.impl;
 
 import cui.shibing.freeread.dao.UserDao;
 import cui.shibing.freeread.model.User;
+import cui.shibing.freeread.model.UserInfo;
 import cui.shibing.freeread.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByName(String userName) {
-        if(!StringUtils.isEmpty(userName)){
+        if (!StringUtils.isEmpty(userName)) {
             return userDao.selectByUserName(userName);
         }
         return null;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int deleteUserByName(String userName) {
-        if(!StringUtils.isEmpty(userName)){
+        if (!StringUtils.isEmpty(userName)) {
             return userDao.deleteUserByName(userName);
         }
         return 0;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int updateUserByName(User user) {
-        if(user != null && !StringUtils.isEmpty(user.getUserName())){
+        if (user != null && !StringUtils.isEmpty(user.getUserName())) {
             return userDao.updateUser(user);
         }
         return 0;
@@ -56,5 +57,30 @@ public class UserServiceImpl implements UserService {
         user.setUserPass(BCrypt.hashpw(password, BCrypt.gensalt()));
         user.setUserRole(UserService.DEFAULT_ROLE);
         return userDao.insertUser(user) == 1;
+    }
+
+    @Override
+    public UserInfo getUserInfo(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return null;
+        }
+        return userDao.selectUserInfoByUserName(userName);
+    }
+
+    @Override
+    public boolean updateUserInfo(String userName, UserInfo userInfo) {
+        if (StringUtils.isEmpty(userName) || userInfo == null || StringUtils.isEmpty(userInfo.getUserInfoId()))
+            return false;
+
+        return userDao.updateUserInfo(userInfo) == 1;
+
+    }
+
+    @Override
+    public boolean insertUserInfo(UserInfo userInfo) {
+        if (userInfo == null) {
+            return false;
+        }
+        return userDao.insertUserInfo(userInfo) == 1;
     }
 }

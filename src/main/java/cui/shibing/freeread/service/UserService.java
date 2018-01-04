@@ -1,6 +1,7 @@
 package cui.shibing.freeread.service;
 
 import cui.shibing.freeread.model.User;
+import cui.shibing.freeread.model.UserInfo;
 
 public interface UserService {
     /**
@@ -31,6 +32,34 @@ public interface UserService {
      * @param password 用户密码
      */
     boolean registerUser(String userName, String password);
+
+    /**
+     * 获取用户的个人信息
+     *
+     * @param userName 用户名
+     *
+     * @return 用户个人信息
+     */
+    UserInfo getUserInfo(String userName);
+
+    /**
+     * 更新用户个人信息
+     *
+     * @param userName 用户名
+     * @param userInfo 用户信息
+     *
+     * @return 是否成功
+     */
+    boolean updateUserInfo(String userName, UserInfo userInfo);
+
+    /**
+     * 插入用户个人信息
+     *
+     * @param userInfo 用户信息
+     *
+     * @return 是否成功
+     */
+    boolean insertUserInfo(UserInfo userInfo);
 
     /**
      * 普通用户权限

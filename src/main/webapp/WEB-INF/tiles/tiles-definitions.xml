@@ -14,13 +14,13 @@
         <put-attribute name="header" value="/navigation/navigationBar"/>
 		<put-attribute name="footer" value= "/WEB-INF/views/footer/footer.jsp"/>
 	</definition>
-	
-	<definition name = "*/*.base_layout" extends = "base_layout">
-		<put-attribute name="main" value= "/{1}/{2}"/>
+
+	<definition name="*/**.base_layout" extends="base_layout">
+		<put-attribute name="main" value="/WEB-INF/views/{1}/{2}.jsp"/>
 	</definition>
-	
-	<definition name="*/*.no_left_layout" extends="no_left_layout">
-		<put-attribute name="main" value="/{1}/{2}"/>
+
+	<definition name="*/**.no_left_layout" extends="no_left_layout">
+		<put-attribute name="main" value="/WEB-INF/views/{1}/{2}.jsp"/>
 	</definition>
 	
 </tiles-definitions>

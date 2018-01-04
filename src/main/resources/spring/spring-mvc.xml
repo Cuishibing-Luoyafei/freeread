@@ -17,8 +17,8 @@
 	<mvc:tiles-configurer>
 		<mvc:definitions location="/WEB-INF/tiles/tiles-definitions.xml" />
 	</mvc:tiles-configurer>
-	
-	<mvc:annotation-driven>
+
+    <mvc:annotation-driven validator="validator">
 		<mvc:argument-resolvers>
             <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
             <bean class="org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver"/>
@@ -30,8 +30,8 @@
 	<mvc:default-servlet-handler />
 	
 	<mvc:resources mapping="/resources/**"
-        location="/WEB-INF/resources/"
-        cache-period="#{0}" />
+                   location="/WEB-INF/resources"
+                   cache-period="#{0}" />
 	
 	<!-- 配置视图解析器 -->
 	<bean id="tilesViewResolver"
@@ -44,5 +44,22 @@
 		<mvc:jsp prefix="/WEB-INF/views/" />
 		<mvc:jsp suffix=".jsp" />
 	</mvc:view-resolvers>
+
+    <bean id="validator"
+          class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass"
+                  value="org.hibernate.validator.HibernateValidator"/>
+        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename"
+                  value="classpath:validate-message.properties"/>
+        <property name="fileEncodings" value="utf-8"/>
+        <property name="cacheSeconds" value="120"/>
+    </bean>
+
 
 </beans>

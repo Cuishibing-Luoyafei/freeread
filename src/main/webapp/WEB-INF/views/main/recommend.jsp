@@ -13,8 +13,8 @@
 							 width="150" height="200">
 					</div>
 					<div>
-						<label style="width: 150"><small><a
-								href="${pageContext.request.contextPath }/novelDetails?novelId=${novel.novelId }">${novel.novelName }</a>
+						<label style="width: 150px"><small><a
+                                href="${pageContext.request.contextPath }/novelHead/novelDetails?novelId=${novel.novelId }">${novel.novelName }</a>
 						</small>
 						</label>
 					</div>
@@ -31,7 +31,7 @@
 		<c:if test="${pageRecommendNovels.hasContent() == true }">
 			<c:if test="${pageRecommendNovels.hasPrevious()}">
 				<li><a
-						href="${pageContext.request.contextPath }/recommend?page=${pageRecommendNovels.getNumber()-1 }&size=${pageRecommendNovels.getSize()}&className=${className}">&laquo;</a>
+                        href="${pageContext.request.contextPath }/novelHead/recommend?page=${pageRecommendNovels.getNumber()-1 }&size=${pageRecommendNovels.getSize()}&className=${className}">&laquo;</a>
 				</li>
 			</c:if>
 			<c:set var="startIndex" value="0" />
@@ -54,7 +54,7 @@
 					</c:when>
 					<c:otherwise>
 						<li><a
-								href="${pageContext.request.contextPath }/recommend?page=${index.index }&size=${pageRecommendNovels.getSize()}&className=${className}">${index.index + 1}</a>
+                                href="${pageContext.request.contextPath }/novelHead/recommend?page=${index.index }&size=${pageRecommendNovels.getSize()}&className=${className}">${index.index + 1}</a>
 						</li>
 					</c:otherwise>
 				</c:choose>
@@ -62,7 +62,7 @@
 			</c:forEach>
 			<c:if test="${pageRecommendNovels.hasNext() }">
 				<li><a
-						href="${pageContext.request.contextPath }/recommend?page=${pageRecommendNovels.getNumber()+1 }&size=${pageRecommendNovels.getSize()}&className=${className}">&raquo;</a>
+                        href="${pageContext.request.contextPath }/novelHead/recommend?page=${pageRecommendNovels.getNumber()+1 }&size=${pageRecommendNovels.getSize()}&className=${className}">&raquo;</a>
 				</li>
 			</c:if>
 		</c:if>

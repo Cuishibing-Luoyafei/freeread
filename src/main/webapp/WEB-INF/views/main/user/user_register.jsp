@@ -5,7 +5,7 @@
         </h3>
     </div>
     <div class="panel-body">
-        <form action="${pageContext.request.contextPath}/registerUser"
+        <form action="${pageContext.request.contextPath}/user/registerUser"
               method="post" class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2"

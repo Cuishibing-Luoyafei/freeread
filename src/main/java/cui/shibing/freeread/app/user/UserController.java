@@ -1,33 +1,44 @@
 package cui.shibing.freeread.app.user;
 
+import cui.shibing.freeread.common.Constant;
 import cui.shibing.freeread.dto.JsonResponse;
+import cui.shibing.freeread.model.User;
+import cui.shibing.freeread.model.UserInfo;
 import cui.shibing.freeread.service.UserService;
 import cui.shibing.freeread.tools.JavaMailHelper;
+import cui.shibing.freeread.tools.MyBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
+import java.util.UUID;
+
+import static cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilter.getUserNameFromAuthentication;
 
 @Controller
 @RequestMapping("user")
+@SessionAttributes("emailCode")
 public class UserController {
 
-    private static final String LOGIN_FAIL_PAGE = "main/loginFail";
+    private static final String LOGIN_FAIL_PAGE = "main/login_fail" + Constant.NO_LEFT_LAYOUT;
 
-    private static final String LOGIN_PAGE = "main/login";
+    private static final String LOGIN_PAGE = "main/login" + Constant.NO_LEFT_LAYOUT;
 
-    private static final String USER_CENTER_PAGE = "main/user/user_center";
+    private static final String USER_CENTER_PAGE = "main/user/user_center" + Constant.NO_LEFT_LAYOUT;
 
-    private static final String USER_REGISTER_PAGE = "main/user/user_register";
+    private static final String USER_REGISTER_PAGE = "main/user/user_register" + Constant.NO_LEFT_LAYOUT;
 
-    private static final String USER_REGISTER_FAIL_PAGE = "main/user/user_register_fail";
+    private static final String USER_REGISTER_FAIL_PAGE = "main/user/user_register_fail" + Constant.NO_LEFT_LAYOUT;
 
-    private static final String USER_REGISTER_SUCCESS_PAGE = "main/user/user_register_success";
+    private static final String USER_REGISTER_SUCCESS_PAGE = "main/user/user_register_success" + Constant.NO_LEFT_LAYOUT;
 
+    private static final String USER_INFO_PAGE = "main/user/user_info" + Constant.NO_LEFT_LAYOUT;
 
     @Autowired
     private UserService userService;
@@ -78,14 +89,23 @@ public class UserController {
         return page;
     }
 
+    /**
+     * 发送邮箱验证码(Ajax方式)
+     *
+     * @param userEmail 用户提供的邮箱
+     *
+     * @return json数据响应
+     */
     @RequestMapping("sendEmailCode")
     @ResponseBody
-    public JsonResponse sendEmailCode(@RequestParam("userEmail") String userEmail) {
+    public JsonResponse sendEmailCode(Model model, @RequestParam("userEmail") String userEmail) {
         JsonResponse jsonResponse = new JsonResponse(false, "");
         boolean checkResult = checkEmail(userEmail);
         if (checkResult) {
-            boolean sendSuccess = sendEmailCodeEmail(randomEmailCode(), userEmail);
+            String emailCode = randomEmailCode();
+            boolean sendSuccess = sendEmailCodeEmail(emailCode, userEmail);
             if (sendSuccess) {
+                model.addAttribute("emailCode", emailCode);
                 jsonResponse.setIsSuccess(true);
                 jsonResponse.setMessage("发送成功");
             } else {
@@ -99,6 +119,53 @@ public class UserController {
         return jsonResponse;
     }
 
+    @RequestMapping("userInfo")
+    public String userInfo(Model model, Authentication authentication, @ModelAttribute("userControllerFrom") UserControllerFrom form) {
+        String userName = getUserNameFromAuthentication(authentication);
+        UserInfo userInfo = userService.getUserInfo(userName);
+        form.setUserName(userName);
+        MyBeanUtils.copyProperties(userInfo, form);
+        return USER_INFO_PAGE;
+    }
+
+    @ModelAttribute("userControllerFrom")
+    public UserControllerFrom setUpForm() {
+        return new UserControllerFrom();
+    }
+
+    @RequestMapping("updateUserInfo")
+    public String updateUserInfo(Model model, Authentication authentication,
+                                 @Validated @ModelAttribute("userControllerFrom") UserControllerFrom from,
+                                 BindingResult bindingResult,
+                                 @SessionAttribute(value = "emailCode", required = false) String emailCode) {
+        if (bindingResult.hasErrors()) {
+            from.setEmailCodeError(false);
+            return USER_INFO_PAGE;
+        }
+        if (StringUtils.isEmpty(emailCode) || !emailCode.equals(from.getUserEmailCode())) {
+            from.setEmailCodeError(true);
+            return USER_INFO_PAGE;
+        } else {
+            from.setEmailCodeError(false);
+        }
+
+        String userName = getUserNameFromAuthentication(authentication);
+        UserInfo oldUserInfo = userService.getUserInfo(userName);
+        if (oldUserInfo == null) {
+            oldUserInfo = new UserInfo();
+            oldUserInfo.setUserInfoId(UUID.randomUUID().toString());
+            oldUserInfo.setUserEmail(from.getUserEmail());
+            userService.insertUserInfo(oldUserInfo);
+            User u = userService.getUserByName(userName);
+            u.setUserInfoId(oldUserInfo.getUserInfoId());
+            userService.updateUserByName(u);
+        } else {
+            oldUserInfo.setUserEmail(from.getUserEmail());
+            userService.updateUserInfo(userName, oldUserInfo);
+        }
+        return USER_INFO_PAGE;
+    }
+
     private boolean sendEmailCodeEmail(String randoCode, String userEmail) {
         String emailTitle = "WOOREAD验证码";
         String emailContent = "WOOREAD验证码：<h1><strong>" + randoCode + "</strong></h1>";
@@ -106,10 +173,7 @@ public class UserController {
     }
 
     private boolean checkEmail(String userEmail) {
-        if (StringUtils.isEmpty(userEmail)) {
-            return false;
-        }
-        return userEmail.matches("\\w+@\\w+(\\.\\w+)+");
+        return !StringUtils.isEmpty(userEmail) && userEmail.matches("\\w+@\\w+(\\.\\w+)+");
     }
 
     /**

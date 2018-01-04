@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertTrue;
 
 public class UserDaoTest extends CustomDaoTest{
     @Autowired
@@ -65,5 +65,10 @@ public class UserDaoTest extends CustomDaoTest{
         assertTrue(userDao.updateUser(user) == 1);
         User selectedUser = userDao.selectByUserName(userName);
         assertTrue(selectedUser.getUserPass().equals(updatedPass));
+    }
+
+    @Test
+    public void testSelectUserInfoByUserName() {
+
     }
 }

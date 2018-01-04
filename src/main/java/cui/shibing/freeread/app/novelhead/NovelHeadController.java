@@ -1,5 +1,6 @@
 package cui.shibing.freeread.app.novelhead;
 
+import cui.shibing.freeread.common.Constant;
 import cui.shibing.freeread.model.NovelHead;
 import cui.shibing.freeread.service.NovelHeadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ public class NovelHeadController {
     /**
      * 小说推荐页面
      */
-    private static final String RECOMMEND_PAGE = "main/recommend";
+    private static final String RECOMMEND_PAGE = "main/recommend" + Constant.BASE_LAYOUT;
     /**
      * 小说详情页面
      */
-    private static final String NOVEL_DETAILS_PAGE = "main/novel_detail";
+    private static final String NOVEL_DETAILS_PAGE = "main/novel_detail" + Constant.BASE_LAYOUT;
     /**
      * 小说排行榜页面
      */
@@ -31,12 +32,15 @@ public class NovelHeadController {
     /**
      * 小说搜索页面
      * */
-    private static final String NOVEL_SEARCH_RESULT_PAGE = "main/novelhead/novel_search_result";
+    private static final String NOVEL_SEARCH_RESULT_PAGE = "main/novelhead/novel_search_result" + Constant.BASE_LAYOUT;
 
     @Autowired
     private NovelHeadService novelHeadService;
 
-    @RequestMapping("recommend")
+    /**
+     * 首页（推荐）
+     **/
+    @RequestMapping(value = {"recommend", "/"})
     public String recommend(Model model, @PageableDefault(value = 12) Pageable pageable,
                             @RequestParam(value = "className", required = false) String className) {
         Page<NovelHead> recommendNovels;
@@ -50,6 +54,9 @@ public class NovelHeadController {
         return RECOMMEND_PAGE;
     }
 
+    /**
+     * 小说详情
+     **/
     @RequestMapping("novelDetails")
     public String novelDetails(Model model, @RequestParam("novelId") String novelId) {
         if (!StringUtils.isEmpty(novelId)) {

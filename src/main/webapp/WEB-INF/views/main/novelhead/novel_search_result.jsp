@@ -14,7 +14,7 @@
 					</div>
 					<div>
 						<label style="width: 150px"><small><a
-                                href="${pageContext.request.contextPath }/novelDetails?novelId=${novel.novelId }">${novel.novelName }</a>
+                                href="${pageContext.request.contextPath }/novelHead/novelDetails?novelId=${novel.novelId }">${novel.novelName }</a>
 						</small>
 						</label>
 					</div>
@@ -34,7 +34,7 @@
         <c:if test="${searchResult.hasContent() == true }">
             <c:if test="${searchResult.hasPrevious()}">
                 <li><a
-                        href="${pageContext.request.contextPath }/recommend?page=${searchResult.getNumber()-1 }&size=${searchResult.getSize()}&className=${className}">&laquo;</a>
+                        href="${pageContext.request.contextPath }/novelHead/recommend?page=${searchResult.getNumber()-1 }&size=${searchResult.getSize()}&className=${className}">&laquo;</a>
                 </li>
             </c:if>
             <c:set var="startIndex" value="0"/>
@@ -57,7 +57,7 @@
                     </c:when>
                     <c:otherwise>
                         <li><a
-                                href="${pageContext.request.contextPath }/recommend?page=${index.index }&size=${searchResult.getSize()}&className=${className}">${index.index + 1}</a>
+                                href="${pageContext.request.contextPath }/novelHead/recommend?page=${index.index }&size=${searchResult.getSize()}&className=${className}">${index.index + 1}</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -65,7 +65,7 @@
             </c:forEach>
             <c:if test="${searchResult.hasNext() }">
                 <li><a
-                        href="${pageContext.request.contextPath }/recommend?page=${searchResult.getNumber()+1 }&size=${searchResult.getSize()}&className=${className}">&raquo;</a>
+                        href="${pageContext.request.contextPath }/novelHead/recommend?page=${searchResult.getNumber()+1 }&size=${searchResult.getSize()}&className=${className}">&raquo;</a>
                 </li>
             </c:if>
         </c:if>
