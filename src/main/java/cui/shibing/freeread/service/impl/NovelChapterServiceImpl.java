@@ -24,20 +24,20 @@ import java.util.List;
 public class NovelChapterServiceImpl implements NovelChapterService {
 
     @Autowired
-    private NovelChapterDao novelContentDao;
+    private NovelChapterDao novelChapterDao;
 
     @Autowired
     private SecretNovelService secretNovelService;
 
+    /*@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+#novelId+'.'+#chapterIndex",unless = "#result != null")*/
     @Override
-    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+#novelId+'.'+#chapterIndex")
     public NovelChapter getChapterByNovelIdAndIndex(String novelId, Integer chapterIndex) {
         if (StringUtils.isEmpty(novelId) || chapterIndex == null)
             return null;
-        NovelChapter novelChapter = novelContentDao.selectNovelChapterByNovelIdAndChapterIndex(novelId, chapterIndex);
-        return novelChapter;
+        return novelChapterDao.selectNovelChapterByNovelIdAndChapterIndex(novelId, chapterIndex);
     }
 
+    /*@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+#novelId+'.'+#chapterIndex",unless = "#result != null")*/
     @Override
     public NovelChapter getChapterByNovelIdAndIndex(String novelId, Integer chapterIndex, String userName) {
         NovelChapter novelChapter = getChapterByNovelIdAndIndex(novelId, chapterIndex);
@@ -63,16 +63,16 @@ public class NovelChapterServiceImpl implements NovelChapterService {
             result = Collections.emptyList();
         else {
             count = searchNovelChapterCountByNovelId(novelId);
-            result = novelContentDao.selectNovelChapterByNovelId(novelId, pageable);
+            result = novelChapterDao.selectNovelChapterByNovelId(novelId, pageable);
         }
         return new PageImpl<NovelChapter>(result, pageable, count);
     }
 
-    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+#novelId")
+    /*@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+#novelId")*/
     @Override
     public long searchNovelChapterCountByNovelId(String novelId) {
         if (!StringUtils.isEmpty(novelId)) {
-            return novelContentDao.selectNovelChapterCountByNovelId(novelId);
+            return novelChapterDao.selectNovelChapterCountByNovelId(novelId);
         }
         return 0;
     }
@@ -86,7 +86,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
             result = Collections.emptyList();
         else {
             count = searchNovelChapterCountByNovelId(novelId);
-            result = novelContentDao.selectNovelChapterInfoByNovelId(novelId, pageable);
+            result = novelChapterDao.selectNovelChapterInfoByNovelId(novelId, pageable);
         }
         List<NovelChapterInfoDto> chapterInfos = new ArrayList<NovelChapterInfoDto>(result.size());
         MyBeanUtils.copyListProperties(result, chapterInfos, NovelChapterInfoDto.class);
@@ -98,7 +98,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     public boolean addNovelChapter(NovelChapter novelChapter) {
         if (novelChapter != null && !StringUtils.isEmpty(novelChapter.getNovelId()) &&
                 !StringUtils.isEmpty(novelChapter.getNovelChapterIndex())) {
-            return novelContentDao.insertNovelChapter(novelChapter) == 1;
+            return novelChapterDao.insertNovelChapter(novelChapter) == 1;
         }
         return false;
     }
@@ -107,9 +107,8 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     @Transactional
     public boolean removeNovelChapter(String novelId) {
         if (!StringUtils.isEmpty(novelId)) {
-            return novelContentDao.deleteNovelChapterByNovelId(novelId) > 0;
+            return novelChapterDao.deleteNovelChapterByNovelId(novelId) > 0;
         }
         return false;
     }
-
 }

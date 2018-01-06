@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author cui
  */
-public class UserControllerFrom {
+public class UserControllerForm {
 
     /**
      * 邮箱

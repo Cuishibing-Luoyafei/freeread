@@ -26,6 +26,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     private NovelChapterService novelChapterService;
 
     @Override
+    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+ #className+'.'+#pageable")
     public Page<NovelHead> searchByNovelClass(String className, Pageable pageable) {
         List<NovelHead> result = null;
         long count = 0;

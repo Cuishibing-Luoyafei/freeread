@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean updateUserInfo(String userName, UserInfo userInfo) {
         if (StringUtils.isEmpty(userName) || userInfo == null || StringUtils.isEmpty(userInfo.getUserInfoId()))
             return false;
@@ -79,6 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean insertUserInfo(UserInfo userInfo) {
         if (userInfo == null) {
             return false;
@@ -87,6 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean updateUserEmail(String userName, String email) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(email)) {
             return false;

@@ -103,6 +103,7 @@ public class SecretNovelServiceImpl implements SecretNovelService {
     }
 
     @Override
+    @Transactional
     public boolean updateLastReadIndex(String userName, String novelId, Integer chapter) {
         if (StringUtils.isEmpty(userName) ||
                 StringUtils.isEmpty(novelId)) {

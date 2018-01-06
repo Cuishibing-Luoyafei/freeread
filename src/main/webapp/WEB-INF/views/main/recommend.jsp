@@ -9,11 +9,12 @@
 
 					<div>
 						<img alt=""
-							 src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2559880466,1764208247&fm=58"
-							 width="150" height="200">
+							 src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515286698498&di=0dc59b4137ca5b4bf0123aab250136e8&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Da8db9b0f6c061d957d133f3c4ec426e7%2Fdcc451da81cb39dbb7278561d2160924ab183025.jpg"
+							 width="150px" height="200px">
+						<%--<label style="position: relative;bottom:100px">${novel.novelName}</label>--%>
 					</div>
 					<div>
-						<label style="width: 150px"><small><a
+						<label style="width: 150px;position: relative;bottom:100px"><small><a
                                 href="${pageContext.request.contextPath }/novelHead/novelDetails?novelId=${novel.novelId }">${novel.novelName }</a>
 						</small>
 						</label>

@@ -2,7 +2,6 @@ package cui.shibing.freeread.app.user;
 
 import cui.shibing.freeread.common.Constant;
 import cui.shibing.freeread.dto.JsonResponse;
-import cui.shibing.freeread.model.User;
 import cui.shibing.freeread.model.UserInfo;
 import cui.shibing.freeread.service.UserService;
 import cui.shibing.freeread.tools.JavaMailHelper;
@@ -15,9 +14,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Random;
-import java.util.UUID;
 
 import static cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilter.getUserNameFromAuthentication;
 import static cui.shibing.freeread.tools.JavaMailHelper.checkEmail;
@@ -118,37 +114,35 @@ public class UserController {
     }
 
     @RequestMapping("userInfo")
-    public String userInfo(Authentication authentication, @ModelAttribute("userControllerFrom") UserControllerFrom form) {
+    public String userInfo(Authentication authentication, @ModelAttribute("userControllerFrom") UserControllerForm form) {
         String userName = getUserNameFromAuthentication(authentication);
         UserInfo userInfo = userService.getUserInfo(userName);
         form.setUserName(userName);
-        MyBeanUtils.copyProperties(userInfo, form);
+        if (userInfo != null) {
+            MyBeanUtils.copyProperties(userInfo, form);
+        }
         return USER_INFO_PAGE;
     }
 
     @ModelAttribute("userControllerFrom")
-    public UserControllerFrom setUpForm() {
-        return new UserControllerFrom();
+    public UserControllerForm setUpForm() {
+        return new UserControllerForm();
     }
 
     @RequestMapping("updateUserInfo")
-    public String updateUserInfo(Model model, Authentication authentication,
-                                 @Validated @ModelAttribute("userControllerFrom") UserControllerFrom from,
+    public String updateUserInfo(Authentication authentication,
+                                 @Validated @ModelAttribute("userControllerFrom") UserControllerForm form,
                                  BindingResult bindingResult,
                                  @SessionAttribute(value = "emailCode", required = false) String emailCode) {
         if (bindingResult.hasErrors()) {
-            from.setEmailCodeError(false);//标识失败原因不是由于验证码的错误
             return USER_INFO_PAGE;
         }
-        if (StringUtils.isEmpty(emailCode) || !emailCode.equals(from.getUserEmailCode())) {
-            from.setEmailCodeError(true);//标识失败的原因是由于验证码的错误
+        if (StringUtils.isEmpty(emailCode) || !emailCode.equals(form.getUserEmailCode())) {
+            form.setEmailCodeError(true);//标识失败的原因是由于验证码的错误
             return USER_INFO_PAGE;
-        } else {
-            from.setEmailCodeError(false);
         }
-
         String userName = getUserNameFromAuthentication(authentication);
-        userService.updateUserEmail(userName, from.getUserEmail());
+        userService.updateUserEmail(userName, form.getUserEmail());
         return USER_INFO_PAGE;
     }
 
