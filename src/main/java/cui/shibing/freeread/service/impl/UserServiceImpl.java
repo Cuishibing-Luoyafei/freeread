@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -82,5 +84,25 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return userDao.insertUserInfo(userInfo) == 1;
+    }
+
+    @Override
+    public boolean updateUserEmail(String userName, String email) {
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(email)) {
+            return false;
+        }
+        UserInfo userInfo = userDao.selectUserInfoByUserName(userName);
+        if (userInfo == null) {
+            userInfo = new UserInfo();
+            String userInfoId = UUID.randomUUID().toString().replaceAll("-", "");
+            userInfo.setUserInfoId(userInfoId);
+            userInfo.setUserEmail(email);
+            User currentUser = userDao.selectByUserName(userName);
+            currentUser.setUserInfoId(userInfoId);
+            return userDao.insertUserInfo(userInfo) == 1 && userDao.updateUser(currentUser) == 1;
+        } else {
+            userInfo.setUserEmail(email);
+            return userDao.updateUserInfo(userInfo) == 1;
+        }
     }
 }

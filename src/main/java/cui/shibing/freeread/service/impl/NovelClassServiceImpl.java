@@ -12,13 +12,13 @@ import java.util.List;
 @Service
 public class NovelClassServiceImpl implements NovelClassService {
 
-	@Autowired
-	private NovelClassDao novelClassDao;
-	
-	@Override
-	@Cacheable(value="default",cacheManager="cacheManager",key="#root.targetClass+'.'+#root.methodName")
-	public List<NovelClass> getAllNovelClasses() {
-		List<NovelClass> classes = novelClassDao.selectAllClass();
-		return classes;
-	}
+    @Autowired
+    private NovelClassDao novelClassDao;
+
+    @Override
+    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName")
+    public List<NovelClass> getAllNovelClasses() {
+        List<NovelClass> classes = novelClassDao.selectAllClass();
+        return classes;
+    }
 }

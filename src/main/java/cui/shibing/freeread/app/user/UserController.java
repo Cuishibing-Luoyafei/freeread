@@ -20,6 +20,8 @@ import java.util.Random;
 import java.util.UUID;
 
 import static cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilter.getUserNameFromAuthentication;
+import static cui.shibing.freeread.tools.JavaMailHelper.checkEmail;
+import static cui.shibing.freeread.tools.JavaMailHelper.randomEmailCode;
 
 @Controller
 @RequestMapping("user")
@@ -82,18 +84,14 @@ public class UserController {
     public String registerUser(@RequestParam("userName") String userName,
                                @RequestParam("userPass") String userPass) {
         boolean isSuccess = userService.registerUser(userName, userPass);
-        String page = USER_REGISTER_FAIL_PAGE;
-        if (isSuccess) {
-            page = USER_REGISTER_SUCCESS_PAGE;
-        }
-        return page;
+
+        return isSuccess ? USER_REGISTER_SUCCESS_PAGE : USER_REGISTER_FAIL_PAGE;
     }
 
     /**
      * 发送邮箱验证码(Ajax方式)
      *
      * @param userEmail 用户提供的邮箱
-     *
      * @return json数据响应
      */
     @RequestMapping("sendEmailCode")
@@ -120,7 +118,7 @@ public class UserController {
     }
 
     @RequestMapping("userInfo")
-    public String userInfo(Model model, Authentication authentication, @ModelAttribute("userControllerFrom") UserControllerFrom form) {
+    public String userInfo(Authentication authentication, @ModelAttribute("userControllerFrom") UserControllerFrom form) {
         String userName = getUserNameFromAuthentication(authentication);
         UserInfo userInfo = userService.getUserInfo(userName);
         form.setUserName(userName);
@@ -139,59 +137,25 @@ public class UserController {
                                  BindingResult bindingResult,
                                  @SessionAttribute(value = "emailCode", required = false) String emailCode) {
         if (bindingResult.hasErrors()) {
-            from.setEmailCodeError(false);
+            from.setEmailCodeError(false);//标识失败原因不是由于验证码的错误
             return USER_INFO_PAGE;
         }
         if (StringUtils.isEmpty(emailCode) || !emailCode.equals(from.getUserEmailCode())) {
-            from.setEmailCodeError(true);
+            from.setEmailCodeError(true);//标识失败的原因是由于验证码的错误
             return USER_INFO_PAGE;
         } else {
             from.setEmailCodeError(false);
         }
 
         String userName = getUserNameFromAuthentication(authentication);
-        UserInfo oldUserInfo = userService.getUserInfo(userName);
-        if (oldUserInfo == null) {
-            oldUserInfo = new UserInfo();
-            oldUserInfo.setUserInfoId(UUID.randomUUID().toString());
-            oldUserInfo.setUserEmail(from.getUserEmail());
-            userService.insertUserInfo(oldUserInfo);
-            User u = userService.getUserByName(userName);
-            u.setUserInfoId(oldUserInfo.getUserInfoId());
-            userService.updateUserByName(u);
-        } else {
-            oldUserInfo.setUserEmail(from.getUserEmail());
-            userService.updateUserInfo(userName, oldUserInfo);
-        }
+        userService.updateUserEmail(userName, from.getUserEmail());
         return USER_INFO_PAGE;
     }
 
-    private boolean sendEmailCodeEmail(String randoCode, String userEmail) {
+    private boolean sendEmailCodeEmail(String randomCode, String userEmail) {
         String emailTitle = "WOOREAD验证码";
-        String emailContent = "WOOREAD验证码：<h1><strong>" + randoCode + "</strong></h1>";
+        String emailContent = "WOOREAD验证码：<h1><strong>" + randomCode + "</strong></h1>";
         return JavaMailHelper.sendEmail(userEmail, emailTitle, emailContent);
-    }
-
-    private boolean checkEmail(String userEmail) {
-        return !StringUtils.isEmpty(userEmail) && userEmail.matches("\\w+@\\w+(\\.\\w+)+");
-    }
-
-    /**
-     * 生成随机的验证码
-     */
-    private String randomEmailCode() {
-        final int codeLength = 6;
-        char[] codeChars = new char[codeLength];
-        Random random = new Random();
-        for (int i = 0; i < codeLength; i++) {
-            boolean isUpperCase = random.nextBoolean();
-            if (isUpperCase) {
-                codeChars[i] = (char) ('A' + random.nextInt(26));
-            } else {
-                codeChars[i] = (char) ('a' + random.nextInt(26));
-            }
-        }
-        return String.valueOf(codeChars);
     }
 
 }

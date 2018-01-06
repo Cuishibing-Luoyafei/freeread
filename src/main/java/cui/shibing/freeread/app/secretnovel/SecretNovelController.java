@@ -25,45 +25,45 @@ import static cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilt
 @RequestMapping("secretNovel")
 public class SecretNovelController {
 
+    private static final String SECRET_NOVELS_PAGE = "main/secretnovel/list_secret_novel" + Constant.NO_LEFT_LAYOUT;
+
+    private static final String OPERATION_RESULT_PAGE = "main/operation_result" + Constant.NO_LEFT_LAYOUT;
+
     @Autowired
     private SecretNovelService secretNovelService;
 
-    private static final String SECRET_NOVELS_PAGE = "main/secretnovel/list_secret_novel" + Constant.NO_LEFT_LAYOUT;
-
     /**
      * 用于异步添加收藏
-     * */
+     */
     @RequestMapping("addSecretNovelAsyn")
     @ResponseBody
     public JsonResponse addSecretNovel(@RequestParam("novelId") String novelId, Authentication authentication) {
         /* TODO:提示信息相关不应该硬编码 */
         JsonResponse response = new JsonResponse(false, "error");
-        if (!StringUtils.isEmpty(novelId) && authentication != null) {
-            String userName = getUserNameFromAuthentication(authentication);
-            List<SecretNovel> novelList = secretNovelService.getSecretNovels(userName);
-            if (containSecretNovel(novelId, novelList)) {
-                //书架中已经存在了
+
+        String userName = getUserNameFromAuthentication(authentication);
+        List<SecretNovel> novelList = secretNovelService.getSecretNovels(userName);
+        if (containSecretNovel(novelId, novelList)) {
+            //书架中已经存在了
+            response.setIsSuccess(true);
+            response.setMessage("已经添加过了!");
+        } else {
+            if (secretNovelService.addSecretNovel(userName, novelId)) {
                 response.setIsSuccess(true);
-                response.setMessage("已经添加过了!");
-            } else {
-                if (secretNovelService.addSecretNovel(userName, novelId)) {
-                    response.setIsSuccess(true);
-                    response.setMessage("添加成功!");
-                }
+                response.setMessage("添加成功!");
             }
         }
+
         return response;
     }
-
-    private static final String OPERATION_RESULT_PAGE = "main/operation_result" + Constant.NO_LEFT_LAYOUT;
 
     /**
      * 添加一本书到我的书架
      */
     @RequestMapping("addSecretNovel")
-    public String addSecretNovel(Model model, @RequestParam("novelId") String novelId, Authentication authentication){
-        JsonResponse response = addSecretNovel(novelId,authentication);
-        model.addAttribute("response",response);
+    public String addSecretNovel(Model model, @RequestParam("novelId") String novelId, Authentication authentication) {
+        JsonResponse response = addSecretNovel(novelId, authentication);
+        model.addAttribute("response", response);
         return OPERATION_RESULT_PAGE;
     }
 
@@ -71,16 +71,16 @@ public class SecretNovelController {
     @ResponseBody
     public JsonResponse removeSecretNovel(@RequestParam("novelId") String novelId, Authentication authentication) {
         JsonResponse response = new JsonResponse(false, "error!");
-        if (!StringUtils.isEmpty(novelId) && authentication != null) {
-            String userName = getUserNameFromAuthentication(authentication);
-            boolean isSuccess = secretNovelService.removeSecretNovel(userName, novelId);
-            response.setIsSuccess(isSuccess);
-            if (isSuccess) {
-                response.setMessage("删除成功!");
-            } else {
-                response.setMessage("删除失败!");
-            }
+
+        String userName = getUserNameFromAuthentication(authentication);
+        boolean isSuccess = secretNovelService.removeSecretNovel(userName, novelId);
+        response.setIsSuccess(isSuccess);
+        if (isSuccess) {
+            response.setMessage("删除成功!");
+        } else {
+            response.setMessage("删除失败!");
         }
+
         return response;
     }
 
@@ -96,10 +96,10 @@ public class SecretNovelController {
 
     @RequestMapping("listSecretNovels")
     public String listSecretNovels(Model model, Authentication authentication) {
-        if (authentication != null) {
-            List<SecretNovel> secretNovels = secretNovelService.getSecretNovels(getUserNameFromAuthentication(authentication));
-            model.addAttribute("secretNovels", secretNovels);
-        }
+
+        List<SecretNovel> secretNovels = secretNovelService.getSecretNovels(getUserNameFromAuthentication(authentication));
+        model.addAttribute("secretNovels", secretNovels);
+
         return SECRET_NOVELS_PAGE;
     }
 

@@ -18,8 +18,8 @@ import static cui.shibing.freeread.datasource.DataSourceType.SLAVER;
  * 使用顺序的算法选择数据源
  * 例如,一个"slaver"名称对应了n个读数据源,在使用"slaver"这个key获取数据源的时候按照顺序返回n个数据源中的某一个.
  * 第一次获取时返回第k个,那么第二次返回第k+1个
- * */
-public class DynamicDataSource extends AbstractRoutingDataSource{
+ */
+public class DynamicDataSource extends AbstractRoutingDataSource {
 
     private int masterDataSourceNum = 0;//主数据源的数量
 
@@ -38,34 +38,34 @@ public class DynamicDataSource extends AbstractRoutingDataSource{
     /**
      * 该方法返回一个key,这个key用来索引数据源.
      * 关于读写分离的主从数据库,已经通过配置文件配置完成,这个方法只是提供key去寻找相应的数据源
-     * */
+     */
     @Override
     protected Object determineCurrentLookupKey() {
-        if(masterDataSourceNum ==0 || slaverDataSourceNum == 0){
+        if (masterDataSourceNum == 0 || slaverDataSourceNum == 0) {
             throw new IllegalArgumentException("masterDataSourceNum or slaverDataSourceNum == 0");
         }
         DataSourceType dataSourceType = DynamicDataSourceTypeHolder.getDatasourceType();
 
         //这是一个主数据源
-        if(dataSourceType == MASTER){
-            return processLookupKey(MASTER,masterDataSourceIndex,masterDataSourceNum);
-        }else{//这是一个从数据源
-            return processLookupKey(SLAVER,slaverDataSourceIndex,slaverDataSourceNum);
+        if (dataSourceType == MASTER) {
+            return processLookupKey(MASTER, masterDataSourceIndex, masterDataSourceNum);
+        } else {//这是一个从数据源
+            return processLookupKey(SLAVER, slaverDataSourceIndex, slaverDataSourceNum);
         }
     }
 
     private static final String DIVISION = "_";
 
     /**
-     *  按顺序取数据源
-     * */
-    private String processLookupKey(DataSourceType dataSourceType,AtomicInteger dataSourceIndex,int dataSouceNum){
-        if(dataSourceIndex.get() < dataSouceNum){
+     * 按顺序取数据源
+     */
+    private String processLookupKey(DataSourceType dataSourceType, AtomicInteger dataSourceIndex, int dataSouceNum) {
+        if (dataSourceIndex.get() < dataSouceNum) {
             int temp = dataSourceIndex.getAndAdd(1);
-            if(dataSourceIndex.get() >= dataSouceNum){
+            if (dataSourceIndex.get() >= dataSouceNum) {
                 dataSourceIndex.set(0);
             }
-            return dataSourceType+DIVISION+temp;
+            return dataSourceType + DIVISION + temp;
         }
         return null;
     }
@@ -83,77 +83,77 @@ public class DynamicDataSource extends AbstractRoutingDataSource{
 
     /**
      * 数据源的属性,还没有完善
-     * */
+     */
     private String dataSourceDriver;
     private String dataSourceUserName;
     private String dataSourcePassword;
     private Integer dataSourceInitialSize;
     private Integer dataSourceMaxActive = -1;
     private Integer dataSourceMaxIdle = -1;
-    private Integer dataSourceMinIdle =-1;
-    private Integer dataSourceMaxWait =-1;
+    private Integer dataSourceMinIdle = -1;
+    private Integer dataSourceMaxWait = -1;
 
     private void resolveDataSources() throws UnsupportedDataTypeException, InstantiationException, IllegalAccessException {
-        if(masterSourcePositions == null || slaverSourcePositions ==null || dataSourceClass ==null){
+        if (masterSourcePositions == null || slaverSourcePositions == null || dataSourceClass == null) {
             throw new NullPointerException("ha ha ha");
         }
         //暂时只支持org.apache.commons.dbcp.BasicDataSource
-        if(!BasicDataSource.class.isAssignableFrom(dataSourceClass)){
+        if (!BasicDataSource.class.isAssignableFrom(dataSourceClass)) {
             throw new UnsupportedDataTypeException();
         }
         masterDataSourceNum = masterSourcePositions.size();
         slaverDataSourceNum = slaverSourcePositions.size();
-        Map<Object,Object> targetDataSources = new HashMap<>(masterDataSourceNum+slaverDataSourceNum);
+        Map<Object, Object> targetDataSources = new HashMap<>(masterDataSourceNum + slaverDataSourceNum);
         resolveMasterDataSources(targetDataSources);
         this.setTargetDataSources(targetDataSources);
     }
 
-    private void resolveMasterDataSources(final Map<Object,Object> targetDataSources) throws IllegalAccessException, InstantiationException {
-        for(int i=0;i<masterSourcePositions.size();i++){
+    private void resolveMasterDataSources(final Map<Object, Object> targetDataSources) throws IllegalAccessException, InstantiationException {
+        for (int i = 0; i < masterSourcePositions.size(); i++) {
             String dataSourcePosition = masterSourcePositions.get(i);
             DataSource dataSource = getDataSource(dataSourcePosition);
-            targetDataSources.put(MASTER+DIVISION+i,dataSource);
+            targetDataSources.put(MASTER + DIVISION + i, dataSource);
         }
-        for(int i=0;i<slaverSourcePositions.size();i++){
+        for (int i = 0; i < slaverSourcePositions.size(); i++) {
             String dataSourcePosition = slaverSourcePositions.get(i);
             DataSource dataSource = getDataSource(dataSourcePosition);
-            targetDataSources.put(SLAVER+DIVISION+i,dataSource);
+            targetDataSources.put(SLAVER + DIVISION + i, dataSource);
         }
     }
 
     private DataSource getDataSource(String dataSourcePostion) throws IllegalAccessException, InstantiationException {
-        BasicDataSource dataSource = (BasicDataSource)dataSourceClass.newInstance();
-        if(!StringUtils.isEmpty(dataSourcePostion)){
+        BasicDataSource dataSource = (BasicDataSource) dataSourceClass.newInstance();
+        if (!StringUtils.isEmpty(dataSourcePostion)) {
             dataSource.setUrl(dataSourcePostion);
         }
-        if(!StringUtils.isEmpty(dataSourceDriver))
+        if (!StringUtils.isEmpty(dataSourceDriver))
             dataSource.setDriverClassName(dataSourceDriver);
-        if(!StringUtils.isEmpty(dataSourceUserName))
+        if (!StringUtils.isEmpty(dataSourceUserName))
             dataSource.setUsername(dataSourceUserName);
-        if(!StringUtils.isEmpty(dataSourcePassword))
+        if (!StringUtils.isEmpty(dataSourcePassword))
             dataSource.setPassword(dataSourcePassword);
-        if(isRightIntegerValue(dataSourceInitialSize)){
+        if (isRightIntegerValue(dataSourceInitialSize)) {
             dataSource.setInitialSize(dataSourceInitialSize);
         }
-        if(isRightIntegerValue(dataSourceMaxActive)){
+        if (isRightIntegerValue(dataSourceMaxActive)) {
             dataSource.setMaxActive(dataSourceMaxActive);
         }
-        if(isRightIntegerValue(dataSourceMaxIdle)){
+        if (isRightIntegerValue(dataSourceMaxIdle)) {
             dataSource.setMaxIdle(dataSourceMaxIdle);
         }
-        if(isRightIntegerValue(dataSourceMinIdle)){
+        if (isRightIntegerValue(dataSourceMinIdle)) {
             dataSource.setMinIdle(dataSourceMinIdle);
         }
-        if(isRightIntegerValue(dataSourceMaxWait)){
+        if (isRightIntegerValue(dataSourceMaxWait)) {
             dataSource.setMaxWait(dataSourceMaxWait);
         }
         return dataSource;
     }
 
-    private boolean isRightIntegerValue(Object object){
-        if(object!=null&&object instanceof Integer){
-            Integer val = (Integer)object;
-            if(val>-1)
+    private boolean isRightIntegerValue(Object object) {
+        if (object != null && object instanceof Integer) {
+            Integer val = (Integer) object;
+            if (val > -1)
                 return true;
         }
         return false;
@@ -205,15 +205,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource{
 
     /**
      * 使用ThreadLocal变量保存索引数据源的key,包级私有
-     * */
+     */
     static class DynamicDataSourceTypeHolder {
         private static final ThreadLocal<DataSourceType> dataSourceType = new ThreadLocal<>();
 
-        static void setDatasourceType(DataSourceType dataSourceType){
+        static void setDatasourceType(DataSourceType dataSourceType) {
             DynamicDataSourceTypeHolder.dataSourceType.set(dataSourceType);
         }
 
-        static DataSourceType getDatasourceType(){
+        static DataSourceType getDatasourceType() {
             return dataSourceType.get();
         }
     }

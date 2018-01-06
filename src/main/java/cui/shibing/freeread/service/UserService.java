@@ -53,6 +53,14 @@ public interface UserService {
     boolean updateUserInfo(String userName, UserInfo userInfo);
 
     /**
+     * 更新用户邮箱
+     * @param userName 用户名
+     * @param email 用户邮箱
+     * @return 是否成功
+     * */
+    boolean updateUserEmail(String userName, String email);
+
+    /**
      * 插入用户个人信息
      *
      * @param userInfo 用户信息

@@ -6,12 +6,12 @@ public enum DataSourceType {
 
     private final String dataSourceType;
 
-    DataSourceType(String dataSourceType){
+    DataSourceType(String dataSourceType) {
         this.dataSourceType = dataSourceType;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.dataSourceType;
     }
 }

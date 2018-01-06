@@ -33,7 +33,7 @@ public class NovelChapterController {
     /**
      * 小说章节列表页面
      */
-    private static final String NOVEL_CHAPTERLIST_PAGE = "main/chapter_list" + Constant.NO_LEFT_LAYOUT;
+    private static final String NOVEL_CHAPTER_LIST_PAGE = "main/chapter_list" + Constant.NO_LEFT_LAYOUT;
 
     @Autowired
     private NovelChapterService chapterService;
@@ -48,13 +48,13 @@ public class NovelChapterController {
     public String novelChapter(Model model, @RequestParam("novelId") String novelId,
                                @RequestParam("chapterIndex") Integer chapterIndex,
                                Authentication authentication) {
-        if (!StringUtils.isEmpty(novelId) && chapterIndex != -1) {
-            NovelChapter novelChapter = chapterService.getChapterByNovelIdAndIndex(novelId, chapterIndex, getUserNameFromAuthentication(authentication));
-            if (novelChapter != null) {
-                model.addAttribute("novelChapter", novelChapter);
-                return NOVEL_CHAPTER_PAGE;
-            }
+        NovelChapter novelChapter = chapterService.getChapterByNovelIdAndIndex(novelId, chapterIndex, getUserNameFromAuthentication(authentication));
+
+        if (novelChapter != null) {
+            model.addAttribute("novelChapter", novelChapter);
+            return NOVEL_CHAPTER_PAGE;
         }
+
         return NO_CHAPTER_PAGE;
     }
 
@@ -64,11 +64,11 @@ public class NovelChapterController {
     @RequestMapping("novelChapterList")
     public String novelChapterList(Model model, @RequestParam("novelId") String novelId,
                                    @PageableDefault(value = 50) Pageable pageable) {
-        if (pageable != null && !StringUtils.isEmpty(novelId)) {
-            Page<NovelChapterInfoDto> novelChapterInfo = chapterService.searchChapterInfoByNovelId(novelId, pageable);
-            model.addAttribute("pageNovelContents", novelChapterInfo);
-        }
-        return NOVEL_CHAPTERLIST_PAGE;
+
+        Page<NovelChapterInfoDto> novelChapterInfo = chapterService.searchChapterInfoByNovelId(novelId, pageable);
+        model.addAttribute("pageNovelContents", novelChapterInfo);
+
+        return NOVEL_CHAPTER_LIST_PAGE;
     }
 
 }

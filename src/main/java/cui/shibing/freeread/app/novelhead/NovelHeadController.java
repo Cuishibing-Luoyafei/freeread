@@ -28,10 +28,10 @@ public class NovelHeadController {
     /**
      * 小说排行榜页面
      */
-    private static final String NOVEL_RANKLIST_PAGE = "left/novel_ranking";
+    private static final String NOVEL_RANK_LIST_PAGE = "left/novel_ranking";
     /**
      * 小说搜索页面
-     * */
+     */
     private static final String NOVEL_SEARCH_RESULT_PAGE = "main/novelhead/novel_search_result" + Constant.BASE_LAYOUT;
 
     @Autowired
@@ -59,33 +59,31 @@ public class NovelHeadController {
      **/
     @RequestMapping("novelDetails")
     public String novelDetails(Model model, @RequestParam("novelId") String novelId) {
-        if (!StringUtils.isEmpty(novelId)) {
-            NovelHead novelHead = novelHeadService.searchByNovelId(novelId);
+
+        NovelHead novelHead = novelHeadService.searchByNovelId(novelId);
+        if (novelHead != null)
             model.addAttribute("novelHead", novelHead);
-        }
+
         return NOVEL_DETAILS_PAGE;
     }
 
     @RequestMapping("novelRankingList")
     public String novelRankingList(Model model) {
-        /**
-         * 排行榜默认显示10个
-         * */
         Pageable pageable = new PageRequest(0, 10);
-        if (pageable != null) {
-            Page<NovelHead> novels = novelHeadService.searchByPopularity(pageable);
-            model.addAttribute("pagePopularityNovels", novels);
-        }
-        return NOVEL_RANKLIST_PAGE;
+
+        Page<NovelHead> novels = novelHeadService.searchByPopularity(pageable);
+        model.addAttribute("pagePopularityNovels", novels);
+
+        return NOVEL_RANK_LIST_PAGE;
     }
 
     @RequestMapping("novelSearchResult")
     public String novelSearchResult(Model model, @RequestParam("searchNovelName") String searchNovelName,
                                     @PageableDefault(value = 6) Pageable pageable) {
-        if (pageable != null && !StringUtils.isEmpty(searchNovelName)) {
-            Page<NovelHead> novelHeads = novelHeadService.searchByNovelName(searchNovelName, pageable);
-            model.addAttribute("searchResult", novelHeads);
-        }
+
+        Page<NovelHead> novelHeads = novelHeadService.searchByNovelName(searchNovelName, pageable);
+        model.addAttribute("searchResult", novelHeads);
+
         return NOVEL_SEARCH_RESULT_PAGE;
     }
 

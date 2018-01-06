@@ -14,22 +14,24 @@ import static cui.shibing.freeread.datasource.DataSourceType.MASTER;
 @Aspect
 public class DataSourceAdvisor {
     private Logger logger = Logger.getLogger(getClass().toString());
+
     /**
      * 定义切入点为dao层下的所有方法被调用时
-     * */
+     */
     @Pointcut("execution(* cui.shibing.freeread.dao.*.*(..))")
-    public void invokeDaoMethod(){}
+    public void invokeDaoMethod() {
+    }
 
     @Before("invokeDaoMethod()")
-    public void beforeInvokeDaoMethod(JoinPoint joinPoint){//ProceedingPoint 只使用于环绕
-        Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+    public void beforeInvokeDaoMethod(JoinPoint joinPoint) {//ProceedingPoint 只使用于环绕
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         DataSourceTypeSetter annotation = method.getAnnotation(DataSourceTypeSetter.class);
         DataSourceType dataSourceType = MASTER;
-        if(annotation!=null){
+        if (annotation != null) {
             dataSourceType = annotation.value();
-            if(dataSourceType == MASTER)
-                logger.info(method.getName()+":use master data source");
-            else logger.info(method.getName()+":use slaver data source");
+            if (dataSourceType == MASTER)
+                logger.info(method.getName() + ":use master data source");
+            else logger.info(method.getName() + ":use slaver data source");
         }
         DynamicDataSource.DynamicDataSourceTypeHolder.setDatasourceType(dataSourceType);
     }
