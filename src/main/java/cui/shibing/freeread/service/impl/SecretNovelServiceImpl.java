@@ -32,7 +32,7 @@ public class SecretNovelServiceImpl implements SecretNovelService {
                 secretNovel.setUserName(userName);
                 secretNovel.setNovelId(novelHead.getNovelId());
                 secretNovel.setNovelName(novelHead.getNovelName());
-                secretNovel.setLastReadChapter(0);
+                secretNovel.setLastReadChapter(1);
                 return addSecretNovel(secretNovel, novelHead);
             }
         }
