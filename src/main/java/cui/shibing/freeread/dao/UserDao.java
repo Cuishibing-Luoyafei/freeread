@@ -1,6 +1,6 @@
 package cui.shibing.freeread.dao;
 
-import cui.shibing.freeread.datasource.DataSourceTypeSetter;
+import cui.shibing.freeread.datasource.DataSource;
 import cui.shibing.freeread.model.User;
 import cui.shibing.freeread.model.UserInfo;
 import org.apache.ibatis.annotations.Param;
@@ -12,43 +12,43 @@ public interface UserDao {
     /**
      * 插入一个User对象
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int insertUser(User user);
 
     /**
      * 根据用户名删除一个用户对象
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int deleteUserByName(String userName);
 
     /**
      * 根据用户名查找用户
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     User selectByUserName(String userName);
 
     /**
      * 根据用户名更新用户
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int updateUser(User user);
 
     /**
      * 根据用户名查找用户信息
      */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     UserInfo selectUserInfoByUserName(@Param("userName") String userName);
 
     /**
      * 插入用户信息
      */
-    @DataSourceTypeSetter
+    @DataSource
     int insertUserInfo(@Param("userInfo") UserInfo userInfo);
 
     /**
      * 更新用户信息
      */
-    @DataSourceTypeSetter
+    @DataSource
     int updateUserInfo(@Param("userInfo") UserInfo userInfo);
 
 }

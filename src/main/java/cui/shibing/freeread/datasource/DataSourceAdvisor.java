@@ -25,7 +25,7 @@ public class DataSourceAdvisor {
     @Before("invokeDaoMethod()")
     public void beforeInvokeDaoMethod(JoinPoint joinPoint) {//ProceedingPoint 只使用于环绕
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        DataSourceTypeSetter annotation = method.getAnnotation(DataSourceTypeSetter.class);
+        DataSource annotation = method.getAnnotation(DataSource.class);
         DataSourceType dataSourceType = MASTER;
         if (annotation != null) {
             dataSourceType = annotation.value();

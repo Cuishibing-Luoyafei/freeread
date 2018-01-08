@@ -9,6 +9,6 @@ import static cui.shibing.freeread.datasource.DataSourceType.MASTER;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface DataSourceTypeSetter {
+public @interface DataSource {
     DataSourceType value() default MASTER;
 }

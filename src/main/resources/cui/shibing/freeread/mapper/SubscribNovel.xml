@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cui.shibing.freeread.dao.SubscribNovelDao">
+
+    <resultMap id="SubscribNovel" type="SubscribNovel">
+        <id column="novel_name" jdbcType="VARCHAR" property="novelName"/>
+        <id column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="is_sended" jdbcType="VARCHAR" property="isSended"/>
+    </resultMap>
+
+    <insert id="insertSubscribNovel" parameterType="SubscribNovel">
+        INSERT INTO
+        novel_subscrib(novel_name,email,is_sended)
+        VALUES (
+        #{subscribNovel.novelName,jdbcType=VARCHAR},
+        #{subscribNovel.email,jdbcType=VARCHAR},
+        #{subscribNovel.isSended,jdbcType=VARCHAR}
+        );
+    </insert>
+
+    <update id="updateSubscribNoveStatus" parameterType="SubscribNovel">
+        UPDATE TABLE
+        novel_subscrib
+        SET
+        is_sended = #{subscribNovel.isSended,jdbcType=VARCHAR}
+        WHERE
+        novel_name = #{subscribNovel.novelName,jdbcType=VARCHAR}
+        AND
+        email = #{subscribNovel.email,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteSendedSubscribNovel">
+        DELETE FROM
+        novel_subscrib
+        WHERE
+        is_sended = 'true'
+    </delete>
+
+    <delete id="deleteSubscribNovelByNameAndEmail"
+            parameterType="SubscribNovel">
+        DELETE FROM
+        novel_subscrib
+        WHERE
+        novel_name = #{subscribNovel.novelName,jdbcType=VARCHAR}
+        AND
+        email = #{subscribNovel.email,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="selectSubscribNovel" resultMap="SubscribNovel">
+        SELECT
+        novel_name,
+        email,
+        is_sended
+        FROM
+        novel_subscrib
+        WHERE
+        is_sended = #{isSended,jdbcType=VARCHAR}
+        LIMIT 0,#{length,jdbcType=INTEGER}
+    </select>
+
+</mapper>

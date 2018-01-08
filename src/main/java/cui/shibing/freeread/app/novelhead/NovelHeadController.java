@@ -3,11 +3,13 @@ package cui.shibing.freeread.app.novelhead;
 import cui.shibing.freeread.common.Constant;
 import cui.shibing.freeread.model.NovelHead;
 import cui.shibing.freeread.service.NovelHeadService;
+import cui.shibing.freeread.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -36,6 +38,9 @@ public class NovelHeadController {
 
     @Autowired
     private NovelHeadService novelHeadService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 首页（推荐）
@@ -67,6 +72,9 @@ public class NovelHeadController {
         return NOVEL_DETAILS_PAGE;
     }
 
+    /**
+     * 小说排行榜
+     */
     @RequestMapping("novelRankingList")
     public String novelRankingList(Model model) {
         Pageable pageable = new PageRequest(0, 10);
@@ -77,14 +85,26 @@ public class NovelHeadController {
         return NOVEL_RANK_LIST_PAGE;
     }
 
+    /**
+     * 小说搜索结果
+     */
     @RequestMapping("novelSearchResult")
     public String novelSearchResult(Model model, @RequestParam("searchNovelName") String searchNovelName,
-                                    @PageableDefault(value = 6) Pageable pageable) {
+                                    @PageableDefault(value = 6) Pageable pageable, Authentication authentication) {
 
         Page<NovelHead> novelHeads = novelHeadService.searchByNovelName(searchNovelName, pageable);
         model.addAttribute("searchResult", novelHeads);
 
         return NOVEL_SEARCH_RESULT_PAGE;
+    }
+
+    /**
+     * 订阅一个小说(小说被收录时,通知订阅的用户)
+     */
+    public String subscribeNovel(Authentication authentication,
+                                 @RequestParam("novelName") String novelName) {
+
+        return "";
     }
 
 }

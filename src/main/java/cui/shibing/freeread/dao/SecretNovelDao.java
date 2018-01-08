@@ -1,6 +1,6 @@
 package cui.shibing.freeread.dao;
 
-import cui.shibing.freeread.datasource.DataSourceTypeSetter;
+import cui.shibing.freeread.datasource.DataSource;
 import cui.shibing.freeread.model.SecretNovel;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,7 +15,7 @@ public interface SecretNovelDao {
      * @param secretNovel 要插入的对象
      * @return 成功插入的数目
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int insertSecretNovel(@Param("secretNovel")SecretNovel secretNovel);
 
     /**
@@ -24,7 +24,7 @@ public interface SecretNovelDao {
      * @param novelId 小说id
      * @return 成功删除的数目
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int deleteSecretNovel(@Param("userName") String userName,@Param("novelId") String novelId);
 
     /**
@@ -32,7 +32,7 @@ public interface SecretNovelDao {
      * @param userName 用户名
      * @return 用户加入书架内的小说集合
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     List<SecretNovel> selectSecretNovelByUserName(@Param("userName") String userName);
 
     /**
@@ -41,6 +41,6 @@ public interface SecretNovelDao {
      * @param novelId 小说id
      * @param userName 用户名
      */
-    @DataSourceTypeSetter
+    @DataSource
     int updateSecretNovelLastReadIndex(@Param("userName") String userName, @Param("novelId") String novelId, @Param("chapter") Integer chapter);
 }

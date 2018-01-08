@@ -91,4 +91,6 @@ public interface NovelHeadService {
 	 * @return 是否成功
 	 */
 	boolean updateNovelHead(NovelHead novelHead);
+
+
 }

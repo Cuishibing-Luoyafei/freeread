@@ -1,12 +1,11 @@
 package cui.shibing.freeread.dao;
 
-import java.util.List;
-
-import cui.shibing.freeread.datasource.DataSourceTypeSetter;
+import cui.shibing.freeread.datasource.DataSource;
+import cui.shibing.freeread.model.NovelHead;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 
-import cui.shibing.freeread.model.NovelHead;
+import java.util.List;
 
 import static cui.shibing.freeread.datasource.DataSourceType.SLAVER;
 
@@ -14,25 +13,25 @@ public interface NovelHeadDao {
     /**
      * 根据小说id删除一个NovelHead
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int deleteNovelHeadByNovelId(String novelId);
 
     /**
      * 插入一个NovelHead
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int insertNovelHead(NovelHead record);
 
     /**
      * 根据小说id查询NovelHead
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     NovelHead selectNovelHeadByNovelId(String novelId);
 
     /**
      * 根据小说的id更新NovelHead
      * */
-    @DataSourceTypeSetter
+    @DataSource
     int updateNovelHeadByNovelId(NovelHead record);
 
     /**
@@ -41,7 +40,7 @@ public interface NovelHeadDao {
      * @param pageable 分页对象
      * @return 相应的小说记录
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     List<NovelHead> selectNovelHeadByNovelName(@Param("novelName")String novelName,@Param("pageable")Pageable pageable);
 
     /**
@@ -50,7 +49,7 @@ public interface NovelHeadDao {
      * @param pageable 分页对象
      * @return 相应的小说记录
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     List<NovelHead> selectNovelHeadByNovelClassName(@Param("novelClassName")String novelClassName,@Param("pageable")Pageable pageable);
 
     /**
@@ -58,7 +57,7 @@ public interface NovelHeadDao {
      * @param pageable 分页对象
      * @return 相应的小说记录
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     List<NovelHead> selectNovelHeadByPopularity(@Param("pageable")Pageable pageable);
 
     /**
@@ -67,30 +66,30 @@ public interface NovelHeadDao {
      * @param pageable 分页对象
      * @return 相应的小说记录
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     List<NovelHead> selectNovelHeadByAuthor(@Param("userName")String userName,@Param("pageable")Pageable pageable);
 
     /**
      * 根据小说名查找小说的数量
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     long selectNovelHeadCountByNovelName(@Param("novelName") String novelName);
 
     /**
      * 根据小说类别查找小说的数量
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     long selectNovelHeadCountByNovelClass(@Param("novelClassName")String novelCassName);
 
     /**
      * 根据小说的点击量查找小说的数量
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     long selectNovelHeadCountByPopularity();
 
     /**
      * 根据小说的作者查找小说的数量
      * */
-    @DataSourceTypeSetter(SLAVER)
+    @DataSource(SLAVER)
     long selectNovelHeadCountByAuthor(@Param("userName")String userName);
 }
