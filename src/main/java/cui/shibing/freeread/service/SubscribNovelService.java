@@ -5,6 +5,27 @@ import cui.shibing.freeread.model.SubscribNovel;
 import java.util.List;
 
 public interface SubscribNovelService {
+    enum Result {
+        NO_EMAIL("用户还没有设置邮箱"),//用户还没有设置邮箱
+        DATABASE_ERROR("数据库错误"),//数据库错误
+        PARAM_ERROR("参数错误");//参数错误
+
+        Result(String resultMessage) {
+            this.resultMessage = resultMessage;
+        }
+
+        private String resultMessage;
+
+        @Override
+        public String toString() {
+            return resultMessage;
+        }
+    }
+
+    class ServiceResult {
+        public Result result;
+        public boolean isSuccess;
+    }
 
     /**
      * 添加一个订阅小说
@@ -14,7 +35,7 @@ public interface SubscribNovelService {
      *
      * @return 是否成功
      */
-    boolean addSubscribNovel(String novelName, String userName);
+    ServiceResult addSubscribNovel(String novelName, String userName);
 
     /**
      * 櫖删除已经发布的订阅

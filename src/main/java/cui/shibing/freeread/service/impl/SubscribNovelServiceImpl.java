@@ -7,6 +7,7 @@ import cui.shibing.freeread.service.SubscribNovelService;
 import cui.shibing.freeread.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
@@ -22,22 +23,40 @@ public class SubscribNovelServiceImpl implements SubscribNovelService {
     private UserService userService;
 
     @Override
-    public boolean addSubscribNovel(String novelName, String userName) {
+    @Transactional
+    public ServiceResult addSubscribNovel(String novelName, String userName) {
+        ServiceResult serviceResult = new ServiceResult();
+        serviceResult.isSuccess = false;
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(novelName)) {
-            return false;
+            serviceResult.result = Result.PARAM_ERROR;
+            return serviceResult;
         }
         UserInfo userInfo = userService.getUserInfo(userName);
         /**
          * 还没有设定邮箱
          * */
         if (userInfo == null || StringUtils.isEmpty(userInfo.getUserEmail())) {
-            return false;
+            serviceResult.result = Result.NO_EMAIL;
+            return serviceResult;
         }
         SubscribNovel subscribNovel = new SubscribNovel();
         subscribNovel.setEmail(userInfo.getUserEmail());
         subscribNovel.setNovelName(novelName.trim());
         subscribNovel.setSended(false);
-        return subscribNovelDao.insertSubscribNovel(subscribNovel) == 1;
+        long updatedRecord;
+        try {
+            updatedRecord = subscribNovelDao.insertSubscribNovel(subscribNovel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            updatedRecord = -1;
+        }
+        if (updatedRecord < 1) {
+            serviceResult.result = Result.DATABASE_ERROR;
+            return serviceResult;
+        } else {
+            serviceResult.isSuccess = true;
+            return serviceResult;
+        }
     }
 
     @Override
