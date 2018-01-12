@@ -50,7 +50,7 @@
                 <form:label path="userEmail" for="userEmail"
                             class="col-sm-2 control-label">邮箱：</form:label>
                 <div class="col-sm-10">
-                    <form:input path="userEmail" class="form-control"/>
+                    <form:input path="userEmail" class="form-control" placeholder="请设置您的邮箱!"/>
                     <form:errors path="userEmail"
                                  cssStyle="background-color: red"/>
                     <button onclick="sendEmailCode();return false;" class="btn"
@@ -62,7 +62,7 @@
                 <form:label path="userEmailCode" for="userEmailCode"
                             class="col-sm-2 control-label">验证码：</form:label>
                 <div class="col-sm-10">
-                    <form:input path="userEmailCode" class="form-control"/>
+                    <form:input path="userEmailCode" class="form-control" placeholder="请输入您收到的验证码!"/>
                     <form:errors path="userEmailCode"
                                  cssStyle="background-color: red"/>
                     <label id="userEmailCodeError"
