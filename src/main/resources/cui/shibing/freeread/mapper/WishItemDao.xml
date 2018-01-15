@@ -35,4 +35,91 @@
         )
     </insert>
 
+    <delete id="deleteWishItem">
+        DELETE FROM
+        novel_wish_list
+        WHERE
+        user_name = #{wishItem.userName}
+        AND
+        user_email = #{wishItem.userEmail}
+        AND
+        novel_name = #{wishItem.novelName}
+    </delete>
+
+    <delete id="deleteWishItem">
+        DELETE FROM
+        novel_wish_list
+        WHERE
+        user_name = #{userName}
+        AND
+        user_email = #{userEmail}
+        AND
+        novel_name = #{novelName}
+    </delete>
+
+    <update id="updateWishItem">
+        UPDATE
+        novel_wish_list
+        <set>
+            <if test="wishItem.isNotify != null and wishItem.isNotify != ''">
+                is_notify = #{wishItem.isNotify}
+            </if>
+            <if test="wishItem.isExist != null and wishItem.isExist != ''">
+                is_exist = #{wishItem.isExist}
+            </if>
+        </set>
+    </update>
+
+    <select id="selectWishNovelFromWishItems" resultMap="java.lang.String">
+        SELECT
+        novel_name
+        FROM
+        novel_wish_list
+        WHERE
+        is_exist = 'false'
+        GROUP BY
+        novel_name
+        ORDER BY
+        COUNT (novel_name)
+        limit
+			#{pageable.offset},#{pageable.pageSize}
+    </select>
+
+    <select id="selectCountOfWishNovel" resultType="java.lang.Long">
+        SELECT
+        COUNT (novel_name)
+        FROM
+        novel_wish_list
+        WHERE
+        is_exist = 'false'
+        GROUP BY
+        novel_name
+    </select>
+
+    <select id="selectWishItemsByUserName" resultMap="WishItem">
+        SELECT
+        user_name,
+        user_email,
+        novel_name,
+        create_date,
+        is_notify,
+        is_exist
+        FROM
+        novel_wish_list
+        WHERE
+        user_name = #{userName}
+        limit #{pageable.offset},#{pageable.pageSize}
+    </select>
+
+    <select id="selectCountOfUserWishItems" resultType="java.lang.Long">
+        SELECT
+        COUNT (user_name,
+        user_email,
+        novel_name)
+        FROM
+        novel_wish_list
+        WHERE
+        user_name = #{userName}
+    </select>
+
 </mapper>

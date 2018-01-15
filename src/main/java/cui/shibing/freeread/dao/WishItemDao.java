@@ -16,22 +16,22 @@ public interface WishItemDao {
     /**
      * 删除一个WishItem
      */
-    int deleteWishItem(WishItem wishItem);
+    int deleteWishItem(@Param("wishItem") WishItem wishItem);
 
     /**
      * 删除一个WishItem(根据主键)
      */
-    int deleteWishItem(String userName, String userEmail, String novelName);
+    int deleteWishItem(@Param("userName") String userName, @Param("userEmail") String userEmail, @Param("novelName") String novelName);
 
     /**
      * 更新一个WishItem(主键不能更新,其它的是按需更新,如果提供了就更新,如果没有提供就不更新)
      */
-    int updateWishItem(WishItem wishItem);
+    int updateWishItem(@Param("wishItem") WishItem wishItem);
 
     /**
      * 查询用户想看的小说有哪些
      */
-    List<String> selectWishNovelFromWishItems(Pageable pageable);
+    List<String> selectWishNovelFromWishItems(@Param("pageable") Pageable pageable);
 
     /**
      * 用户想看的小说的数量
@@ -41,7 +41,7 @@ public interface WishItemDao {
     /**
      * 根据用户名查询WishItem
      */
-    List<WishItem> selectWishItemsByUserName(String userName, Pageable pageable);
+    List<WishItem> selectWishItemsByUserName(@Param("userName") String userName, @Param("pageable") Pageable pageable);
 
     /**
      * 根据用户名查询WishItem的数量
