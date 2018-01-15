@@ -13,7 +13,7 @@
         <result property="isExist" column="is_exist"/>
     </resultMap>
 
-    <insert id="insertWishItem">
+    <insert id="insertWishItem" parameterType="WishItem">
         INSERT INTO
         novel_wish_list
         (
@@ -39,17 +39,6 @@
         DELETE FROM
         novel_wish_list
         WHERE
-        user_name = #{wishItem.userName}
-        AND
-        user_email = #{wishItem.userEmail}
-        AND
-        novel_name = #{wishItem.novelName}
-    </delete>
-
-    <delete id="deleteWishItem">
-        DELETE FROM
-        novel_wish_list
-        WHERE
         user_name = #{userName}
         AND
         user_email = #{userEmail}
@@ -57,7 +46,7 @@
         novel_name = #{novelName}
     </delete>
 
-    <update id="updateWishItem">
+    <update id="updateWishItem" parameterType="WishItem">
         UPDATE
         novel_wish_list
         <set>
@@ -87,7 +76,7 @@
 
     <select id="selectCountOfWishNovel" resultType="java.lang.Long">
         SELECT
-        COUNT (novel_name)
+        COUNT (*)
         FROM
         novel_wish_list
         WHERE
@@ -113,13 +102,26 @@
 
     <select id="selectCountOfUserWishItems" resultType="java.lang.Long">
         SELECT
-        COUNT (user_name,
-        user_email,
-        novel_name)
+        COUNT (*)
         FROM
         novel_wish_list
         WHERE
         user_name = #{userName}
+    </select>
+
+    <select id="selectWishItemsByNovelName" resultMap="WishItem">
+        <bind name="novel_name_p" value="'%' + novel_name + '%'"/>
+        SELECT
+        user_name,
+        user_email,
+        novel_name,
+        create_date,
+        is_notify,
+        is_exist
+        FROM
+        novel_wish_list
+        WHERE
+        novel_name like #{novel_name_p}
     </select>
 
 </mapper>
