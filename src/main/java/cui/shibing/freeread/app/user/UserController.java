@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static cui.shibing.freeread.security.CustomAuthenticationLoginProcessFilter.getUserNameFromAuthentication;
+import static cui.shibing.freeread.tools.CommonUtils.getUserNameFromAuthentication;
 import static cui.shibing.freeread.tools.JavaMailHelper.checkEmail;
 import static cui.shibing.freeread.tools.JavaMailHelper.randomEmailCode;
 

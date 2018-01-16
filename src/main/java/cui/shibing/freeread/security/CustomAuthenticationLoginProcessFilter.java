@@ -1,7 +1,5 @@
 package cui.shibing.freeread.security;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -10,10 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomAuthenticationLoginProcessFilter extends UsernamePasswordAuthenticationFilter{
     private static final String USER_NAME = "username";
     private static final String USER_PASS = "userpass";
-
-    public static String getUserNameFromAuthentication(Authentication authentication) {
-        return ((UserDetails) authentication.getPrincipal()).getUsername();
-    }
 
     public CustomAuthenticationLoginProcessFilter(AuthenticationFailureHandler failureHandler){
         super();
