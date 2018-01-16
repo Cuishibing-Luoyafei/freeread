@@ -59,7 +59,7 @@
         </set>
     </update>
 
-    <select id="selectWishNovelFromWishItems" resultMap="java.lang.String">
+    <select id="selectWishNovelFromWishItems" resultType="java.lang.String">
         SELECT
         novel_name
         FROM
