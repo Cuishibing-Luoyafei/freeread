@@ -22,8 +22,8 @@
 			</span>
             </c:forEach>
             <c:if test="${searchResult.hasContent() == false}">
-                <label>需要订阅该小说吗?本站收录该小说时会以邮件通知您!</label>
-                <a href="${pageContext.request.contextPath}/novelHead/addSubscribNovel?novelName=${novelName}">订阅</a>
+                <label>本站暂时没有收录该小说</label>
+                <!-- <a href="${pageContext.request.contextPath}/novelHead/addSubscribNovel?novelName=${novelName}">订阅</a> -->
             </c:if>
         </div>
     </div>
