@@ -122,6 +122,17 @@
         novel_wish_list
         WHERE
         novel_name like #{novel_name_p}
+        limit #{pageable.offset},#{pageable.pageSize}
+    </select>
+
+    <select id="selectWishItemCountByNovelName" resultType="long">
+        <bind name="novel_name_p" value="'%' + novel_name + '%'"/>
+        SELECT
+        COUNT (*)
+        FROM
+        novel_wish_list
+        WHERE
+        novel_name like #{novel_name_p}
     </select>
 
 </mapper>

@@ -1,8 +1,12 @@
 package cui.shibing.freeread.common;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collections;
 
 public class CommonUtils {
 
@@ -26,6 +30,19 @@ public class CommonUtils {
      */
     public static String getUserNameFromAuthentication(Authentication authentication) {
         return ((UserDetails) authentication.getPrincipal()).getUsername();
+    }
+
+    private static Object EMPTY_PAGE_IMPL;
+
+    /**
+     * 获取一个空的PageImpl对象
+     */
+    public static <T> Page<T> emptyPage(Pageable pageable) {
+        if (EMPTY_PAGE_IMPL == null) {
+            EMPTY_PAGE_IMPL = new PageImpl<>(Collections.emptyList(), pageable, 0);
+            return (Page<T>) EMPTY_PAGE_IMPL;
+        }
+        return (Page<T>) EMPTY_PAGE_IMPL;
     }
 
 }

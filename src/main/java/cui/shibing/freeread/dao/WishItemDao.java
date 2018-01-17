@@ -44,8 +44,13 @@ public interface WishItemDao {
     long selectCountOfUserWishItems(@Param("userName") String userName);
 
     /**
-     * 根据给定的小说名查询相关的WishItem(模糊查询),结果集相对较少,所以没有做分页
+     * 根据给定的小说名查询相关的WishItem(模糊查询)
      */
-    List<WishItem> selectWishItemsByNovelName(@Param("novelName") String novelName);
+    List<WishItem> selectWishItemsByNovelName(@Param("novelName") String novelName, @Param("pageable") Pageable pageable);
+
+    /**
+     * 根据给定的小说名查询相关的WishItem的数量
+     */
+    long selectWishItemCountByNovelName(@Param("novelName") String novelName);
 
 }
