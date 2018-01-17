@@ -16,6 +16,9 @@ import org.springframework.util.StringUtils;
 import java.util.Collections;
 import java.util.List;
 
+import static cui.shibing.freeread.common.CommonUtils.emptyPage;
+import static cui.shibing.freeread.common.CommonUtils.validatePageable;
+
 @Service
 public class NovelHeadServiceImpl implements NovelHeadService {
 
@@ -28,29 +31,29 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     @Override
     @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+ #className+'.'+#pageable")
     public Page<NovelHead> searchByNovelClass(String className, Pageable pageable) {
-        List<NovelHead> result = null;
-        long count = 0;
-        if (StringUtils.isEmpty(className) || pageable == null) {
-            result = Collections.emptyList();
-        } else {
-            count = searchCountByClassName(className);
-            result = novelHeadDao.selectNovelHeadByNovelClassName(className, pageable);
+        if (StringUtils.isEmpty(className) || !validatePageable(pageable)) {
+            return emptyPage(pageable);
         }
-        return new PageImpl<NovelHead>(result, pageable, count);
+        long count = novelHeadDao.selectNovelHeadCountByNovelClass(className);
+        if (count > 0) {
+            List<NovelHead> result = novelHeadDao.selectNovelHeadByNovelClassName(className, pageable);
+            return new PageImpl<NovelHead>(result, pageable, count);
+        }
+        return emptyPage(pageable);
     }
 
     @Override
     @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #pageable")
     public Page<NovelHead> searchByPopularity(Pageable pageable) {
-        List<NovelHead> result = null;
-        long count = 0;
-        if (pageable == null) {
-            result = Collections.emptyList();
-        } else {
-            result = novelHeadDao.selectNovelHeadByPopularity(pageable);
-            count = searchNovelHeadCount();
+        if (!validatePageable(pageable)) {
+            return emptyPage(pageable);
         }
-        return new PageImpl<NovelHead>(result, pageable, count);
+        long count = novelHeadDao.selectNovelHeadCountByPopularity();
+        if (count > 0) {
+            List<NovelHead> result = novelHeadDao.selectNovelHeadByPopularity(pageable);
+            return new PageImpl<NovelHead>(result, pageable, count);
+        }
+        return emptyPage(pageable);
     }
 
     @Override

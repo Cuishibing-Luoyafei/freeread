@@ -18,7 +18,7 @@ public class CommonUtils {
      * @return true 有效,false 无效
      */
     public static boolean validatePageable(Pageable pageable) {
-        return pageable != null && pageable.getPageNumber() >= 1 && pageable.getPageSize() >= 1;
+        return pageable != null && pageable.getPageNumber() >= 0 && pageable.getPageSize() > 0;
     }
 
     /**
