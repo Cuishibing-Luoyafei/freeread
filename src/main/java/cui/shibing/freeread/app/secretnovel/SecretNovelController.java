@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-import static cui.shibing.freeread.tools.CommonUtils.getUserNameFromAuthentication;
+import static cui.shibing.freeread.common.CommonUtils.getUserNameFromAuthentication;
 
 /**
  * 书架相关的Controller

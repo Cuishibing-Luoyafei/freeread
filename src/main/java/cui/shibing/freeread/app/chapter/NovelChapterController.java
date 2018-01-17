@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import static cui.shibing.freeread.tools.CommonUtils.getUserNameFromAuthentication;
+import static cui.shibing.freeread.common.CommonUtils.getUserNameFromAuthentication;
 
 
 @Controller

@@ -1,12 +1,13 @@
 /**
 * Copyright © 1998-2017, Glodon Inc. All Rights Reserved.
 */
-package cui.shibing.freeread.tools;
+package cui.shibing.freeread.common;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
-
+import cui.shibing.freeread.dao.CustomDaoTest;
+import cui.shibing.freeread.dao.NovelChapterDao;
+import cui.shibing.freeread.dao.NovelHeadDao;
+import cui.shibing.freeread.model.NovelChapter;
+import cui.shibing.freeread.model.NovelHead;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -19,11 +20,9 @@ import org.jsoup.select.Elements;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cui.shibing.freeread.dao.CustomDaoTest;
-import cui.shibing.freeread.dao.NovelChapterDao;
-import cui.shibing.freeread.dao.NovelHeadDao;
-import cui.shibing.freeread.model.NovelChapter;
-import cui.shibing.freeread.model.NovelHead;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 /**
  *

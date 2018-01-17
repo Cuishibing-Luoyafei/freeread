@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 import java.util.Collections;
 import java.util.List;
 
-import static cui.shibing.freeread.tools.CommonUtils.validatePageable;
+import static cui.shibing.freeread.common.CommonUtils.validatePageable;
 
 public class WishListServiceImpl implements WishListService {
 

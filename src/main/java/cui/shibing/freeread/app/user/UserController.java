@@ -1,11 +1,11 @@
 package cui.shibing.freeread.app.user;
 
 import cui.shibing.freeread.common.Constant;
+import cui.shibing.freeread.common.JavaMailHelper;
+import cui.shibing.freeread.common.MyBeanUtils;
 import cui.shibing.freeread.dto.JsonResponse;
 import cui.shibing.freeread.model.UserInfo;
 import cui.shibing.freeread.service.UserService;
-import cui.shibing.freeread.tools.JavaMailHelper;
-import cui.shibing.freeread.tools.MyBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,9 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static cui.shibing.freeread.tools.CommonUtils.getUserNameFromAuthentication;
-import static cui.shibing.freeread.tools.JavaMailHelper.checkEmail;
-import static cui.shibing.freeread.tools.JavaMailHelper.randomEmailCode;
+import static cui.shibing.freeread.common.CommonUtils.getUserNameFromAuthentication;
+import static cui.shibing.freeread.common.JavaMailHelper.checkEmail;
+import static cui.shibing.freeread.common.JavaMailHelper.randomEmailCode;
 
 @Controller
 @RequestMapping("user")

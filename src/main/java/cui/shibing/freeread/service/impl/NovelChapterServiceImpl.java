@@ -1,12 +1,12 @@
 package cui.shibing.freeread.service.impl;
 
+import cui.shibing.freeread.common.MyBeanUtils;
 import cui.shibing.freeread.dao.NovelChapterDao;
 import cui.shibing.freeread.dto.NovelChapterInfoDto;
 import cui.shibing.freeread.model.NovelChapter;
 import cui.shibing.freeread.model.SecretNovel;
 import cui.shibing.freeread.service.NovelChapterService;
 import cui.shibing.freeread.service.SecretNovelService;
-import cui.shibing.freeread.tools.MyBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;

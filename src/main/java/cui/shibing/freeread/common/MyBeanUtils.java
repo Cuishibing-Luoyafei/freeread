@@ -1,4 +1,4 @@
-package cui.shibing.freeread.tools;
+package cui.shibing.freeread.common;
 
 import org.springframework.beans.BeanUtils;
 

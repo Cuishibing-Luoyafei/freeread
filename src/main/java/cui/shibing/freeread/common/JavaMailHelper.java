@@ -1,4 +1,4 @@
-package cui.shibing.freeread.tools;
+package cui.shibing.freeread.common;
 
 import org.springframework.util.StringUtils;
 
@@ -139,6 +139,13 @@ public class JavaMailHelper {
         return String.valueOf(codeChars);
     }
 
+    /**
+     * 验证邮箱的有效性
+     *
+     * @param userEmail 要验证的邮箱
+     *
+     * @return 验证结果, true:成功,false:失败
+     */
     public static boolean checkEmail(String userEmail) {
         return !StringUtils.isEmpty(userEmail) && userEmail.matches("\\w+@\\w+(\\.\\w+)+");
     }
