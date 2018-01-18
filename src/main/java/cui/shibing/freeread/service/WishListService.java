@@ -20,6 +20,24 @@ public interface WishListService {
     Page<WishItem> getWishItemByNovelName(String novelName, Pageable pageable);
 
     /**
+     * 添加一个WisItem
+     *
+     * @param wishItem 要添加的WishItem
+     * @return 是否添加成功
+     */
+    boolean addWishItem(WishItem wishItem);
+
+    /**
+     * 删除一个WishItem
+     *
+     * @param novelName 小说名
+     * @param userEmail 用户邮箱
+     * @param userName  用户名
+     * @return 是否删除成功
+     */
+    boolean removeWishItem(String userName, String userEmail, String novelName);
+
+    /**
      * 查询个人的WishItem
      *
      * @param userName 用户名称
