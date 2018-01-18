@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 import static cui.shibing.freeread.common.CommonUtils.emptyPage;
@@ -58,24 +57,21 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 
     @Override
     public Page<NovelHead> searchByNovelName(String novelName, Pageable pageable) {
-        List<NovelHead> result = null;
-        long count = 0;
-        if (StringUtils.isEmpty(novelName) || pageable == null) {
-            result = Collections.emptyList();
-        } else {
-            result = novelHeadDao.selectNovelHeadByNovelName(novelName, pageable);
-            count = searchCountByNovelName(novelName);
+        if (StringUtils.isEmpty(novelName) || !validatePageable(pageable)) {
+            return emptyPage(pageable);
         }
-        return new PageImpl<NovelHead>(result, pageable, count);
+        long count = novelHeadDao.selectNovelHeadCountByNovelName(novelName);
+        if (count > 0) {
+            List<NovelHead> result = novelHeadDao.selectNovelHeadByNovelName(novelName, pageable);
+            return new PageImpl<NovelHead>(result, pageable, count);
+        }
+        return emptyPage(pageable);
     }
 
     @Override
     @Transactional
     public boolean addNovelHead(NovelHead head) {
-        if (head != null && !StringUtils.isEmpty(head.getNovelId())) {
-            return novelHeadDao.insertNovelHead(head) == 1;
-        }
-        return false;
+        return head != null && !StringUtils.isEmpty(head.getNovelId()) && novelHeadDao.insertNovelHead(head) == 1;
     }
 
     @Override
@@ -96,7 +92,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     @Override
     @Transactional
     public boolean updateNovelHead(NovelHead novelHead) {
-        if (novelHead != null) {
+        if (novelHead != null && !StringUtils.isEmpty(novelHead.getNovelId())) {
             return novelHeadDao.updateNovelHeadByNovelId(novelHead) == 1;
         }
         return false;
@@ -111,15 +107,15 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 
     @Override
     public Page<NovelHead> searchByAuthor(String userName, Pageable pageable) {
-        List<NovelHead> result = null;
-        long count = 0;
-        if (StringUtils.isEmpty(userName) || pageable == null) {
-            result = Collections.emptyList();
-        } else {
-            result = novelHeadDao.selectNovelHeadByAuthor(userName, pageable);
-            count = searchCountByAuthor(userName);
+        if (StringUtils.isEmpty(userName) || !validatePageable(pageable)) {
+            return emptyPage(pageable);
         }
-        return new PageImpl<NovelHead>(result, pageable, count);
+        long count = novelHeadDao.selectNovelHeadCountByAuthor(userName);
+        if (count > 0) {
+            List<NovelHead> result = novelHeadDao.selectNovelHeadByAuthor(userName, pageable);
+            return new PageImpl<NovelHead>(result, pageable, count);
+        }
+        return emptyPage(pageable);
     }
 
     @Override
