@@ -120,11 +120,17 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 
     @Override
     public long searchCountByNovelName(String novelName) {
+        if (StringUtils.isEmpty(novelName)) {
+            return 0;
+        }
         return novelHeadDao.selectNovelHeadCountByNovelName(novelName);
     }
 
     @Override
     public long searchCountByAuthor(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return 0;
+        }
         return novelHeadDao.selectNovelHeadCountByAuthor(userName);
     }
 
@@ -135,8 +141,9 @@ public class NovelHeadServiceImpl implements NovelHeadService {
 
     @Override
     public long searchCountByClassName(String className) {
-        if (StringUtils.isEmpty(className))
+        if (StringUtils.isEmpty(className)) {
             return 0;
+        }
         return novelHeadDao.selectNovelHeadCountByNovelClass(className);
     }
 
