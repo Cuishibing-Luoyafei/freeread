@@ -56,6 +56,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     }
 
     @Override
+    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #novelName +'.' + #pageable")
     public Page<NovelHead> searchByNovelName(String novelName, Pageable pageable) {
         if (StringUtils.isEmpty(novelName) || !validatePageable(pageable)) {
             return emptyPage(pageable);

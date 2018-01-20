@@ -1,8 +1,11 @@
 package cui.shibing.freeread.app.novelhead;
 
+import cui.shibing.freeread.common.CommonUtils;
 import cui.shibing.freeread.common.Constant;
 import cui.shibing.freeread.model.NovelHead;
+import cui.shibing.freeread.model.UserInfo;
 import cui.shibing.freeread.service.NovelHeadService;
+import cui.shibing.freeread.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("novelHead")
@@ -26,7 +28,7 @@ public class NovelHeadController {
     /**
      * 小说详情页面
      */
-    private static final String NOVEL_DETAILS_PAGE = "main/novel_detail" + Constant.BASE_LAYOUT;
+    private static final String NOVEL_DETAILS_PAGE = "main/novel_detail" + Constant.NO_LEFT_LAYOUT;
     /**
      * 小说排行榜页面
      */
@@ -34,10 +36,13 @@ public class NovelHeadController {
     /**
      * 小说搜索页面
      */
-    private static final String NOVEL_SEARCH_RESULT_PAGE = "main/novelhead/novel_search_result" + Constant.BASE_LAYOUT;
+    private static final String NOVEL_SEARCH_RESULT_PAGE = "main/novelhead/novel_search_result" + Constant.NO_LEFT_LAYOUT;
 
     @Autowired
     private NovelHeadService novelHeadService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 首页（推荐）
@@ -82,23 +87,20 @@ public class NovelHeadController {
         return NOVEL_RANK_LIST_PAGE;
     }
 
-    @RequestMapping("novelSearchResultPage")
-    public String novelSearchResultPage() {
-        return NOVEL_SEARCH_RESULT_PAGE;
-    }
-
     /**
      * 小说搜索结果
      */
     @RequestMapping("novelSearchResult")
-    public String novelSearchResult(RedirectAttributes model, @RequestParam("searchNovelName") String searchNovelName,
+    public String novelSearchResult(Model model, @RequestParam("searchNovelName") String searchNovelName,
                                     @PageableDefault(value = 6) Pageable pageable, Authentication authentication) {
 
         Page<NovelHead> novelHeads = novelHeadService.searchByNovelName(searchNovelName, pageable);
-        model.addFlashAttribute("searchResult", novelHeads);
-        model.addFlashAttribute("novelName", searchNovelName);
+        model.addAttribute("searchResult", novelHeads);
+        model.addAttribute("novelName", searchNovelName);
+        UserInfo userInfo = userService.getUserInfo(CommonUtils.getUserNameFromAuthentication(authentication));
+        model.addAttribute("userEmail", userInfo.getUserEmail());
 
-        return "redirect:/novelHead/novelSearchResultPage";
+        return NOVEL_SEARCH_RESULT_PAGE;
     }
 
 }

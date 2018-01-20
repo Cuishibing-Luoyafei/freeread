@@ -22,7 +22,12 @@
 			</span>
             </c:forEach>
             <c:if test="${searchResult.hasContent() == false}">
-                <label>本站暂时没有收录该小说</label>
+                <label>本站暂时没有收录该小说,输入你的邮箱,添加到您的希望单:</label>
+                <form action="${pageContext.request.contextPath}/wishlist/addWishItem">
+                    <label>小说名:</label><input name="novelName" value="${novelName}"/><br>
+                    <label>邮箱:</label><input name="userEmail" value="${userEmail}"/><br>
+                    <button>添加</button>
+                </form>
                 <!-- <a href="${pageContext.request.contextPath}/novelHead/addSubscribNovel?novelName=${novelName}">订阅</a> -->
             </c:if>
         </div>

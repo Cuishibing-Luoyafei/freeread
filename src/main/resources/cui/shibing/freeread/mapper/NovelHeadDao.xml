@@ -123,12 +123,13 @@
 	</select>
 	
 	<select id="selectNovelHeadCountByNovelName" parameterType="java.lang.String" resultType="java.lang.Long">
+        <bind name="novel_name_p" value="'%' + novelName + '%'"/>
 		select
 		count(*)
 		from 
 			novel_head
 		where
-			novel_name = #{novelName,jdbcType=VARCHAR}
+        novel_name like #{novel_name_p}
 	</select>
 
 	<select id="selectNovelHeadByNovelClassName" resultMap="BaseResultMap">
