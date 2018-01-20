@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static cui.shibing.freeread.common.CommonUtils.emptyPage;
+import static cui.shibing.freeread.common.CommonUtils.emptyPageObject;
 import static cui.shibing.freeread.common.CommonUtils.validatePageable;
 
 @Service
@@ -31,42 +31,42 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+ #className+'.'+#pageable")
     public Page<NovelHead> searchByNovelClass(String className, Pageable pageable) {
         if (StringUtils.isEmpty(className) || !validatePageable(pageable)) {
-            return emptyPage(pageable);
+            return emptyPageObject(pageable);
         }
         long count = novelHeadDao.selectNovelHeadCountByNovelClass(className);
         if (count > 0) {
             List<NovelHead> result = novelHeadDao.selectNovelHeadByNovelClassName(className, pageable);
             return new PageImpl<NovelHead>(result, pageable, count);
         }
-        return emptyPage(pageable);
+        return emptyPageObject(pageable);
     }
 
     @Override
     @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #pageable")
     public Page<NovelHead> searchByPopularity(Pageable pageable) {
         if (!validatePageable(pageable)) {
-            return emptyPage(pageable);
+            return emptyPageObject(pageable);
         }
         long count = novelHeadDao.selectNovelHeadCountByPopularity();
         if (count > 0) {
             List<NovelHead> result = novelHeadDao.selectNovelHeadByPopularity(pageable);
             return new PageImpl<NovelHead>(result, pageable, count);
         }
-        return emptyPage(pageable);
+        return emptyPageObject(pageable);
     }
 
     @Override
     @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #novelName +'.' + #pageable")
     public Page<NovelHead> searchByNovelName(String novelName, Pageable pageable) {
         if (StringUtils.isEmpty(novelName) || !validatePageable(pageable)) {
-            return emptyPage(pageable);
+            return emptyPageObject(pageable);
         }
         long count = novelHeadDao.selectNovelHeadCountByNovelName(novelName);
         if (count > 0) {
             List<NovelHead> result = novelHeadDao.selectNovelHeadByNovelName(novelName, pageable);
             return new PageImpl<NovelHead>(result, pageable, count);
         }
-        return emptyPage(pageable);
+        return emptyPageObject(pageable);
     }
 
     @Override
@@ -109,14 +109,14 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     @Override
     public Page<NovelHead> searchByAuthor(String userName, Pageable pageable) {
         if (StringUtils.isEmpty(userName) || !validatePageable(pageable)) {
-            return emptyPage(pageable);
+            return emptyPageObject(pageable);
         }
         long count = novelHeadDao.selectNovelHeadCountByAuthor(userName);
         if (count > 0) {
             List<NovelHead> result = novelHeadDao.selectNovelHeadByAuthor(userName, pageable);
             return new PageImpl<NovelHead>(result, pageable, count);
         }
-        return emptyPage(pageable);
+        return emptyPageObject(pageable);
     }
 
     @Override

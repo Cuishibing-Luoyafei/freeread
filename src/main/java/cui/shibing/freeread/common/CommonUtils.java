@@ -37,7 +37,7 @@ public class CommonUtils {
     /**
      * 获取一个空的PageImpl对象
      */
-    public static <T> Page<T> emptyPage(Pageable pageable) {
+    public static <T> Page<T> emptyPageObject(Pageable pageable) {
         if (EMPTY_PAGE_IMPL == null) {
             EMPTY_PAGE_IMPL = new PageImpl<>(Collections.emptyList(), pageable, 0);
             return (Page<T>) EMPTY_PAGE_IMPL;

@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static cui.shibing.freeread.common.CommonUtils.emptyPage;
+import static cui.shibing.freeread.common.CommonUtils.emptyPageObject;
 import static cui.shibing.freeread.common.CommonUtils.validatePageable;
 
 @Service
@@ -24,7 +24,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public Page<WishItem> getWishItemByNovelName(String novelName, Pageable pageable) {
         if (StringUtils.isEmpty(novelName) || !validatePageable(pageable)) {
-            return emptyPage(pageable);
+            return emptyPageObject(pageable);
         }
         long count = wishItemDao.selectWishItemCountByNovelName(novelName);
         if (count > 0) {
@@ -32,7 +32,7 @@ public class WishListServiceImpl implements WishListService {
             return new PageImpl<WishItem>(result, pageable, count);
         }
 
-        return emptyPage(pageable);
+        return emptyPageObject(pageable);
 
     }
 
@@ -70,7 +70,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public Page<WishItem> getWishItemFromUser(String userName, Pageable pageable) {
         if (StringUtils.isEmpty(userName) || !validatePageable(pageable)) {
-            return emptyPage(pageable);
+            return emptyPageObject(pageable);
         }
 
         long count = wishItemDao.selectCountOfUserWishItems(userName);
@@ -79,21 +79,21 @@ public class WishListServiceImpl implements WishListService {
             return new PageImpl<WishItem>(result, pageable, count);
         }
 
-        return emptyPage(pageable);
+        return emptyPageObject(pageable);
 
     }
 
     @Override
     public Page<String> getNovelNamesFromWishItems(Pageable pageable) {
         if (!validatePageable(pageable)) {
-            return emptyPage(pageable);
+            return emptyPageObject(pageable);
         }
         long count = wishItemDao.selectCountOfWishNovel();
         if (count > 0) {
             List<String> result = wishItemDao.selectWishNovelFromWishItems(pageable);
             return new PageImpl<String>(result, pageable, count);
         }
-        return emptyPage(pageable);
+        return emptyPageObject(pageable);
     }
 
     @Override
