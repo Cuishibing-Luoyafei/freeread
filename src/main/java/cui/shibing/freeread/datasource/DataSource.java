@@ -1,11 +1,13 @@
 package cui.shibing.freeread.datasource;
 
-import static cui.shibing.freeread.datasource.DataSourceType.MASTER;
+import cui.shibing.freeread.datastrategy.DefaultDataSourceStrategy;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import static cui.shibing.freeread.datasource.DataSourceType.MASTER;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })
@@ -24,7 +26,7 @@ public @interface DataSource {
     /**
      * 获取分库分表信息的接口类，在需要动态获取分库分表信息时会动态生成该类的实例来获取
      * */
-    Class<? extends DataInfo> dataInfo();
+    Class<? extends DataInfo> dataInfo() default DefaultDataSourceStrategy.class;
     
     /**
      * 标识主从库

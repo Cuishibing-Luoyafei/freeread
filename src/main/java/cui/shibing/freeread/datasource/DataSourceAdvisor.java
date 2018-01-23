@@ -9,10 +9,9 @@ import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import static cui.shibing.freeread.datasource.DataSourceType.MASTER;
 
 @Aspect
 public class DataSourceAdvisor {
@@ -26,14 +25,13 @@ public class DataSourceAdvisor {
     }
     
     @Before("invokeDaoMethod()")
-    public void beforeInvokeDaoMethod(JoinPoint joinPoint) {// ProceedingPoint
-                                                            // 只使用于环绕
+    public void beforeInvokeDaoMethod(JoinPoint joinPoint) throws IllegalAccessException, InstantiationException {// ProceedingPoint 只使用于环绕
         Method method = ((MethodSignature) joinPoint.getSignature())
                 .getMethod();
         DataSource annotation = method.getAnnotation(DataSource.class);
         
         if (annotation == null) {
-            throw new Exception("DataSource Annotation not null!");
+            throw new NullPointerException("DataSource Annotation not null!");
         }
         
         String dataSourceName = "";
@@ -47,28 +45,48 @@ public class DataSourceAdvisor {
             dataSourceName = annotation.dataSourceName();
         } else {
             dataInfo = annotation.dataInfo().newInstance();
-            params = getMethodParmas(joinPoint);
-            dataSourceName = dataInfo.getDataSourceName(params);
+            params = getMethodParmas(joinPoint, method);
+            try {
+                dataSourceName = dataInfo.getDataSourceName(params);
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+                throw new RuntimeException("get data source name error!");
+            }
         }
         
         if (!StringUtils.isEmpty(annotation.tableName())) {
             tableName = annotation.tableName();
         } else {
             if(params == null){
-                params = getMethodParmas(joinPoint);
+                params = getMethodParmas(joinPoint, method);
             }
-            tableName = dataInfo.getTableName(params); 
+            if (dataInfo == null) {
+                dataInfo = annotation.dataInfo().newInstance();
+            }
+            try {
+                tableName = dataInfo.getTableName(params);
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+                throw new RuntimeException("get table name error!");
+            }
         }
-        
-        DataSourceType dataSourceType = MASTER;
-        dataSourceType = annotation.value();
-        
-        DynamicDataSource.DynamicDataSourceTypeHolder
-                .setDatasourceType(dataSourceType);
+        DynamicDataSource.DynamicDataSourceInfoHolder.setDataSourceName(dataSourceName);
+        DynamicDataSource.DynamicDataSourceInfoHolder.setTableName(tableName);
+        DynamicDataSource.DynamicDataSourceInfoHolder
+                .setDatasourceType(annotation.value());
     }
-    
-    private Map<String, Object> getMethodParmas(JoinPoint joinPoint) {
-        //TODO:获取方法的参数值
-        return null;
+
+    private Map<String, Object> getMethodParmas(JoinPoint joinPoint, Method targetMethod) {
+        Map<String, Object> resultParams = new HashMap<>();
+        Parameter[] parameters = targetMethod.getParameters();
+        Object[] args = joinPoint.getArgs();
+        if (parameters.length != args.length) {
+            logger.info("形参和实参不匹配!");
+            return resultParams;
+        }
+        for (int i = 0; i < parameters.length; i++) {
+            resultParams.put(parameters[i].getName(), args[i]);
+        }
+        return resultParams;
     }
 }
