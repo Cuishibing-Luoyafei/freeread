@@ -204,9 +204,9 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     /**
-     * 使用ThreadLocal变量保存索引数据源的key,包级私有
+     * 使用ThreadLocal变量保存索引数据源的key
      */
-    static class DynamicDataSourceInfoHolder {
+    public static class DynamicDataSourceInfoHolder {
         private static final ThreadLocal<DataSourceType> dataSourceType = new ThreadLocal<>();
         private static final ThreadLocal<String> dataSourceName = new ThreadLocal<>();
         private static final ThreadLocal<String> tableName = new ThreadLocal<>();
@@ -215,7 +215,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             dataSourceName.set(dataSourceNameStr);
         }
 
-        static String getDataSourceName() {
+        public static String getDataSourceName() {
             return dataSourceName.get();
         }
 
@@ -223,7 +223,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             tableName.set(tableNameStr);
         }
 
-        static String getTableName() {
+        public static String getTableName() {
             return tableName.get();
         }
 

@@ -44,30 +44,30 @@ public class DataSourceAdvisor {
         if (!StringUtils.isEmpty(annotation.dataSourceName())) {
             dataSourceName = annotation.dataSourceName();
         } else {
-            dataInfo = annotation.dataInfo().newInstance();
-            params = getMethodParmas(joinPoint, method);
             try {
+                dataInfo = annotation.dataInfo().newInstance();
+                params = getMethodParmas(joinPoint, method);
                 dataSourceName = dataInfo.getDataSourceName(params);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
-                throw new RuntimeException("get data source name error!");
+                throw new RuntimeException("get data source name error!" + throwable.getMessage());
             }
         }
         
         if (!StringUtils.isEmpty(annotation.tableName())) {
             tableName = annotation.tableName();
         } else {
-            if(params == null){
-                params = getMethodParmas(joinPoint, method);
-            }
-            if (dataInfo == null) {
-                dataInfo = annotation.dataInfo().newInstance();
-            }
             try {
+                if (params == null) {
+                    params = getMethodParmas(joinPoint, method);
+                }
+                if (dataInfo == null) {
+                    dataInfo = annotation.dataInfo().newInstance();
+                }
                 tableName = dataInfo.getTableName(params);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
-                throw new RuntimeException("get table name error!");
+                throw new RuntimeException("get table name error!" + throwable.getMessage());
             }
         }
         DynamicDataSource.DynamicDataSourceInfoHolder.setDataSourceName(dataSourceName);
