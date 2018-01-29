@@ -26,7 +26,8 @@ public interface NovelChapterDao {
      * @return 相应的小说章节对象
      * */
     @DataSource(SLAVER)
-    NovelChapter selectNovelChapterByNovelIdAndChapterIndex(@Param("novelId")String novelId, @Param("chapterIndex")Integer chapterIndex);
+    NovelChapter selectNovelChapterByNovelIdAndChapterIndex(@Param("novelId")String novelId,
+                                                            @Param("chapterIndex")Integer chapterIndex);
 
     /**
      * 查询一个小说的所有章节,包含小说的内容
@@ -35,7 +36,8 @@ public interface NovelChapterDao {
      * @return 相应的章节记录
      * */
     @DataSource(SLAVER)
-    List<NovelChapter> selectNovelChapterByNovelId(@Param("novelId")String novelId,@Param("pageable")Pageable pageable);
+    List<NovelChapter> selectNovelChapterByNovelId(@Param("novelId")String novelId,
+                                                   @Param("pageable")Pageable pageable);
 
     /**
      * 查询一个小说的所有章节,不包含小说的内容
@@ -44,7 +46,8 @@ public interface NovelChapterDao {
      * @return 相应的章节记录
      * */
     @DataSource(SLAVER)
-    List<NovelChapter> selectNovelChapterInfoByNovelId(@Param("novelId")String novelId,@Param("pageable")Pageable pageable);
+    List<NovelChapter> selectNovelChapterInfoByNovelId(@Param("novelId")String novelId,
+                                                       @Param("pageable")Pageable pageable);
 
     /**
      * 查询一个小说的章节数目

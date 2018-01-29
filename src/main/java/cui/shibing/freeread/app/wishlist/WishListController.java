@@ -41,9 +41,9 @@ public class WishListController {
     }
 
     @RequestMapping("listWishItem")
-    public String listWishItem(Model model, Authentication authentication,@PageableDefault Pageable pageable){
-        Page<WishItem> result = wishListService.getWishItemFromUser(CommonUtils.getUserNameFromAuthentication(authentication),pageable);
-        model.addAttribute("wishItems",result);
+    public String listWishItem(Model model, Authentication authentication, @PageableDefault Pageable pageable) {
+        Page<WishItem> result = wishListService.getWishItemFromUser(CommonUtils.getUserNameFromAuthentication(authentication), pageable);
+        model.addAttribute("wishItems", result);
         return LIST_WISH_ITEM_PAGE;
     }
 
