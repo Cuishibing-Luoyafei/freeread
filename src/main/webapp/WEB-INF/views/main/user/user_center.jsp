@@ -12,6 +12,9 @@
             <li class="list-group-item"><a
                     href="${pageContext.request.contextPath}/user/userInfo">个人信息</a>
             </li>
+            <li class="list-group-item"><a
+                    href="${pageContext.request.contextPath}/wishlist/listWishItem">我的心愿单</a>
+            </li>
             <li class="list-group-item">更多内容，敬请期待...</li>
         </ul>
     </div>

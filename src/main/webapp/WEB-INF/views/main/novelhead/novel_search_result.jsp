@@ -21,16 +21,24 @@
 
 			</span>
             </c:forEach>
-            <c:if test="${searchResult.hasContent() == false}">
-                <label>本站暂时没有收录该小说,输入你的邮箱,添加到您的希望单:</label>
-                <form action="${pageContext.request.contextPath}/wishlist/addWishItem">
-                    <label>小说名:</label><input name="novelName" value="${novelName}"/><br>
-                    <label>邮箱:</label><input name="userEmail" value="${userEmail}"/><br>
-                    <button>添加</button>
-                </form>
-                <!-- <a href="${pageContext.request.contextPath}/novelHead/addSubscribNovel?novelName=${novelName}">订阅</a> -->
-            </c:if>
         </div>
+        <c:if test="${searchResult.hasContent() == false}">
+            <label>本站暂时没有收录该小说,输入你的邮箱,添加到您的希望单:</label>
+            <form class="form-inline" action="${pageContext.request.contextPath}/wishlist/addWishItem">
+                <div class="form-group">
+                    <label for="novelName">小说名:</label>
+                    <input id="novelName" class="form-control" type="text" name="novelName" value="${novelName}" placeholder="请输入小说名"/>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">邮箱:</label>
+                    <input id="userEmail" class="form-control" name="userEmail" type="text" value="${userEmail}" placeholder="请输入您的邮箱"/>
+                </div>
+
+                <button class="btn btn-primary" type="submit">添加</button>
+            </form>
+            <hr>
+            <button class="btn btn-default" onclick="window.location='${pageContext.request.contextPath}/'">不添加,去看看其它小说</button>
+        </c:if>
     </div>
 </div>
 

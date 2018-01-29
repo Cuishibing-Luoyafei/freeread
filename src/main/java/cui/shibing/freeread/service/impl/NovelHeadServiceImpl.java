@@ -36,7 +36,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
         long count = novelHeadDao.selectNovelHeadCountByNovelClass(className);
         if (count > 0) {
             List<NovelHead> result = novelHeadDao.selectNovelHeadByNovelClassName(className, pageable);
-            return new PageImpl<NovelHead>(result, pageable, count);
+            return new PageImpl<NovelHead>(result,pageable,count);
         }
         return emptyPageObject(pageable);
     }
@@ -64,7 +64,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
         long count = novelHeadDao.selectNovelHeadCountByNovelName(novelName);
         if (count > 0) {
             List<NovelHead> result = novelHeadDao.selectNovelHeadByNovelName(novelName, pageable);
-            return new PageImpl<NovelHead>(result, pageable, count);
+            return new PageImpl<NovelHead>(result,pageable,count);
         }
         return emptyPageObject(pageable);
     }

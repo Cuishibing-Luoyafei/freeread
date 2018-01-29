@@ -33,43 +33,40 @@
     </div>
     <div class="panel-body">
 
-        <form:form class="form-horizontal" role="form"
+        <form:form class="form-inline" role="form"
                    modelAttribute="userControllerFrom" method="post"
                    action="${pageContext.request.contextPath}/user/updateUserInfo">
             <div class="form-group">
-                <form:label path="userName" for="userName"
-                            class="col-sm-2 control-label">用户名：</form:label>
-                <div class="col-sm-10">
+                <form:label path="userName" for="userName">用户名：</form:label>
+
                     <form:input path="userName" readonly="true"
                                 class="form-control"/>
                     <form:errors path="userName"
                                  cssStyle="background-color: red"/>
-                </div>
+
             </div>
             <div class="form-group">
-                <form:label path="userEmail" for="userEmail"
-                            class="col-sm-2 control-label">邮箱：</form:label>
-                <div class="col-sm-10">
+                <form:label path="userEmail" for="userEmail">邮箱：</form:label>
+
                     <form:input path="userEmail" class="form-control" placeholder="请设置您的邮箱!"/>
                     <form:errors path="userEmail"
                                  cssStyle="background-color: red"/>
                     <button onclick="sendEmailCode();return false;" class="btn"
                             style="float:right">发送验证码
                     </button>
-                </div>
+
             </div>
             <div class="form-group" id="email_code_group">
-                <form:label path="userEmailCode" for="userEmailCode"
-                            class="col-sm-2 control-label">验证码：</form:label>
-                <div class="col-sm-10">
-                    <form:input path="userEmailCode" class="form-control" placeholder="请输入您收到的验证码!"/>
+                <form:label path="userEmailCode" for="userEmailCode">验证码：</form:label>
+
+                    <form:input path="userEmailCode" class="form-control" placeholder="请输入您收到的验证码!" maxlength="6"/>
                     <form:errors path="userEmailCode"
                                  cssStyle="background-color: red"/>
                     <label id="userEmailCodeError"
                            style="background-color: red"></label>
-                </div>
+
             </div>
-            <button class="btn" style="float:right">更新个人信息</button>
+            <button class="btn btn-primary" style="float:right">更新个人信息</button>
             <form:hidden path="emailCodeError"/>
         </form:form>
 

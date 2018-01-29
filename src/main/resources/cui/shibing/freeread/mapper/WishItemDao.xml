@@ -102,7 +102,7 @@
 
     <select id="selectCountOfUserWishItems" resultType="java.lang.Long">
         SELECT
-        COUNT (*)
+        COUNT(*)
         FROM
         novel_wish_list
         WHERE
@@ -128,7 +128,7 @@
     <select id="selectWishItemCountByNovelName" resultType="long">
         <bind name="novel_name_p" value="'%' + novel_name + '%'"/>
         SELECT
-        COUNT (*)
+        COUNT(*)
         FROM
         novel_wish_list
         WHERE
