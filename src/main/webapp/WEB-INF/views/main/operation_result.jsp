@@ -6,7 +6,7 @@
         <div class="panel-body">
             <label>${response.message}</label>
             <br>
-            <button class="btn btn-default" style="line-height: 15px;float:right" onclick="window.location='${pageContext.request.contextPath}'">OK</button>
+            <button class="btn btn-default" style="line-height: 15px;float:right" onclick="window.location='${pageContext.request.contextPath}/'">OK</button>
         </div>
     </div>
 </div>
