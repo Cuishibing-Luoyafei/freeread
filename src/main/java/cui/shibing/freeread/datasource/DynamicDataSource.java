@@ -44,7 +44,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         if (masterDataSourceNum == 0 || slaverDataSourceNum == 0) {
             throw new IllegalArgumentException("masterDataSourceNum or slaverDataSourceNum == 0");
         }
-        DataSourceType dataSourceType = DynamicDataSourceTypeHolder.getDatasourceType();
+        DataSourceType dataSourceType = DynamicDataSourceInfoHolder.getDatasourceType();
 
         //这是一个主数据源
         if (dataSourceType == MASTER) {
@@ -204,13 +204,40 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     /**
-     * 使用ThreadLocal变量保存索引数据源的key,包级私有
+     * 使用ThreadLocal变量保存索引数据源的key
      */
-    static class DynamicDataSourceTypeHolder {
+    public static class DynamicDataSourceInfoHolder {
         private static final ThreadLocal<DataSourceType> dataSourceType = new ThreadLocal<>();
+        private static final ThreadLocal<String> dataSourceName = new ThreadLocal<>();
+        private static final ThreadLocal<String> originalTableName = new ThreadLocal<>();
+        private static final ThreadLocal<String> tableName = new ThreadLocal<>();
 
-        static void setDatasourceType(DataSourceType dataSourceType) {
-            DynamicDataSourceTypeHolder.dataSourceType.set(dataSourceType);
+        static void setDataSourceName(String dataSourceNameStr) {
+            dataSourceName.set(dataSourceNameStr);
+        }
+
+        public static String getDataSourceName() {
+            return dataSourceName.get();
+        }
+
+        static void setOriginalTableName(String tableNameStr) {
+            originalTableName.set(tableNameStr);
+        }
+
+        public static String getOriginalTableName() {
+            return originalTableName.get();
+        }
+        
+        static void setTableName(String tableNameStr) {
+        	tableName.set(tableNameStr);
+        }
+        
+        public static String getTableName() {
+        	return tableName.get();
+        }
+
+        static void setDatasourceType(DataSourceType dataSourceTypeRaw) {
+            dataSourceType.set(dataSourceTypeRaw);
         }
 
         static DataSourceType getDatasourceType() {

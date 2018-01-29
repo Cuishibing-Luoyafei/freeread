@@ -1,6 +1,7 @@
 package cui.shibing.freeread.dao;
 
 import cui.shibing.freeread.datasource.DataSource;
+import cui.shibing.freeread.datastrategy.SelectNovelHeadByIdStrategy;
 import cui.shibing.freeread.model.NovelHead;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public interface NovelHeadDao {
     /**
      * 根据小说id查询NovelHead
      * */
-    @DataSource(SLAVER)
+    @DataSource(value = SLAVER, dataSourceName = "novel", dataInfo = SelectNovelHeadByIdStrategy.class)
     NovelHead selectNovelHeadByNovelId(String novelId);
 
     /**
