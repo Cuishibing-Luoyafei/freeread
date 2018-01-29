@@ -42,5 +42,7 @@ public interface SecretNovelDao {
      * @param userName 用户名
      */
     @DataSource
-    int updateSecretNovelLastReadIndex(@Param("userName") String userName, @Param("novelId") String novelId, @Param("chapter") Integer chapter);
+    int updateSecretNovelLastReadIndex(@Param("userName") String userName,
+                                       @Param("novelId") String novelId,
+                                       @Param("chapter") Integer chapter);
 }

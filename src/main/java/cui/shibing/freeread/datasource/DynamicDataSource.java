@@ -31,6 +31,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     private Class<?> dataSourceClass;
 
+    //TODO:因为有可能有多个不同的数据源,所以这里保存数据源的集合应该用一个<String,List<String>>的Map.
     private List<String> masterSourcePositions;//主数据源位置集合,就是url的集合
 
     private List<String> slaverSourcePositions;//从数据源位置集合,就是url的集合
