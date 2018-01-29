@@ -209,6 +209,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     public static class DynamicDataSourceInfoHolder {
         private static final ThreadLocal<DataSourceType> dataSourceType = new ThreadLocal<>();
         private static final ThreadLocal<String> dataSourceName = new ThreadLocal<>();
+        private static final ThreadLocal<String> originalTableName = new ThreadLocal<>();
         private static final ThreadLocal<String> tableName = new ThreadLocal<>();
 
         static void setDataSourceName(String dataSourceNameStr) {
@@ -219,12 +220,20 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             return dataSourceName.get();
         }
 
-        static void setTableName(String tableNameStr) {
-            tableName.set(tableNameStr);
+        static void setOriginalTableName(String tableNameStr) {
+            originalTableName.set(tableNameStr);
         }
 
+        public static String getOriginalTableName() {
+            return originalTableName.get();
+        }
+        
+        static void setTableName(String tableNameStr) {
+        	tableName.set(tableNameStr);
+        }
+        
         public static String getTableName() {
-            return tableName.get();
+        	return tableName.get();
         }
 
         static void setDatasourceType(DataSourceType dataSourceTypeRaw) {

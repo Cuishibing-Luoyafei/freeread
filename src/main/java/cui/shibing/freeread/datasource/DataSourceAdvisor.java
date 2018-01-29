@@ -39,7 +39,7 @@ public class DataSourceAdvisor {
         Map<String, Object> params = null;
         DataInfo dataInfo = null;
         /**
-         * 如果配置了数据库的名字
+         * 如果配置了数据库名
          * */
         if (!StringUtils.isEmpty(annotation.dataSourceName())) {
             dataSourceName = annotation.dataSourceName();
@@ -53,6 +53,10 @@ public class DataSourceAdvisor {
                 throw new RuntimeException("get data source name error!" + throwable.getMessage());
             }
         }
+        
+        /**
+         * 表名在mybatis拦截器中使用,用于动态修改sql
+         * */
         
         if (!StringUtils.isEmpty(annotation.tableName())) {
             tableName = annotation.tableName();
@@ -72,6 +76,7 @@ public class DataSourceAdvisor {
         }
         DynamicDataSource.DynamicDataSourceInfoHolder.setDataSourceName(dataSourceName);
         DynamicDataSource.DynamicDataSourceInfoHolder.setTableName(tableName);
+        DynamicDataSource.DynamicDataSourceInfoHolder.setOriginalTableName(annotation.originalTableName());
         DynamicDataSource.DynamicDataSourceInfoHolder
                 .setDatasourceType(annotation.value());
     }

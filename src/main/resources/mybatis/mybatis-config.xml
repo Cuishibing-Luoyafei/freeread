@@ -6,4 +6,8 @@
     <typeAliases>
         <package name="cui.shibing.freeread.model"/>
     </typeAliases>
+    <plugins>
+    	<!-- 动态修改表名的拦截器 -->
+    	<plugin interceptor="cui.shibing.freeread.mybatisinterceptor.MybatisInterceptor"/>
+    </plugins>
 </configuration>
