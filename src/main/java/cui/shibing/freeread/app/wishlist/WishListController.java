@@ -6,6 +6,9 @@ import cui.shibing.freeread.dto.JsonResponse;
 import cui.shibing.freeread.model.WishItem;
 import cui.shibing.freeread.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WishListController {
 
     private static final String ADD_WISH_ITEM_RESULT = "main/operation_result" + Constant.NO_LEFT_LAYOUT;
+
+    private static final String LIST_WISH_ITEM_PAGE = "main/wishlist/list_wish_item" + Constant.NO_LEFT_LAYOUT;
 
     @Autowired
     private WishListService wishListService;
@@ -33,6 +38,13 @@ public class WishListController {
         }
         model.addAttribute("response", response);
         return ADD_WISH_ITEM_RESULT;
+    }
+
+    @RequestMapping("listWishItem")
+    public String listWishItem(Model model, Authentication authentication,@PageableDefault Pageable pageable){
+        Page<WishItem> result = wishListService.getWishItemFromUser(CommonUtils.getUserNameFromAuthentication(authentication),pageable);
+        model.addAttribute("wishItems",result);
+        return LIST_WISH_ITEM_PAGE;
     }
 
 }
