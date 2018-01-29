@@ -10,11 +10,11 @@ public interface DataInfo {
     /**
      * 获取库的名称
      * */
-    String getDataSourceName(Map<String, Object> params) throws Throwable;
+    String getDataSourceName(Map<String, Object> params);
     
     /**
      * 获取表的名称
      * */
-    String getTableName(Map<String, Object> params) throws Throwable;
+    String getTableName(Map<String, Object> params);
     
 }
