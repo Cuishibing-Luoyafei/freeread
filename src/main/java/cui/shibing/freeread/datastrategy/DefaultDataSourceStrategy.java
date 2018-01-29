@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class DefaultDataSourceStrategy implements DataInfo {
     @Override
-    public String getDataSourceName(Map<String, Object> params) throws Throwable {
+    public String getDataSourceName(Map<String, Object> params) {
         return null;
     }
 
     @Override
-    public String getTableName(Map<String, Object> params) throws Throwable {
+    public String getTableName(Map<String, Object> params) {
         return null;
     }
 }

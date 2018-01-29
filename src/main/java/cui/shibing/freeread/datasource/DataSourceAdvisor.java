@@ -48,9 +48,9 @@ public class DataSourceAdvisor {
                 dataInfo = annotation.dataInfo().newInstance();
                 params = getMethodParmas(joinPoint, method);
                 dataSourceName = dataInfo.getDataSourceName(params);
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-                throw new RuntimeException("get data source name error!" + throwable.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("get data source name error!" + e.getMessage());
             }
         }
         
@@ -69,9 +69,9 @@ public class DataSourceAdvisor {
                     dataInfo = annotation.dataInfo().newInstance();
                 }
                 tableName = dataInfo.getTableName(params);
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-                throw new RuntimeException("get table name error!" + throwable.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("get table name error!" + e.getMessage());
             }
         }
         DynamicDataSource.DynamicDataSourceInfoHolder.setDataSourceName(dataSourceName);
