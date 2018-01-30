@@ -9,32 +9,19 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static cui.shibing.freeread.datasource.DataSourceType.MASTER;
 import static cui.shibing.freeread.datasource.DataSourceType.SLAVER;
 
-/**
- * 使用顺序的算法选择数据源
- * 例如,一个"slaver"名称对应了n个读数据源,在使用"slaver"这个key获取数据源的时候按照顺序返回n个数据源中的某一个.
- * 第一次获取时返回第k个,那么第二次返回第k+1个
- */
 public class DynamicDataSource extends AbstractRoutingDataSource {
-
-    private int masterDataSourceNum = 0;//主数据源的数量
-
-    private int slaverDataSourceNum = 0;//从数据源的数量
-
-    private AtomicInteger masterDataSourceIndex = new AtomicInteger(0);
-
-    private AtomicInteger slaverDataSourceIndex = new AtomicInteger(0);
 
     private Class<?> dataSourceClass;
 
-    //TODO:因为有可能有多个不同的数据源,所以这里保存数据源的集合应该用一个<String,List<String>>的Map.
-    private List<String> masterSourcePositions;//主数据源位置集合,就是url的集合
+    private Map<String, List<String>> masterSources;//主数据源url集合
 
-    private List<String> slaverSourcePositions;//从数据源位置集合,就是url的集合
+    private Map<String, List<String>> slaverSources;//从数据源url集合
+
+    private DataSourceKeyHolder keyHolder;
 
     /**
      * 该方法返回一个key,这个key用来索引数据源.
@@ -42,41 +29,20 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      */
     @Override
     protected Object determineCurrentLookupKey() {
-        if (masterDataSourceNum == 0 || slaverDataSourceNum == 0) {
-            throw new IllegalArgumentException("masterDataSourceNum or slaverDataSourceNum == 0");
-        }
         DataSourceType dataSourceType = DynamicDataSourceInfoHolder.getDatasourceType();
-
-        //这是一个主数据源
-        if (dataSourceType == MASTER) {
-            return processLookupKey(MASTER, masterDataSourceIndex, masterDataSourceNum);
-        } else {//这是一个从数据源
-            return processLookupKey(SLAVER, slaverDataSourceIndex, slaverDataSourceNum);
-        }
+        String baseDataSourceName = DynamicDataSourceInfoHolder.getDataSourceName();
+        return keyHolder.getDataSourceKey(baseDataSourceName, dataSourceType);
     }
 
     private static final String DIVISION = "_";
-
-    /**
-     * 按顺序取数据源
-     */
-    private String processLookupKey(DataSourceType dataSourceType, AtomicInteger dataSourceIndex, int dataSouceNum) {
-        if (dataSourceIndex.get() < dataSouceNum) {
-            int temp = dataSourceIndex.getAndAdd(1);
-            if (dataSourceIndex.get() >= dataSouceNum) {
-                dataSourceIndex.set(0);
-            }
-            return dataSourceType + DIVISION + temp;
-        }
-        return null;
-    }
 
     @Override
     public void afterPropertiesSet() {
         try {
             resolveDataSources();
+            keyHolder = new DataSourceKeyHolder(masterSources, slaverSources);
         } catch (UnsupportedDataTypeException | InstantiationException | IllegalAccessException e) {
-            logger.info(e);
+            logger.error(e);
             throw new RuntimeException(e);
         }
         super.afterPropertiesSet();//不调用父类的该方法的话,报数据源未初始化的异常
@@ -94,38 +60,44 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     private Integer dataSourceMinIdle = -1;
     private Integer dataSourceMaxWait = -1;
 
-    private void resolveDataSources() throws UnsupportedDataTypeException, InstantiationException, IllegalAccessException {
-        if (masterSourcePositions == null || slaverSourcePositions == null || dataSourceClass == null) {
-            throw new NullPointerException("ha ha ha");
+    private void resolveDataSources() throws UnsupportedDataTypeException,
+            InstantiationException, IllegalAccessException {
+        if (masterSources == null || slaverSources == null || dataSourceClass == null) {
+            throw new RuntimeException("数据源列表为空");
         }
         //暂时只支持org.apache.commons.dbcp.BasicDataSource
         if (!BasicDataSource.class.isAssignableFrom(dataSourceClass)) {
             throw new UnsupportedDataTypeException();
         }
-        masterDataSourceNum = masterSourcePositions.size();
-        slaverDataSourceNum = slaverSourcePositions.size();
-        Map<Object, Object> targetDataSources = new HashMap<>(masterDataSourceNum + slaverDataSourceNum);
-        resolveMasterDataSources(targetDataSources);
+
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        resolveDataSources(targetDataSources, masterSources, MASTER);
+        resolveDataSources(targetDataSources, slaverSources, SLAVER);
         this.setTargetDataSources(targetDataSources);
     }
 
-    private void resolveMasterDataSources(final Map<Object, Object> targetDataSources) throws IllegalAccessException, InstantiationException {
-        for (int i = 0; i < masterSourcePositions.size(); i++) {
-            String dataSourcePosition = masterSourcePositions.get(i);
-            DataSource dataSource = getDataSource(dataSourcePosition);
-            targetDataSources.put(MASTER + DIVISION + i, dataSource);
-        }
-        for (int i = 0; i < slaverSourcePositions.size(); i++) {
-            String dataSourcePosition = slaverSourcePositions.get(i);
-            DataSource dataSource = getDataSource(dataSourcePosition);
-            targetDataSources.put(SLAVER + DIVISION + i, dataSource);
+    private static String generateDataSourceKey(DataSourceType type, String baseName, int index) {
+        return type + baseName + DIVISION + index;
+    }
+
+    private void resolveDataSources(Map<Object, Object> targetDataSources,
+                                    Map<String, List<String>> dataSourceUrls,
+                                    DataSourceType type)
+            throws IllegalAccessException, InstantiationException {
+        for (Map.Entry<String, List<String>> entry : dataSourceUrls.entrySet()) {
+            String baseName = entry.getKey();
+            List<String> urls = entry.getValue();
+            for (int i = 0; i < urls.size(); i++) {
+                targetDataSources.put(generateDataSourceKey(type, baseName, i), getDataSource(urls.get(i)));
+            }
         }
     }
 
-    private DataSource getDataSource(String dataSourcePostion) throws IllegalAccessException, InstantiationException {
+    private DataSource getDataSource(String dataSourceUrl) throws IllegalAccessException,
+            InstantiationException {
         BasicDataSource dataSource = (BasicDataSource) dataSourceClass.newInstance();
-        if (!StringUtils.isEmpty(dataSourcePostion)) {
-            dataSource.setUrl(dataSourcePostion);
+        if (!StringUtils.isEmpty(dataSourceUrl)) {
+            dataSource.setUrl(dataSourceUrl);
         }
         if (!StringUtils.isEmpty(dataSourceDriver))
             dataSource.setDriverClassName(dataSourceDriver);
@@ -192,20 +164,20 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         this.dataSourceMaxWait = dataSourceMaxWait;
     }
 
-    public void setMasterSourcePositions(List<String> masterSourcePositions) {
-        this.masterSourcePositions = masterSourcePositions;
-    }
-
-    public void setSlaverSourcePositions(List<String> slaverSourcePositions) {
-        this.slaverSourcePositions = slaverSourcePositions;
-    }
-
     public void setDataSourceClass(Class<?> dataSourceClass) {
         this.dataSourceClass = dataSourceClass;
     }
 
+    public void setMasterSources(Map<String, List<String>> masterSources) {
+        this.masterSources = masterSources;
+    }
+
+    public void setSlaverSources(Map<String, List<String>> slaverSources) {
+        this.slaverSources = slaverSources;
+    }
+
     /**
-     * 使用ThreadLocal变量保存索引数据源的key
+     * 使用ThreadLocal变量传递数据源相关的信息
      */
     public static class DynamicDataSourceInfoHolder {
         private static final ThreadLocal<DataSourceType> dataSourceType = new ThreadLocal<>();
@@ -217,7 +189,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             dataSourceName.set(dataSourceNameStr);
         }
 
-        public static String getDataSourceName() {
+        static String getDataSourceName() {
             return dataSourceName.get();
         }
 
@@ -228,13 +200,13 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         public static String getOriginalTableName() {
             return originalTableName.get();
         }
-        
+
         static void setTableName(String tableNameStr) {
-        	tableName.set(tableNameStr);
+            tableName.set(tableNameStr);
         }
-        
+
         public static String getTableName() {
-        	return tableName.get();
+            return tableName.get();
         }
 
         static void setDatasourceType(DataSourceType dataSourceTypeRaw) {
@@ -243,6 +215,82 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
         static DataSourceType getDatasourceType() {
             return dataSourceType.get();
+        }
+    }
+
+    private static class DataSourceKeyHolder {
+        private final int MASTER_INDEX = 0;
+        private final int SLAVER_INDEX = 1;
+        private final int KEY_GROUP_SIZE = 2;
+        private Map<String, DataSourceKey[]> dataSourceKeys;
+
+        DataSourceKeyHolder(Map<String, List<String>> masterDataSourceUrls,
+                            Map<String, List<String>> slaverDataSourceUrls) {
+            construct(masterDataSourceUrls, slaverDataSourceUrls);
+        }
+
+        private void construct(Map<String, List<String>> masterDataSourceUrls,
+                               Map<String, List<String>> slaverDataSourceUrls) {
+            if (masterDataSourceUrls == null || slaverDataSourceUrls == null) {
+                throw new NullPointerException("masterDataSourceUrls or slaverDataSourceUrls is null");
+            }
+            dataSourceKeys = new HashMap<>();
+            for (Map.Entry<String, List<String>> entry : masterDataSourceUrls.entrySet()) {
+                DataSourceKey[] keyGroup = new DataSourceKey[KEY_GROUP_SIZE];
+                keyGroup[MASTER_INDEX] = translate(entry.getKey(), entry.getValue(), MASTER);
+                dataSourceKeys.put(entry.getKey(), keyGroup);
+            }
+            for (Map.Entry<String, List<String>> entry : slaverDataSourceUrls.entrySet()) {
+                DataSourceKey[] keyGroup = dataSourceKeys.get(entry.getKey());
+                if (keyGroup != null) {
+                    keyGroup[SLAVER_INDEX] = translate(entry.getKey(), entry.getValue(), SLAVER);
+                }
+            }
+        }
+
+        private DataSourceKey translate(String baseName, List<String> urls, DataSourceType type) {
+            if (urls != null && urls.size() > 0 && !StringUtils.isEmpty(baseName)) {
+                DataSourceKey firstDataSourceKey = new DataSourceKey();
+                firstDataSourceKey.key = generateDataSourceKey(type, baseName, 0);
+                DataSourceKey currentDataSourceKey = firstDataSourceKey;
+                for (int i = 1; i < urls.size(); i++) {
+                    DataSourceKey tempName = new DataSourceKey();
+                    tempName.key = generateDataSourceKey(type, baseName, i);
+                    currentDataSourceKey.nextKey = tempName;
+                    currentDataSourceKey = tempName;
+                }
+                currentDataSourceKey.nextKey = firstDataSourceKey;
+                return firstDataSourceKey;
+            }
+            return null;
+        }
+
+        String getDataSourceKey(String dataSourceName, DataSourceType type) {
+            String result = null;
+            switch (type) {
+                case MASTER: {
+                    DataSourceKey[] keyGroup = dataSourceKeys.get(dataSourceName);
+                    if (keyGroup != null) {
+                        result = keyGroup[MASTER_INDEX].key;
+                        keyGroup[MASTER_INDEX] = keyGroup[MASTER_INDEX].nextKey;
+                    }
+                }
+                break;
+                case SLAVER: {
+                    DataSourceKey[] keyGroup = dataSourceKeys.get(dataSourceName);
+                    if (keyGroup != null) {
+                        result = keyGroup[SLAVER_INDEX].key;
+                        keyGroup[SLAVER_INDEX] = keyGroup[SLAVER_INDEX].nextKey;
+                    }
+                }
+                break;
+            }
+            return result;
+        }
+
+        private static class DataSourceKey {
+            String key;
+            DataSourceKey nextKey;
         }
     }
 }

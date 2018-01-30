@@ -50,7 +50,7 @@ public class DataSourceAdvisor {
                 dataSourceName = dataInfo.getDataSourceName(params);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException("get data source name error!" + e.getMessage());
+                throw new RuntimeException("get data source key error!" + e.getMessage());
             }
         }
         
@@ -71,7 +71,7 @@ public class DataSourceAdvisor {
                 tableName = dataInfo.getTableName(params);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException("get table name error!" + e.getMessage());
+                throw new RuntimeException("get table key error!" + e.getMessage());
             }
         }
         DynamicDataSource.DynamicDataSourceInfoHolder.setDataSourceName(dataSourceName);
