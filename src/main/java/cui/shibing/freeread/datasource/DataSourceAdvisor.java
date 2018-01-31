@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -16,6 +17,9 @@ import java.util.logging.Logger;
 @Aspect
 public class DataSourceAdvisor {
     private Logger logger = Logger.getLogger(getClass().toString());
+
+    @Autowired
+    private DynamicDataSource dataSource;
     
     /**
      * 定义切入点为dao层下的所有方法被调用时
@@ -53,7 +57,11 @@ public class DataSourceAdvisor {
                 throw new RuntimeException("get data source key error!" + e.getMessage());
             }
         }
-        
+
+        if (StringUtils.isEmpty(dataSourceName)) {
+            dataSourceName = dataSource.getDefaultDataSourceName();
+        }
+
         /**
          * 表名在mybatis拦截器中使用,用于动态修改sql
          * */

@@ -17,11 +17,41 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     private Class<?> dataSourceClass;
 
-    private Map<String, List<String>> masterSources;//主数据源url集合
-
-    private Map<String, List<String>> slaverSources;//从数据源url集合
-
     private DataSourceKeyHolder keyHolder;
+
+    private List<DataSourceConfigObject> configObjects;//数据源配置对象
+
+    private String defaultDataSourceName;
+
+    public static class DataSourceConfigObject {
+        private String dataSourceName;
+        private List<String> masterUrls;
+        private List<String> slaverUrls;
+
+        public void setDataSourceName(String dataSourceName) {
+            this.dataSourceName = dataSourceName;
+        }
+
+        public void setMasterUrls(List<String> masterUrls) {
+            this.masterUrls = masterUrls;
+        }
+
+        public void setSlaverUrls(List<String> slaverUrls) {
+            this.slaverUrls = slaverUrls;
+        }
+    }
+
+    public void setConfigObjects(List<DataSourceConfigObject> configObjects) {
+        this.configObjects = configObjects;
+    }
+
+    public void setDefaultDataSourceName(String defaultDataSourceName) {
+        this.defaultDataSourceName = defaultDataSourceName;
+    }
+
+    public String getDefaultDataSourceName() {
+        return defaultDataSourceName;
+    }
 
     /**
      * 该方法返回一个key,这个key用来索引数据源.
@@ -40,7 +70,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     public void afterPropertiesSet() {
         try {
             resolveDataSources();
-            keyHolder = new DataSourceKeyHolder(masterSources, slaverSources);
+            keyHolder = new DataSourceKeyHolder(configObjects);
         } catch (UnsupportedDataTypeException | InstantiationException | IllegalAccessException e) {
             logger.error(e);
             throw new RuntimeException(e);
@@ -62,17 +92,22 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     private void resolveDataSources() throws UnsupportedDataTypeException,
             InstantiationException, IllegalAccessException {
-        if (masterSources == null || slaverSources == null || dataSourceClass == null) {
+        if (configObjects == null || configObjects.size() < 1) {
             throw new RuntimeException("数据源列表为空");
+        }
+        if (dataSourceClass == null) {
+            throw new RuntimeException("没有配置数据源类型");
         }
         //暂时只支持org.apache.commons.dbcp.BasicDataSource
         if (!BasicDataSource.class.isAssignableFrom(dataSourceClass)) {
-            throw new UnsupportedDataTypeException();
+            throw new UnsupportedDataTypeException("暂时只支持org.apache.commons.dbcp.BasicDataSource");
         }
 
         Map<Object, Object> targetDataSources = new HashMap<>();
-        resolveDataSources(targetDataSources, masterSources, MASTER);
-        resolveDataSources(targetDataSources, slaverSources, SLAVER);
+        resolveDataSources(targetDataSources, configObjects);
+        if (targetDataSources.size() < 1) {
+            throw new RuntimeException("无效的数据源配置");
+        }
         this.setTargetDataSources(targetDataSources);
     }
 
@@ -81,14 +116,17 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     private void resolveDataSources(Map<Object, Object> targetDataSources,
-                                    Map<String, List<String>> dataSourceUrls,
-                                    DataSourceType type)
-            throws IllegalAccessException, InstantiationException {
-        for (Map.Entry<String, List<String>> entry : dataSourceUrls.entrySet()) {
-            String baseName = entry.getKey();
-            List<String> urls = entry.getValue();
-            for (int i = 0; i < urls.size(); i++) {
-                targetDataSources.put(generateDataSourceKey(type, baseName, i), getDataSource(urls.get(i)));
+                                    List<DataSourceConfigObject> configObjects)
+            throws InstantiationException, IllegalAccessException {
+        for (DataSourceConfigObject configObject : configObjects) {
+            String dataSourceName = configObject.dataSourceName;
+            for (int i = 0; i < configObject.masterUrls.size(); i++) {
+                targetDataSources.put(generateDataSourceKey(MASTER, dataSourceName, i),
+                        getDataSource(configObject.masterUrls.get(i)));
+            }
+            for (int i = 0; i < configObject.slaverUrls.size(); i++) {
+                targetDataSources.put(generateDataSourceKey(SLAVER, dataSourceName, i),
+                        getDataSource(configObject.slaverUrls.get(i)));
             }
         }
     }
@@ -168,14 +206,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         this.dataSourceClass = dataSourceClass;
     }
 
-    public void setMasterSources(Map<String, List<String>> masterSources) {
-        this.masterSources = masterSources;
-    }
-
-    public void setSlaverSources(Map<String, List<String>> slaverSources) {
-        this.slaverSources = slaverSources;
-    }
-
     /**
      * 使用ThreadLocal变量传递数据源相关的信息
      */
@@ -224,27 +254,21 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         private final int KEY_GROUP_SIZE = 2;
         private Map<String, DataSourceKey[]> dataSourceKeys;
 
-        DataSourceKeyHolder(Map<String, List<String>> masterDataSourceUrls,
-                            Map<String, List<String>> slaverDataSourceUrls) {
-            construct(masterDataSourceUrls, slaverDataSourceUrls);
+        DataSourceKeyHolder(List<DataSourceConfigObject> configObjects) {
+            construct(configObjects);
         }
 
-        private void construct(Map<String, List<String>> masterDataSourceUrls,
-                               Map<String, List<String>> slaverDataSourceUrls) {
-            if (masterDataSourceUrls == null || slaverDataSourceUrls == null) {
-                throw new NullPointerException("masterDataSourceUrls or slaverDataSourceUrls is null");
+        private void construct(List<DataSourceConfigObject> configObjects) {
+            if (configObjects == null) {
+                throw new NullPointerException("configObjects is null");
             }
             dataSourceKeys = new HashMap<>();
-            for (Map.Entry<String, List<String>> entry : masterDataSourceUrls.entrySet()) {
+            for (DataSourceConfigObject configObject : configObjects) {
+                String baseName = configObject.dataSourceName;
                 DataSourceKey[] keyGroup = new DataSourceKey[KEY_GROUP_SIZE];
-                keyGroup[MASTER_INDEX] = translate(entry.getKey(), entry.getValue(), MASTER);
-                dataSourceKeys.put(entry.getKey(), keyGroup);
-            }
-            for (Map.Entry<String, List<String>> entry : slaverDataSourceUrls.entrySet()) {
-                DataSourceKey[] keyGroup = dataSourceKeys.get(entry.getKey());
-                if (keyGroup != null) {
-                    keyGroup[SLAVER_INDEX] = translate(entry.getKey(), entry.getValue(), SLAVER);
-                }
+                keyGroup[MASTER_INDEX] = translate(baseName, configObject.masterUrls, MASTER);
+                keyGroup[SLAVER_INDEX] = translate(baseName, configObject.slaverUrls, SLAVER);
+                dataSourceKeys.put(baseName, keyGroup);
             }
         }
 
