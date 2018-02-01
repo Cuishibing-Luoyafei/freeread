@@ -1,10 +1,8 @@
 package cui.shibing.freeread.datastrategy;
 
-import cui.shibing.freeread.datasource.DataInfo;
-
 import java.util.Map;
 
-public class DefaultDataSourceStrategy implements DataInfo {
+public class DefaultDataSourceStrategy implements DataSourceStrategy {
     @Override
     public String getDataSourceName(Map<String, Object> params) {
         return null;

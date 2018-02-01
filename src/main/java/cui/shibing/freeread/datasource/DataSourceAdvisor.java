@@ -1,5 +1,6 @@
 package cui.shibing.freeread.datasource;
 
+import cui.shibing.freeread.datastrategy.DataSourceStrategy;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -20,6 +21,8 @@ public class DataSourceAdvisor {
 
     @Autowired
     private DynamicDataSource dataSource;
+
+    private Map<Method, DataSourceStrategy> dataSourceStrategyCache = new HashMap<>();
     
     /**
      * 定义切入点为dao层下的所有方法被调用时
@@ -27,21 +30,34 @@ public class DataSourceAdvisor {
     @Pointcut("execution(* cui.shibing.freeread.dao.*.*(..))")
     public void invokeDaoMethod() {
     }
-    
+
+    private DataSourceStrategy getDataSourceStrategy(Method method,
+                                                     DataSource annotation)
+            throws IllegalAccessException, InstantiationException {
+        DataSourceStrategy dataSourceStrategy;
+        dataSourceStrategy = dataSourceStrategyCache.get(method);
+        if (dataSourceStrategy == null) {
+            dataSourceStrategy = annotation.dataSourceStrategy().newInstance();
+            dataSourceStrategyCache.put(method, dataSourceStrategy);
+        }
+        return dataSourceStrategy;
+    }
+
     @Before("invokeDaoMethod()")
-    public void beforeInvokeDaoMethod(JoinPoint joinPoint) throws IllegalAccessException, InstantiationException {// ProceedingPoint 只使用于环绕
+    public void beforeInvokeDaoMethod(JoinPoint joinPoint) throws IllegalAccessException,
+            InstantiationException {// ProceedingPoint 只使用于环绕
         Method method = ((MethodSignature) joinPoint.getSignature())
                 .getMethod();
         DataSource annotation = method.getAnnotation(DataSource.class);
         
         if (annotation == null) {
-            throw new NullPointerException("DataSource Annotation not null!");
+            throw new NullPointerException("DataSource Annotation is null!");
         }
-        
-        String dataSourceName = "";
-        String tableName = "";
+
+        String dataSourceName;
+        String tableName;
         Map<String, Object> params = null;
-        DataInfo dataInfo = null;
+        DataSourceStrategy dataSourceStrategy = null;
         /**
          * 如果配置了数据库名
          * */
@@ -49,9 +65,9 @@ public class DataSourceAdvisor {
             dataSourceName = annotation.dataSourceName();
         } else {
             try {
-                dataInfo = annotation.dataInfo().newInstance();
+                dataSourceStrategy = getDataSourceStrategy(method, annotation);
                 params = getMethodParmas(joinPoint, method);
-                dataSourceName = dataInfo.getDataSourceName(params);
+                dataSourceName = dataSourceStrategy.getDataSourceName(params);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("get data source key error!" + e.getMessage());
@@ -62,9 +78,7 @@ public class DataSourceAdvisor {
             dataSourceName = dataSource.getDefaultDataSourceName();
         }
 
-        /**
-         * 表名在mybatis拦截器中使用,用于动态修改sql
-         * */
+        /*表名在mybatis拦截器中使用,用于动态修改sql*/
         
         if (!StringUtils.isEmpty(annotation.tableName())) {
             tableName = annotation.tableName();
@@ -73,10 +87,10 @@ public class DataSourceAdvisor {
                 if (params == null) {
                     params = getMethodParmas(joinPoint, method);
                 }
-                if (dataInfo == null) {
-                    dataInfo = annotation.dataInfo().newInstance();
+                if (dataSourceStrategy == null) {
+                    dataSourceStrategy = getDataSourceStrategy(method, annotation);
                 }
-                tableName = dataInfo.getTableName(params);
+                tableName = dataSourceStrategy.getTableName(params);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("get table key error!" + e.getMessage());
@@ -89,12 +103,17 @@ public class DataSourceAdvisor {
                 .setDatasourceType(annotation.value());
     }
 
+    /**
+     * 获取被拦截的方法的参数，返回参数名和参数的键值对。
+     * 但是获取不到参数名，获取到的是类似于arg0,arg1这样的。。。
+     * 想定用参数的下标代替参数名。
+     */
     private Map<String, Object> getMethodParmas(JoinPoint joinPoint, Method targetMethod) {
         Map<String, Object> resultParams = new HashMap<>();
         Parameter[] parameters = targetMethod.getParameters();
         Object[] args = joinPoint.getArgs();
         if (parameters.length != args.length) {
-            logger.info("形参和实参不匹配!");
+            logger.warning("形参和实参不匹配!");
             return resultParams;
         }
         for (int i = 0; i < parameters.length; i++) {

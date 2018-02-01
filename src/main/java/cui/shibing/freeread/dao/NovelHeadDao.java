@@ -27,7 +27,7 @@ public interface NovelHeadDao {
      * 根据小说id查询NovelHead
      * */
     @DataSource(value = SLAVER, dataSourceName = "default-database", originalTableName = "novel_head",
-            dataInfo = SelectNovelHeadByIdStrategy.class)
+            dataSourceStrategy = SelectNovelHeadByIdStrategy.class)
     NovelHead selectNovelHeadByNovelId(String novelId);
 
     /**
