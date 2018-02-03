@@ -19,6 +19,9 @@ import java.util.logging.Logger;
 public class DataSourceAdvisor {
     private Logger logger = Logger.getLogger(getClass().toString());
 
+    /**
+     * 注入这个bean暂时只是为了获取默认的dataSourceName
+     */
     @Autowired
     private DynamicDataSource dataSource;
 
@@ -58,9 +61,7 @@ public class DataSourceAdvisor {
         String tableName;
         Map<String, Object> params = null;
         DataSourceStrategy dataSourceStrategy = null;
-        /**
-         * 如果配置了数据库名
-         * */
+        /* 如果配置了数据库名*/
         if (!StringUtils.isEmpty(annotation.dataSourceName())) {
             dataSourceName = annotation.dataSourceName();
         } else {
