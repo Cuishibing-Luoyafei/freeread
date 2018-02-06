@@ -6,7 +6,7 @@
 				<hr>
 
 				<p>
-                    Copyright © 2013-2017<a target="_blank" href="#">WOO
+                    <a target="_blank" href="#">WOO
                     READ</a>
 				</p>
 			</div>

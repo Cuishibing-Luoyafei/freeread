@@ -15,6 +15,7 @@
                     login-processing-url="/login"/>
 
         <intercept-url pattern="/resources/**" access="permitAll()"/>
+        <intercept-url pattern="/favicon.ico" access="permitAll()"/>
         <intercept-url pattern="/user/loginPage" access="permitAll()"/>
         <intercept-url pattern="/user/loginFailPage" access="permitAll()"/>
         <intercept-url pattern="/user/registerUserPage" access="permitAll()"/>

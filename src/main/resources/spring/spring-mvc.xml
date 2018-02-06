@@ -30,8 +30,11 @@
 	<mvc:default-servlet-handler />
 	
 	<mvc:resources mapping="/resources/**"
-                   location="/WEB-INF/resources"
+                   location="/WEB-INF/resources/"
                    cache-period="#{0}" />
+
+    <!-- 浏览器获取网站图标 -->
+    <mvc:resources mapping="/favicon.ico" location="/WEB-INF/resources/favicon.ico"/>
 	
 	<!-- 配置视图解析器 -->
 	<bean id="tilesViewResolver"
@@ -60,6 +63,5 @@
         <property name="fileEncodings" value="utf-8"/>
         <property name="cacheSeconds" value="120"/>
     </bean>
-
 
 </beans>
