@@ -4,6 +4,8 @@
             <label>${novelChapter.novelChapterName}</label>
             <a style="float:right"
                href="${pageContext.request.contextPath}/novelChapter/novelChapterList?novelId=${novelChapter.novelId }">返回章节列表</a>
+            <a href="${pageContext.request.contextPath}/secretNovel/addSecretNovel?novelId=${novelChapter.novelId }"
+               style="float:right;position:relative;left:-10px">加入书架</a>
         </div>
     </div>
     <div class="panel-body">
