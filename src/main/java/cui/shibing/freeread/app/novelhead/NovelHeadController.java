@@ -98,6 +98,9 @@ public class NovelHeadController {
         model.addAttribute("searchResult", novelHeads);
         model.addAttribute("novelName", searchNovelName);
         UserInfo userInfo = userService.getUserInfo(CommonUtils.getUserNameFromAuthentication(authentication));
+        if(userInfo == null){
+            userInfo = new UserInfo();
+        }
         model.addAttribute("userEmail", userInfo.getUserEmail());
 
         return NOVEL_SEARCH_RESULT_PAGE;

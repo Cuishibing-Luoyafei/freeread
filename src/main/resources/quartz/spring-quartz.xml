@@ -44,8 +44,8 @@
 			<ref bean="spiderNovelAddressJobDetail" />
 		</property>
 		<property name="cronExpression">
-			<value>11 11 11 11 11 ?</value>
-			<!-- 每年执行一次 -->
+			<value>0 25 23 * * ?</value>
+			<!-- 每天23:05执行一次 -->
 		</property>
 	</bean>
 

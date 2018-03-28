@@ -28,7 +28,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     private NovelChapterService novelChapterService;
 
     @Override
-    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+ #className+'.'+#pageable")
+    //@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName+'.'+ #className+'.'+#pageable")
     public Page<NovelHead> searchByNovelClass(String className, Pageable pageable) {
         if (StringUtils.isEmpty(className) || !validatePageable(pageable)) {
             return emptyPageObject(pageable);
@@ -42,7 +42,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     }
 
     @Override
-    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #pageable")
+    //@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #pageable")
     public Page<NovelHead> searchByPopularity(Pageable pageable) {
         if (!validatePageable(pageable)) {
             return emptyPageObject(pageable);
@@ -56,7 +56,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     }
 
     @Override
-    @Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #novelName +'.' + #pageable")
+    //@Cacheable(value = "default", cacheManager = "cacheManager", key = "#root.targetClass+'.'+#root.methodName +'.'+ #novelName +'.' + #pageable")
     public Page<NovelHead> searchByNovelName(String novelName, Pageable pageable) {
         if (StringUtils.isEmpty(novelName) || !validatePageable(pageable)) {
             return emptyPageObject(pageable);

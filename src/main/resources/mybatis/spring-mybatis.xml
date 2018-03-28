@@ -32,7 +32,7 @@
                     <property name="dataSourceName" value="default-database"/>
                     <property name="masterUrls">
                         <array>
-                            <value>jdbc:mysql://45.77.149.102:3306/freeread_db</value>
+                            <value>jdbc:mysql://localhost:3306/freeread_db</value>
                         </array>
                     </property>
                     <property name="slaverUrls">
