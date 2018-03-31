@@ -7,7 +7,10 @@
     <div class="panel-body">
         <ul class="list-group">
             <c:forEach items="${wishItems.getContent()}" var="wishItem">
-                <li class="list-group-item">${wishItem.novelName}</li>
+                <li class="list-group-item">
+                    <label>${wishItem.novelName}</label>
+                    <a href="${pageContext.request.contextPath}/wishlist/removeWishItem?userName=${wishItem.userName}&userEmail=${wishItem.userEmail}&novelName=${wishItem.novelName}" style="float:right">删除</a>
+                </li>
             </c:forEach>
         </ul>
     </div>
