@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +24,16 @@ public class BaseServiceOutput<T> implements Serializable {
     private int code;
     private String message;
     private T data;
+
+    public BaseServiceOutput(int code,String message,Supplier<T> supplier){
+        this(code,message);
+        this.data = supplier.get();
+    }
+
+    public BaseServiceOutput(int code,String message){
+        this.code = code;
+        this.message = message;
+    }
 
     public <R> R ifSuccess(Function<T,R> function){
         return function.apply(data);

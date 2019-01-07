@@ -17,7 +17,7 @@ import java.util.Locale;
 @SpringBootApplication
 @EnableCommonRepository
 @RestController
-public class Application implements CommandLineRunner,MessageSourceAware {
+public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -27,17 +27,5 @@ public class Application implements CommandLineRunner,MessageSourceAware {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasenames("message");
         return messageSource;
-    }
-
-    private MessageSource messageSource;
-
-    @Override
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-        System.out.println(messageSource.getMessage("no-such",new Object[]{"user"},Locale.CHINA));
     }
 }

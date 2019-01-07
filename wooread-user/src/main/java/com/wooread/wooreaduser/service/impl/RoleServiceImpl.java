@@ -74,7 +74,7 @@ public class RoleServiceImpl implements RoleService {
         for (char c : chars) {
             if (!Character.isDigit(c) && c != ',') {
                 result.setData(false);
-                result.setMessage(message("input-has-chinese"));
+                result.setMessage(message("invalid-role-ids"));
                 return result;
             }
         }

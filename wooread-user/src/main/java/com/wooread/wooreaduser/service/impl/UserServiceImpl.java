@@ -6,7 +6,6 @@ import com.wooread.wooreaduser.model.User;
 import com.wooread.wooreaduser.model.UserInfo;
 import com.wooread.wooreaduser.service.RoleService;
 import com.wooread.wooreaduser.service.UserService;
-import com.wooread.wooreaduser.tools.MessageTools;
 import cui.shibing.commonrepository.CommonRepository;
 import cui.shibing.commonrepository.Specifications;
 import org.springframework.beans.BeanUtils;
@@ -41,12 +40,12 @@ public class UserServiceImpl implements UserService {
     public BaseServiceOutput<User> createUser(UserServiceInput.CreateUserInput input) {
         List<User> users = userCommonRepository.findAll(Specifications.equal("userName", input.getUserName()));
         if (users.size() > 0)
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","user"), null);
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "user"));
 
         BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
         BaseServiceOutput<User> roleValidateResult = validateResult.ifSuccess((isValid) -> {
             if (!isValid)
-                return new BaseServiceOutput<>(CODE_FAIL, validateResult.getMessage(), null);
+                return new BaseServiceOutput<>(CODE_FAIL, validateResult.getMessage());
             return null;
         });
         if (roleValidateResult != null)
@@ -60,7 +59,7 @@ public class UserServiceImpl implements UserService {
         if (userName.size() > 1) {// 用户名重复
             // 把这条信息删除
             userCommonRepository.delete(user);
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","user"), null);
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "user"));
         }
 
         UserInfo userInfo = new UserInfo();
@@ -78,18 +77,26 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(input, user);
             userCommonRepository.save(user);
             return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), user);
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","user"), null));
+        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such", "user")));
     }
 
     @Override
-    public BaseServiceOutput<UserInfo> updateUserInfo(UserServiceInput.UpdateUserInput input) {
+    public BaseServiceOutput<UserInfo> updateUserInfo(UserServiceInput.UpdateUserInfoInput input) {
+        BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
+        BaseServiceOutput<UserInfo> roleValidateResult = validateResult.ifSuccess((isValid) -> {
+            if (!isValid)
+                return new BaseServiceOutput<>(CODE_FAIL, validateResult.getMessage());
+            return null;
+        });
+        if (roleValidateResult != null)
+            return roleValidateResult;
         return userCommonRepository.findById(input.getUserId()).map(user -> {
             return userInfoCommonRepository.findById(user.getUserInfoId()).map(userInfo -> {
                 BeanUtils.copyProperties(input, userInfo);
                 userInfoCommonRepository.save(userInfo);
                 return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), userInfo);
-            }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","user info"), null));
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","user"), null));
+            }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such", "user info")));
+        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such", "user")));
     }
 
     @Override
@@ -101,12 +108,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseServiceOutput<User> findUserByName(String userName) {
         Optional<User> user = userCommonRepository.findOne(Specifications.equal("userName", userName));
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), user.get());
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> user.orElse(null));
     }
 
     @Override
     public BaseServiceOutput<UserInfo> findUserInfo(Integer userId) {
         Optional<UserInfo> userInfo = userInfoCommonRepository.findOne(Specifications.equal("userId", userId));
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), userInfo.get());
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> userInfo.orElse(null));
     }
 }

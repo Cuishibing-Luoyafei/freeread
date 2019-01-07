@@ -14,7 +14,7 @@ public interface UserService {
 
     BaseServiceOutput<UserInfo> findUserInfo(Integer userId);
 
-    BaseServiceOutput<UserInfo> updateUserInfo(UserServiceInput.UpdateUserInput input);
+    BaseServiceOutput<UserInfo> updateUserInfo(UserServiceInput.UpdateUserInfoInput input);
 
     BaseServiceOutput<List<User>> findUserLikeName(String userName);
 

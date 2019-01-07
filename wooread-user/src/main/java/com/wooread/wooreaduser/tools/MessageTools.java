@@ -3,6 +3,7 @@ package com.wooread.wooreaduser.tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.FieldError;
 
 import javax.annotation.PostConstruct;
 import java.util.Locale;
@@ -19,12 +20,17 @@ public class MessageTools {
         messageTools = this;
     }
 
-    public static String message(String code,String... args){
-        return message(code,args);
+    public static String message(String code, String... args) {
+        return messageTools.messageSource.getMessage(code, args, Locale.getDefault());
     }
 
-    public static String message(String code, Object[] args) {
+    public static String message(String code, Object... args) {
         return messageTools.messageSource.getMessage(code, args, Locale.getDefault());
+    }
+
+    public static String message(FieldError fieldError) {
+        return messageTools.messageSource.getMessage(fieldError.getCode(), new Object[]{fieldError.getField()},
+                fieldError.getField()+":"+fieldError.getDefaultMessage(), Locale.getDefault());
     }
 
 }
