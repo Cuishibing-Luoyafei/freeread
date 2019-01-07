@@ -9,7 +9,7 @@ import java.util.List;
 public interface RoleService {
     BaseServiceOutput<Role> createRole(RoleServiceInput.CreateRoleInput input);
 
-    BaseServiceOutput<?> deleteRoleById(Integer roleId);
+    BaseServiceOutput<Boolean> deleteRoleById(Integer roleId);
 
     BaseServiceOutput<Role> updateRole(RoleServiceInput.UpdateRoleInput input);
 

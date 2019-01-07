@@ -31,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
     public BaseServiceOutput<Role> createRole(RoleServiceInput.CreateRoleInput input) {
         List<Role> roles = roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName()));
         if (roles.size() > 0)
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","role name"), null);
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "role name"));
 
         Role role = new Role();
         BeanUtils.copyProperties(input, role);
@@ -39,24 +39,32 @@ public class RoleServiceImpl implements RoleService {
 
         if (roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName())).size() > 1) {
             roleCommonRepository.delete(role);
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","role name"), null);
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "role name"));
         }
         return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), role);
     }
 
     @Override
-    public BaseServiceOutput<?> deleteRoleById(Integer roleId) {
-        roleCommonRepository.deleteById(roleId);
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), null);
+    public BaseServiceOutput<Boolean> deleteRoleById(Integer roleId) {
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
+            roleCommonRepository.deleteById(roleId);
+            return true;
+        });
     }
 
     @Override
     public BaseServiceOutput<Role> updateRole(RoleServiceInput.UpdateRoleInput input) {
         return roleCommonRepository.findById(input.getRoleId()).map(role -> {
+            List<Role> allRoles = roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName()));
+            for (Role r : allRoles) {
+                if (r.getRoleName().equals(input.getRoleName()) && !r.getRoleId().equals(role.getRoleId())) {
+                    return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "role name"), (Role) null);
+                }
+            }
             BeanUtils.copyProperties(input, role);
             role = roleCommonRepository.save(role);
             return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), role);
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","role"), null));
+        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such", "role")));
     }
 
     @Override
@@ -85,7 +93,7 @@ public class RoleServiceImpl implements RoleService {
         for (String idStr : splitIds) {
             if (!roleIdSet.contains(Integer.parseInt(idStr))) {
                 result.setData(false);
-                result.setMessage(message("no-such","role id"));
+                result.setMessage(message("no-such", "role id"));
                 return result;
             }
         }

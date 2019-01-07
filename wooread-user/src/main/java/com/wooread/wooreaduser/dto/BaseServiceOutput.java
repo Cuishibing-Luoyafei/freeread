@@ -25,21 +25,22 @@ public class BaseServiceOutput<T> implements Serializable {
     private String message;
     private T data;
 
-    public BaseServiceOutput(int code,String message,Supplier<T> supplier){
-        this(code,message);
-        this.data = supplier.get();
+    public BaseServiceOutput(int code, String message, Supplier<T> supplier) {
+        this(code, message);
+        if (supplier != null)
+            this.data = supplier.get();
     }
 
-    public BaseServiceOutput(int code,String message){
+    public BaseServiceOutput(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public <R> R ifSuccess(Function<T,R> function){
+    public <R> R ifSuccess(Function<T, R> function) {
         return function.apply(data);
     }
 
-    public void ifSuccess(Consumer<T> consumer){
+    public void ifSuccess(Consumer<T> consumer) {
         consumer.accept(data);
     }
 

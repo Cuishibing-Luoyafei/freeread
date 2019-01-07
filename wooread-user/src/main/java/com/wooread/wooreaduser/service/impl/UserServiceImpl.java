@@ -43,13 +43,8 @@ public class UserServiceImpl implements UserService {
             return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "user"));
 
         BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
-        BaseServiceOutput<User> roleValidateResult = validateResult.ifSuccess((isValid) -> {
-            if (!isValid)
-                return new BaseServiceOutput<>(CODE_FAIL, validateResult.getMessage());
-            return null;
-        });
-        if (roleValidateResult != null)
-            return roleValidateResult;
+        if (validateResult.getData())
+            return new BaseServiceOutput<>(CODE_FAIL, validateResult.getMessage());
 
         User user = new User();
         BeanUtils.copyProperties(input, user);
@@ -83,13 +78,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseServiceOutput<UserInfo> updateUserInfo(UserServiceInput.UpdateUserInfoInput input) {
         BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
-        BaseServiceOutput<UserInfo> roleValidateResult = validateResult.ifSuccess((isValid) -> {
-            if (!isValid)
-                return new BaseServiceOutput<>(CODE_FAIL, validateResult.getMessage());
-            return null;
-        });
-        if (roleValidateResult != null)
-            return roleValidateResult;
+        if (validateResult.getData())
+            return new BaseServiceOutput<>(CODE_FAIL, validateResult.getMessage());
+
         return userCommonRepository.findById(input.getUserId()).map(user -> {
             return userInfoCommonRepository.findById(user.getUserInfoId()).map(userInfo -> {
                 BeanUtils.copyProperties(input, userInfo);
@@ -101,19 +92,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BaseServiceOutput<List<User>> findUserLikeName(String userName) {
-        List<User> users = userCommonRepository.findAll(Specifications.like("userName", "%" + userName + "%"));
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), users);
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
+            return userCommonRepository.findAll(Specifications.like("userName", "%" + userName + "%"));
+        });
     }
 
     @Override
     public BaseServiceOutput<User> findUserByName(String userName) {
-        Optional<User> user = userCommonRepository.findOne(Specifications.equal("userName", userName));
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> user.orElse(null));
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
+            return userCommonRepository.findOne(Specifications.equal("userName", userName)).orElse(null);
+        });
     }
 
     @Override
     public BaseServiceOutput<UserInfo> findUserInfo(Integer userId) {
-        Optional<UserInfo> userInfo = userInfoCommonRepository.findOne(Specifications.equal("userId", userId));
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> userInfo.orElse(null));
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
+            return userInfoCommonRepository.findOne(Specifications.equal("userId", userId)).orElse(null);
+        });
     }
 }

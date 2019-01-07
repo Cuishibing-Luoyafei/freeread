@@ -29,8 +29,10 @@ public class MessageTools {
     }
 
     public static String message(FieldError fieldError) {
-        return messageTools.messageSource.getMessage(fieldError.getCode(), new Object[]{fieldError.getField()},
-                fieldError.getField()+":"+fieldError.getDefaultMessage(), Locale.getDefault());
+        if (fieldError != null)
+            return messageTools.messageSource.getMessage(fieldError.getCode(), new Object[]{fieldError.getField()},
+                    fieldError.getField() + ":" + fieldError.getDefaultMessage(), Locale.getDefault());
+        return "";
     }
 
 }
