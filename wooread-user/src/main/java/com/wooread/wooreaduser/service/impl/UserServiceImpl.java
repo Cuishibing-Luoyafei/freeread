@@ -6,6 +6,7 @@ import com.wooread.wooreaduser.model.User;
 import com.wooread.wooreaduser.model.UserInfo;
 import com.wooread.wooreaduser.service.RoleService;
 import com.wooread.wooreaduser.service.UserService;
+import com.wooread.wooreaduser.tools.MessageTools;
 import cui.shibing.commonrepository.CommonRepository;
 import cui.shibing.commonrepository.Specifications;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_FAIL;
 import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_SUCCESS;
+import static com.wooread.wooreaduser.tools.MessageTools.message;
 
 @Service
 @Transactional
@@ -38,8 +40,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseServiceOutput<User> createUser(UserServiceInput.CreateUserInput input) {
         List<User> users = userCommonRepository.findAll(Specifications.equal("userName", input.getUserName()));
-        if (users.size() > CODE_SUCCESS)
-            return new BaseServiceOutput<>(CODE_FAIL, "already has user", null);
+        if (users.size() > 0)
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","user"), null);
 
         BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
         BaseServiceOutput<User> roleValidateResult = validateResult.ifSuccess((isValid) -> {
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
         if (userName.size() > 1) {// 用户名重复
             // 把这条信息删除
             userCommonRepository.delete(user);
-            return new BaseServiceOutput<>(CODE_FAIL, "already has user", null);
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","user"), null);
         }
 
         UserInfo userInfo = new UserInfo();
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
         userInfoCommonRepository.save(userInfo);
         user.setUserInfoId(userInfo.getUserInfoId());
         userCommonRepository.save(user);
-        return new BaseServiceOutput<>(CODE_SUCCESS, "success", user);
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), user);
     }
 
     @Override
@@ -75,8 +77,8 @@ public class UserServiceImpl implements UserService {
         return userCommonRepository.findById(input.getUserId()).map(user -> {
             BeanUtils.copyProperties(input, user);
             userCommonRepository.save(user);
-            return new BaseServiceOutput<>(CODE_SUCCESS, "success", user);
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, "no such user", null));
+            return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), user);
+        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","user"), null));
     }
 
     @Override
@@ -85,26 +87,26 @@ public class UserServiceImpl implements UserService {
             return userInfoCommonRepository.findById(user.getUserInfoId()).map(userInfo -> {
                 BeanUtils.copyProperties(input, userInfo);
                 userInfoCommonRepository.save(userInfo);
-                return new BaseServiceOutput<>(CODE_SUCCESS, "success", userInfo);
-            }).orElse(new BaseServiceOutput<>(CODE_FAIL, "no such user Info", null));
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, "no such user", null));
+                return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), userInfo);
+            }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","user info"), null));
+        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","user"), null));
     }
 
     @Override
     public BaseServiceOutput<List<User>> findUserLikeName(String userName) {
         List<User> users = userCommonRepository.findAll(Specifications.like("userName", "%" + userName + "%"));
-        return new BaseServiceOutput<>(CODE_SUCCESS, "success", users);
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), users);
     }
 
     @Override
     public BaseServiceOutput<User> findUserByName(String userName) {
         Optional<User> user = userCommonRepository.findOne(Specifications.equal("userName", userName));
-        return new BaseServiceOutput<>(CODE_SUCCESS, "success", user.get());
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), user.get());
     }
 
     @Override
     public BaseServiceOutput<UserInfo> findUserInfo(Integer userId) {
         Optional<UserInfo> userInfo = userInfoCommonRepository.findOne(Specifications.equal("userId", userId));
-        return new BaseServiceOutput<>(CODE_SUCCESS, "success", userInfo.get());
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), userInfo.get());
     }
 }

@@ -17,6 +17,7 @@ import java.util.*;
 
 import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_FAIL;
 import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_SUCCESS;
+import static com.wooread.wooreaduser.tools.MessageTools.message;
 
 @Service
 @Transactional
@@ -30,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
     public BaseServiceOutput<Role> createRole(RoleServiceInput.CreateRoleInput input) {
         List<Role> roles = roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName()));
         if (roles.size() > 0)
-            return new BaseServiceOutput<>(CODE_FAIL, "same role name", null);
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","role name"), null);
 
         Role role = new Role();
         BeanUtils.copyProperties(input, role);
@@ -38,15 +39,15 @@ public class RoleServiceImpl implements RoleService {
 
         if (roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName())).size() > 1) {
             roleCommonRepository.delete(role);
-            return new BaseServiceOutput<>(CODE_FAIL, "same role name", null);
+            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate","role name"), null);
         }
-        return new BaseServiceOutput<>(CODE_SUCCESS, "success", role);
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), role);
     }
 
     @Override
     public BaseServiceOutput<?> deleteRoleById(Integer roleId) {
         roleCommonRepository.deleteById(roleId);
-        return new BaseServiceOutput<>(CODE_SUCCESS, "success", null);
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), null);
     }
 
     @Override
@@ -54,18 +55,18 @@ public class RoleServiceImpl implements RoleService {
         return roleCommonRepository.findById(input.getRoleId()).map(role -> {
             BeanUtils.copyProperties(input, role);
             role = roleCommonRepository.save(role);
-            return new BaseServiceOutput<>(CODE_SUCCESS, "success", role);
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, "no such role", null));
+            return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), role);
+        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such","role"), null));
     }
 
     @Override
     public BaseServiceOutput<List<Role>> findAllRole() {
-        return new BaseServiceOutput<>(CODE_SUCCESS, "success", roleCommonRepository.findAll());
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), roleCommonRepository.findAll());
     }
 
     @Override
     public BaseServiceOutput<Boolean> isValidRoleId(String roleIds) {
-        BaseServiceOutput<Boolean> result = new BaseServiceOutput<>(CODE_SUCCESS, "success", true);
+        BaseServiceOutput<Boolean> result = new BaseServiceOutput<>(CODE_SUCCESS, message("success"), true);
         if (StringUtils.isEmpty(roleIds)) {
             return result;
         }
@@ -73,7 +74,7 @@ public class RoleServiceImpl implements RoleService {
         for (char c : chars) {
             if (!Character.isDigit(c) && c != ',') {
                 result.setData(false);
-                result.setMessage("输入中含有其他字符");
+                result.setMessage(message("input-has-chinese"));
                 return result;
             }
         }
@@ -84,7 +85,7 @@ public class RoleServiceImpl implements RoleService {
         for (String idStr : splitIds) {
             if (!roleIdSet.contains(Integer.parseInt(idStr))) {
                 result.setData(false);
-                result.setMessage("不存在的role id");
+                result.setMessage(message("no-such","role id"));
                 return result;
             }
         }

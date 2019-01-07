@@ -17,6 +17,9 @@ public class UserController {
 
     @GetMapping("findUserLikeName")
     public BaseServiceOutput<List<User>> findUserLikeName(@RequestParam(value = "name",required = false) String name){
+        if(true){
+            throw new RuntimeException("df");
+        }
         if(name == null){
             return new BaseServiceOutput<>(-1,"name not be null",null);
         }
