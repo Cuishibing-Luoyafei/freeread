@@ -15,7 +15,7 @@ public class NovelHeadServiceInput {
         @NotNull
         private Integer authorId;
         private String picture;
-        private String desc;
+        private String description;
         private Boolean canShow;
     }
 

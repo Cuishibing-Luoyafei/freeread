@@ -19,4 +19,6 @@ public interface UserService {
     BaseServiceOutput<List<User>> findUserLikeName(String userName);
 
     BaseServiceOutput<User> findUserByName(String userName);
+
+    BaseServiceOutput<User> findUserById(Integer userId);
 }

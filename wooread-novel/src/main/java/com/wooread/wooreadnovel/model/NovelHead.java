@@ -23,6 +23,6 @@ public class NovelHead implements Serializable {
     private String novelName;
     private Integer authorId;
     private String picture;
-    private String desc;
+    private String description;
     private Boolean canShow;
 }

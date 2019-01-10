@@ -110,4 +110,9 @@ public class UserServiceImpl implements UserService {
             return userInfoCommonRepository.findOne(Specifications.equal("userId", userId)).orElse(null);
         });
     }
+
+    @Override
+    public BaseServiceOutput<User> findUserById(Integer userId) {
+        return new BaseServiceOutput<>(CODE_SUCCESS,message("success"),()-> userCommonRepository.findById(userId).orElse(null));
+    }
 }

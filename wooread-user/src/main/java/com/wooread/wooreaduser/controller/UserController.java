@@ -6,20 +6,29 @@ import com.wooread.wooreaduser.model.User;
 import com.wooread.wooreaduser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_FAIL;
+import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_SUCCESS;
 import static com.wooread.wooreaduser.tools.MessageTools.message;
 
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @GetMapping("existUser")
+    public BaseServiceOutput<Boolean> existUser(@RequestParam("userId") Integer userId){
+        return new BaseServiceOutput<>(CODE_SUCCESS,message("success"),()->{
+            return userService.findUserById(userId).getData() != null;
+        });
+    }
 
     @GetMapping("findUserLikeName")
     public BaseServiceOutput<List<User>> findUserLikeName(@RequestParam(value = "name") String name) {

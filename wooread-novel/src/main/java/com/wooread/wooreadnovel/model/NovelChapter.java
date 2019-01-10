@@ -20,7 +20,7 @@ public class NovelChapter implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer chapterId;
-    private Integer index;
+    private Integer number;
     private String title;
     private String content;
 }
