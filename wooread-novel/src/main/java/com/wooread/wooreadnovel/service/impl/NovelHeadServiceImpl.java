@@ -2,6 +2,7 @@ package com.wooread.wooreadnovel.service.impl;
 
 import com.wooread.wooreadnovel.dto.BaseServiceOutput;
 import com.wooread.wooreadnovel.dto.NovelHeadServiceInput;
+import com.wooread.wooreadnovel.model.NovelChapter;
 import com.wooread.wooreadnovel.model.NovelHead;
 import com.wooread.wooreadnovel.service.NovelHeadService;
 import com.wooread.wooreadnovel.service.UserService;
@@ -16,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-import static com.wooread.wooreadnovel.dto.BaseServiceOutput.CODE_FAIL;
-import static com.wooread.wooreadnovel.dto.BaseServiceOutput.CODE_SUCCESS;
+import static com.wooread.wooreadnovel.dto.BaseServiceOutput.*;
 import static com.wooread.wooreadnovel.tools.MessageTools.message;
 
 @Service
@@ -25,59 +25,60 @@ import static com.wooread.wooreadnovel.tools.MessageTools.message;
 public class NovelHeadServiceImpl implements NovelHeadService {
 
     @Resource(name = "NovelHead")
-    private CommonRepository<NovelHead, Integer> novelHeadcommonRespository;
+    private CommonRepository<NovelHead, Integer> novelHeadCommonRepository;
+
+    @Resource(name = "NovelChapter")
+    private CommonRepository<NovelChapter, Integer> novelChapterCommonRepository;
 
     @Autowired
     private UserService userService;
 
     @Override
     public BaseServiceOutput<NovelHead> createNovelHead(NovelHeadServiceInput.CreateNovelHeadInput input) {
-        if (novelHeadcommonRespository.findAll(Specifications.equal(
+        if (novelHeadCommonRepository.findAll(Specifications.equal(
                 "novelName", input.getNovelName())).size() > 0) {
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "novel"));
+            return ofFail(message("duplicate", "novel"));
         }
         if (!userService.existUser(input.getAuthorId()).getData()) {
-            return new BaseServiceOutput<>(CODE_FAIL, message("no-such", "author"));
+            return ofFail(message("no-such", "author"));
         }
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
+        return ofSuccess(() -> {
             NovelHead novelHead = new NovelHead();
             BeanUtils.copyProperties(input, novelHead);
-            return novelHeadcommonRespository.save(novelHead);
+            return novelHeadCommonRepository.save(novelHead);
         });
     }
 
     @Override
     public BaseServiceOutput<NovelHead> updateNovelHead(NovelHeadServiceInput.UpdateNovelHeadInput input) {
-        if (novelHeadcommonRespository.findAll(Specifications.equal("novelName", input.getNovelName())).size() > 0) {
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "novel name"));
+        if (novelHeadCommonRepository.findAll(Specifications.equal("novelName", input.getNovelName())).size() > 0) {
+            return ofFail(message("duplicate", "novel name"));
         }
         if (!userService.existUser(input.getAuthorId()).getData()) {
-            return new BaseServiceOutput<>(CODE_FAIL, message("no-such", "author"));
+            return ofFail(message("no-such", "author"));
         }
-        return novelHeadcommonRespository.findById(input.getNovelId()).map(novelHead -> {
-            return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
+        return novelHeadCommonRepository.findById(input.getNovelId()).map(novelHead -> {
+            return ofSuccess(() -> {
                 BeanUtils.copyProperties(input, novelHead);
-                return novelHeadcommonRespository.save(novelHead);
+                return novelHeadCommonRepository.save(novelHead);
             });
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such", "novel head")));
+        }).orElse(ofFail(message("no-such", "novel head")));
     }
 
     @Override
     public BaseServiceOutput<Boolean> deleteNovelHead(Integer novelId) {
-        return novelHeadcommonRespository.findById(novelId).map(novelHead -> {
-            return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
-                novelHeadcommonRespository.delete(novelHead);
-                // TODO:删除对应的章节
+        return novelHeadCommonRepository.findById(novelId).map(novelHead -> {
+            return ofSuccess(() -> {
+                novelHeadCommonRepository.delete(novelHead);
+                novelChapterCommonRepository.deleteInBatch(novelChapterCommonRepository.findAll(Specifications.equal("novelId", novelId)));
                 return true;
             });
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such", "novel"), false));
+        }).orElse(ofFail(message("no-such", "novel"), false));
     }
 
     @Override
     public BaseServiceOutput<Page<NovelHead>> findByLikeName(String name, Pageable pageable) {
         String likeName = "%" + name + "%";
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
-            return novelHeadcommonRespository.findAll(Specifications.like("novelName", likeName), pageable);
-        });
+        return ofSuccess(() -> novelHeadCommonRepository.findAll(Specifications.like("novelName", likeName), pageable));
     }
 }

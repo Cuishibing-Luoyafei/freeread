@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.io.Serializable;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static com.wooread.wooreaduser.tools.MessageTools.message;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +34,30 @@ public class BaseServiceOutput<T> implements Serializable {
     public BaseServiceOutput(int code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public static <T> BaseServiceOutput<T> ofSuccess(Supplier<T> supplier){
+        return new BaseServiceOutput<>(CODE_SUCCESS,message("success"),supplier);
+    }
+
+    public static <T> BaseServiceOutput<T> ofSuccess(T data){
+        return new BaseServiceOutput<>(CODE_SUCCESS,message("success"),data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofFail(String message){
+        return new BaseServiceOutput<>(CODE_FAIL,message);
+    }
+
+    public static <T> BaseServiceOutput<T> ofFail(String message,T data){
+        return new BaseServiceOutput<>(CODE_FAIL,message,data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofException(String message){
+        return new BaseServiceOutput<>(CODE_EXCEPTION,message);
+    }
+
+    public static <T> BaseServiceOutput<T> ofException(String message,T data){
+        return new BaseServiceOutput<>(CODE_EXCEPTION,message,data);
     }
 
     public <R> R ifSuccess(Function<T, R> function) {

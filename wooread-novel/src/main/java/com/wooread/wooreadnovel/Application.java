@@ -1,4 +1,4 @@
-package com.wooread;
+package com.wooread.wooreadnovel;
 
 import cui.shibing.EnableCommonRepository;
 import org.springframework.boot.SpringApplication;

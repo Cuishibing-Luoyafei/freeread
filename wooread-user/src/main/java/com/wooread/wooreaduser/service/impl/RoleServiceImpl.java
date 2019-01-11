@@ -15,8 +15,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_FAIL;
-import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_SUCCESS;
+import static com.wooread.wooreaduser.dto.BaseServiceOutput.*;
 import static com.wooread.wooreaduser.tools.MessageTools.message;
 
 @Service
@@ -31,7 +30,7 @@ public class RoleServiceImpl implements RoleService {
     public BaseServiceOutput<Role> createRole(RoleServiceInput.CreateRoleInput input) {
         List<Role> roles = roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName()));
         if (roles.size() > 0)
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "role name"));
+            return ofFail(message("duplicate", "role name"));
 
         Role role = new Role();
         BeanUtils.copyProperties(input, role);
@@ -39,14 +38,14 @@ public class RoleServiceImpl implements RoleService {
 
         if (roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName())).size() > 1) {
             roleCommonRepository.delete(role);
-            return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "role name"));
+            return ofFail(message("duplicate", "role name"));
         }
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), role);
+        return ofSuccess(role);
     }
 
     @Override
     public BaseServiceOutput<Boolean> deleteRoleById(Integer roleId) {
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), () -> {
+        return ofSuccess(() -> {
             roleCommonRepository.deleteById(roleId);
             return true;
         });
@@ -58,18 +57,18 @@ public class RoleServiceImpl implements RoleService {
             List<Role> allRoles = roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName()));
             for (Role r : allRoles) {
                 if (r.getRoleName().equals(input.getRoleName()) && !r.getRoleId().equals(role.getRoleId())) {
-                    return new BaseServiceOutput<>(CODE_FAIL, message("duplicate", "role name"), (Role) null);
+                    return ofFail(message("duplicate", "role name"), (Role) null);
                 }
             }
             BeanUtils.copyProperties(input, role);
             role = roleCommonRepository.save(role);
-            return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), role);
-        }).orElse(new BaseServiceOutput<>(CODE_FAIL, message("no-such", "role")));
+            return ofSuccess(role);
+        }).orElse(ofFail(message("no-such", "role")));
     }
 
     @Override
     public BaseServiceOutput<List<Role>> findAllRole() {
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), roleCommonRepository.findAll());
+        return ofSuccess(roleCommonRepository.findAll());
     }
 
     @Override

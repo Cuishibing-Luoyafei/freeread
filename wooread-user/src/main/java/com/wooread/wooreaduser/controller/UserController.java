@@ -3,6 +3,7 @@ package com.wooread.wooreaduser.controller;
 import com.wooread.wooreaduser.dto.BaseServiceOutput;
 import com.wooread.wooreaduser.dto.UserServiceInput;
 import com.wooread.wooreaduser.model.User;
+import com.wooread.wooreaduser.model.UserInfo;
 import com.wooread.wooreaduser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -14,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_FAIL;
-import static com.wooread.wooreaduser.dto.BaseServiceOutput.CODE_SUCCESS;
+import static com.wooread.wooreaduser.dto.BaseServiceOutput.*;
 import static com.wooread.wooreaduser.tools.MessageTools.message;
 
 @RestController
@@ -24,10 +24,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("existUser")
-    public BaseServiceOutput<Boolean> existUser(@RequestParam("userId") Integer userId){
-        return new BaseServiceOutput<>(CODE_SUCCESS,message("success"),()->{
-            return userService.findUserById(userId).getData() != null;
-        });
+    public BaseServiceOutput<Boolean> existUser(@RequestParam("userId") Integer userId) {
+        return ofSuccess(() -> userService.findUserById(userId).getData() != null);
     }
 
     @GetMapping("findUserLikeName")
@@ -41,26 +39,18 @@ public class UserController {
     }
 
     @PostMapping("createUser")
-    public BaseServiceOutput<?> createUser(@Validated UserServiceInput.CreateUserInput input, BindingResult bindingResult) {
-        BaseServiceOutput<?> result = new BaseServiceOutput<>(CODE_FAIL, "");
+    public BaseServiceOutput<User> createUser(@Validated UserServiceInput.CreateUserInput input, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            result.setMessage(message(bindingResult.getFieldError()));
-            return result;
+            return ofFail(message(bindingResult.getFieldError()));
         }
-        result = userService.createUser(input);
-        result.setData(null);
-        return result;
+        return userService.createUser(input);
     }
 
     @PostMapping("updateUserInfo")
-    public BaseServiceOutput<?> updateUserInfo(@Validated UserServiceInput.UpdateUserInfoInput input, BindingResult bindingResult){
-        BaseServiceOutput<?> result = new BaseServiceOutput<>(CODE_FAIL, "");
+    public BaseServiceOutput<UserInfo> updateUserInfo(@Validated UserServiceInput.UpdateUserInfoInput input, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            result.setMessage(message(bindingResult.getFieldError()));
-            return result;
+            return ofFail(message(bindingResult.getFieldError()));
         }
-        result = userService.updateUserInfo(input);
-        result.setData(null);
-        return result;
+        return userService.updateUserInfo(input);
     }
 }
