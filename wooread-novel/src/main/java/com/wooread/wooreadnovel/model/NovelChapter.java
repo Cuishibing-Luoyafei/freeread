@@ -18,8 +18,7 @@ public class NovelChapter implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer chapterId;
     private Integer novelId;
-    private String title;
 
-    @Column(length = 30000,columnDefinition = "text")
+    @Column(columnDefinition = "text")
     private String content;
 }

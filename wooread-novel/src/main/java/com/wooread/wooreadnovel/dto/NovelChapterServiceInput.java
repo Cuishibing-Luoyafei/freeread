@@ -13,20 +13,18 @@ public class NovelChapterServiceInput {
         @NotNull
         private Integer novelId;
         @NotEmpty
-        @Length(max = 100)
-        private String title;
-        @NotEmpty
         @Length(max = 30000)
         private String content;
+
+        @NotEmpty
+        @Length(max = 100)
+        private String title;
     }
 
     @Data
     public static class UpdateNovelChapterInput {
         @NotNull
         private Integer chapterId;
-        @NotEmpty
-        @Length(max = 100)
-        private String title;
         @NotEmpty
         @Length(max = 30000)
         private String content;
