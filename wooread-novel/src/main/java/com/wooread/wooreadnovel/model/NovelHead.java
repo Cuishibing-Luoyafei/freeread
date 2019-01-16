@@ -21,8 +21,8 @@ public class NovelHead implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer novelId;
     private String novelName;
-    private Integer authorId;
     private String picture;
     private String description;
     private Boolean canShow;
+    private Integer userId;
 }

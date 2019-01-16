@@ -12,12 +12,12 @@ public class NovelHeadServiceInput {
         @NotEmpty
         @Length(max = 100)
         private String novelName;
-        @NotNull
-        private Integer authorId;
         private String picture;
         @Length(max = 300)
         private String description;
         private Boolean canShow;
+        @NotNull
+        private Integer userId;
     }
 
     @Data

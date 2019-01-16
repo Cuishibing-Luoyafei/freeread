@@ -1,0 +1,29 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: wooread-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: wooread-user
+          uri: lb://wooread-user
+          predicates:
+            - Path=/wooread-user/**
+          filters:
+            - RewritePath=/wooread-user/(?<segment>.*),/$\{segment}
+
+        - id: wooread-novel
+          uri: lb://wooread-novel
+          predicates:
+            - Path=/wooread-novel/**
+          filters:
+            - RewritePath=/wooread-novel/(?<segment>.*),/$\{segment}
+
+eureka:
+  client:
+    service-url:
+      default-zone: http:localhost:8761/eureka/
+  instance:
+    hostname: localhost

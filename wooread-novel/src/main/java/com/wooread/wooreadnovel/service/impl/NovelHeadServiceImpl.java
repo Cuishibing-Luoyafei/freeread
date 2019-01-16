@@ -39,7 +39,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
                 "novelName", input.getNovelName())).size() > 0) {
             return ofFail(message("duplicate", "novel"));
         }
-        if (!userService.existUser(input.getAuthorId()).getData()) {
+        if (!userService.existUser(input.getUserId()).getData()) {
             return ofFail(message("no-such", "author"));
         }
         return ofSuccess(() -> {
@@ -54,7 +54,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
         if (novelHeadCommonRepository.findAll(Specifications.equal("novelName", input.getNovelName())).size() > 0) {
             return ofFail(message("duplicate", "novel name"));
         }
-        if (!userService.existUser(input.getAuthorId()).getData()) {
+        if (!userService.existUser(input.getUserId()).getData()) {
             return ofFail(message("no-such", "author"));
         }
         return novelHeadCommonRepository.findById(input.getNovelId()).map(novelHead -> {
