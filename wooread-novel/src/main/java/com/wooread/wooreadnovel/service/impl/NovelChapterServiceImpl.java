@@ -71,6 +71,6 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 
     @Override
     public BaseServiceOutput<NovelChapter> findNovelChapterByChapterId(Integer chapterId) {
-        return ofSuccess(() -> novelChapterCommonRepository.findById(chapterId).orElse(null));
+        return ofSuccess(novelChapterCommonRepository.findById(chapterId).orElse(null));
     }
 }

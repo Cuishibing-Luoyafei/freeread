@@ -14,12 +14,12 @@ spring:
           filters:
             - RewritePath=/wooread-user/(?<segment>.*),/$\{segment}
 
-        - id: wooread-novel
-          uri: lb://wooread-novel
-          predicates:
-            - Path=/wooread-novel/**
-          filters:
-            - RewritePath=/wooread-novel/(?<segment>.*),/$\{segment}
+#        - id: wooread-novel
+#          uri: lb://wooread-novel
+#          predicates:
+#            - Path=/wooread-novel/**
+#          filters:
+#            - RewritePath=/wooread-novel/(?<segment>.*),/$\{segment}
 
 eureka:
   client:
