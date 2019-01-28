@@ -32,7 +32,7 @@ public class JwtTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<J
                 ServerHttpResponse response = exchange.getResponse();
                 HttpHeaders responseHeaders = response.getHeaders();
                 responseHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(new Gson().toJson(ofFail("未登录或会话过期!")).getBytes());
+                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(new Gson().toJson(ofFail("error", "未登录或会话过期!")).getBytes());
                 return response.writeWith(Mono.just(bodyDataBuffer));
             }else{// 验证token
                 //TODO:
