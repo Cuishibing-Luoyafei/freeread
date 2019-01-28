@@ -6,20 +6,22 @@ spring:
     name: wooread-gateway
   cloud:
     gateway:
-      routes:
-        - id: wooread-user
-          uri: lb://wooread-user
-          predicates:
-            - Path=/wooread-user/**
-          filters:
-            - RewritePath=/wooread-user/(?<segment>.*),/$\{segment}
+        routes:
+          - id: wooread-novel
+            uri: lb://wooread-novel
+            predicates:
+              - Path=/wooread-novel/**
+            filters:
+              - StripPrefix=1
+              - JwtToken
 
-#        - id: wooread-novel
-#          uri: lb://wooread-novel
-#          predicates:
-#            - Path=/wooread-novel/**
-#          filters:
-#            - RewritePath=/wooread-novel/(?<segment>.*),/$\{segment}
+          - id: wooread-user
+            uri: lb://wooread-user
+            predicates:
+              - Path=/wooread-user/**
+            filters:
+              - StripPrefix=1
+              - JwtToken
 
 eureka:
   client:

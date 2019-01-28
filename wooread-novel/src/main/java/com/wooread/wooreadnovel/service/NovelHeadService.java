@@ -1,6 +1,6 @@
 package com.wooread.wooreadnovel.service;
 
-import com.wooread.wooreadnovel.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import com.wooread.wooreadnovel.dto.NovelHeadServiceInput;
 import com.wooread.wooreadnovel.model.NovelHead;
 import org.springframework.data.domain.Page;

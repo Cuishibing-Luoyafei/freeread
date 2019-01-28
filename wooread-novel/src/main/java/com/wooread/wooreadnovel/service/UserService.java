@@ -1,6 +1,6 @@
 package com.wooread.wooreadnovel.service;
 
-import com.wooread.wooreadnovel.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

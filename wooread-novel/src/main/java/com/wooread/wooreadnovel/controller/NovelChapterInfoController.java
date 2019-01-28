@@ -1,6 +1,6 @@
 package com.wooread.wooreadnovel.controller;
 
-import com.wooread.wooreadnovel.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import com.wooread.wooreadnovel.dto.NovelChapterInfoServiceInput;
 import com.wooread.wooreadnovel.model.NovelChapterInfo;
 import com.wooread.wooreadnovel.service.NovelChapterInfoService;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.wooread.wooreadnovel.dto.BaseServiceOutput.ofFail;
-import static com.wooread.wooreadnovel.tools.MessageTools.message;
+import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
+import static com.wooread.wooreadbase.tools.MessageTools.message;
 
 @RestController
 public class NovelChapterInfoController {

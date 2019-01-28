@@ -1,6 +1,6 @@
 package com.wooread.wooreadnovel.service.impl;
 
-import com.wooread.wooreadnovel.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import com.wooread.wooreadnovel.dto.NovelChapterInfoServiceInput;
 import com.wooread.wooreadnovel.model.NovelChapterInfo;
 import com.wooread.wooreadnovel.model.NovelHead;
@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-import static com.wooread.wooreadnovel.dto.BaseServiceOutput.ofFail;
-import static com.wooread.wooreadnovel.dto.BaseServiceOutput.ofSuccess;
-import static com.wooread.wooreadnovel.tools.MessageTools.message;
+import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
+import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofSuccess;
+import static com.wooread.wooreadbase.tools.MessageTools.message;
 
 @Service
 @Transactional

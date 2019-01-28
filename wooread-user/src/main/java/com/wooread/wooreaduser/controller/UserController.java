@@ -1,6 +1,6 @@
 package com.wooread.wooreaduser.controller;
 
-import com.wooread.wooreaduser.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import com.wooread.wooreaduser.dto.UserServiceInput;
 import com.wooread.wooreaduser.model.User;
 import com.wooread.wooreaduser.model.UserInfo;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.wooread.wooreaduser.dto.BaseServiceOutput.*;
-import static com.wooread.wooreaduser.tools.MessageTools.message;
+import static com.wooread.wooreadbase.dto.BaseServiceOutput.*;
+import static com.wooread.wooreadbase.tools.MessageTools.message;
 
 @RestController
 public class UserController {

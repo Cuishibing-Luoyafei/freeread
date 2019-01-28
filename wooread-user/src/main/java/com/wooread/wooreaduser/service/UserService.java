@@ -1,6 +1,6 @@
 package com.wooread.wooreaduser.service;
 
-import com.wooread.wooreaduser.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import com.wooread.wooreaduser.dto.UserServiceInput;
 import com.wooread.wooreaduser.model.User;
 import com.wooread.wooreaduser.model.UserInfo;

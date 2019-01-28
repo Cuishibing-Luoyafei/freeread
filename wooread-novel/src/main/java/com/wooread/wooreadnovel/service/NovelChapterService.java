@@ -1,6 +1,6 @@
 package com.wooread.wooreadnovel.service;
 
-import com.wooread.wooreadnovel.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import com.wooread.wooreadnovel.dto.NovelChapterServiceInput;
 import com.wooread.wooreadnovel.model.NovelChapter;
 import com.wooread.wooreadnovel.model.NovelChapterInfo;

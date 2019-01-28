@@ -1,6 +1,6 @@
 package com.wooread.wooreadnovel.controller;
 
-import com.wooread.wooreadnovel.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.dto.BaseServiceOutput;
 import com.wooread.wooreadnovel.dto.NovelHeadServiceInput;
 import com.wooread.wooreadnovel.model.NovelHead;
 import com.wooread.wooreadnovel.service.NovelHeadService;
@@ -10,9 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.wooread.wooreadnovel.dto.BaseServiceOutput.CODE_FAIL;
-import static com.wooread.wooreadnovel.dto.BaseServiceOutput.ofFail;
-import static com.wooread.wooreadnovel.tools.MessageTools.message;
+import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
+import static com.wooread.wooreadbase.tools.MessageTools.message;
 
 @RestController
 public class NovelHeadController {
