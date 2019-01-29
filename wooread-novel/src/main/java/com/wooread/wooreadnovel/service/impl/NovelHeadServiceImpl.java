@@ -61,12 +61,10 @@ public class NovelHeadServiceImpl implements NovelHeadService {
         if (!userService.existUser(input.getUserId()).getPayload()) {
             return ofFail(message("no-such", "author"));
         }
-        return novelHeadCommonRepository.findById(input.getNovelId()).map(novelHead -> {
-            return ofSuccess(() -> {
-                BeanUtils.copyProperties(input, novelHead);
-                return novelHeadCommonRepository.save(novelHead);
-            });
-        }).orElse(ofFail(message("no-such", "novel head")));
+        return novelHeadCommonRepository.findById(input.getNovelId()).map(novelHead -> ofSuccess(() -> {
+            BeanUtils.copyProperties(input, novelHead);
+            return novelHeadCommonRepository.save(novelHead);
+        })).orElse(ofFail(message("no-such", "novel head")));
     }
 
     @Override

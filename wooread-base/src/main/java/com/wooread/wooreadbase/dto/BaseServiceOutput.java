@@ -82,8 +82,16 @@ public class BaseServiceOutput<T> implements Serializable {
         return new BaseServiceOutput<>(CODE_FAIL, message, data);
     }
 
+    public static <T> BaseServiceOutput<T> ofFail(String message, Supplier<T> supplier) {
+        return new BaseServiceOutput<>(CODE_FAIL, message, supplier);
+    }
+
     public static <T> BaseServiceOutput<T> ofFail(MessageTools.MessageInfo message, T data) {
         return new BaseServiceOutput<>(CODE_FAIL, message, data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofFail(MessageTools.MessageInfo message, Supplier<T> supplier) {
+        return new BaseServiceOutput<>(CODE_FAIL, message, supplier);
     }
 
     public static <T> BaseServiceOutput<T> ofException(String message) {
@@ -98,8 +106,16 @@ public class BaseServiceOutput<T> implements Serializable {
         return new BaseServiceOutput<>(CODE_EXCEPTION, message, data);
     }
 
+    public static <T> BaseServiceOutput<T> ofException(String message, Supplier<T> supplier) {
+        return new BaseServiceOutput<>(CODE_EXCEPTION, message, supplier);
+    }
+
     public static <T> BaseServiceOutput<T> ofException(MessageTools.MessageInfo message, T data) {
         return new BaseServiceOutput<>(CODE_EXCEPTION, message, data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofException(MessageTools.MessageInfo message, Supplier<T> supplier) {
+        return new BaseServiceOutput<>(CODE_EXCEPTION, message, supplier);
     }
 
     public <R> Optional<R> ifSuccess(Function<T, R> function) {
