@@ -17,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.wooread.wooreadbase.dto.BaseServiceOutput.*;
+import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
+import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofSuccess;
 import static com.wooread.wooreadbase.tools.MessageTools.message;
 
 @Service
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
             return ofFail(message("duplicate", "user"));
 
         BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
-        if (!validateResult.getData())
+        if (!validateResult.getPayload())
             return ofFail(validateResult.getMessage());
 
         User user = new User();
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseServiceOutput<UserInfo> updateUserInfo(UserServiceInput.UpdateUserInfoInput input) {
         BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
-        if (validateResult.getData())
+        if (validateResult.getPayload())
             return ofFail(validateResult.getMessage());
 
         return userCommonRepository.findById(input.getUserId()).map(user -> {

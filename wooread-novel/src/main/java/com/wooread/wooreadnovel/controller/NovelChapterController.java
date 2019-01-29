@@ -1,9 +1,9 @@
 package com.wooread.wooreadnovel.controller;
 
 import com.wooread.wooreadbase.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.jwt.JwtUtils;
 import com.wooread.wooreadnovel.dto.NovelChapterServiceInput;
 import com.wooread.wooreadnovel.model.NovelChapter;
-import com.wooread.wooreadnovel.model.NovelChapterInfo;
 import com.wooread.wooreadnovel.service.NovelChapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -45,7 +45,7 @@ public class NovelChapterController {
 
     @GetMapping("findNovelChapterByChapterId")
     public BaseServiceOutput<NovelChapter> findNovelChapterByChapterId(
-            @RequestParam("novelChapterId") Integer novelChapterId) {
+            @RequestParam("novelChapterId") Integer novelChapterId, JwtUtils.DecodedToken token) {
 
         return novelChapterService.findNovelChapterByChapterId(novelChapterId);
     }

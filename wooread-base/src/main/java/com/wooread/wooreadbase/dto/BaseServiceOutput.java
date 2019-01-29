@@ -1,11 +1,13 @@
 package com.wooread.wooreadbase.dto;
 
+import com.wooread.wooreadbase.tools.MessageTools;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -22,61 +24,109 @@ public class BaseServiceOutput<T> implements Serializable {
     public static final int CODE_EXCEPTION = 1 << 3;
 
     private int code;
+    private String messageCode;
     private String message;
-    private T data;
-
-    public BaseServiceOutput(int code, String message, Supplier<T> supplier) {
-        this(code, message);
-        if (supplier != null)
-            this.data = supplier.get();
-    }
+    private Object messageArgs;
+    private T payload;
 
     public BaseServiceOutput(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public static <T> BaseServiceOutput<T> ofSuccess(Supplier<T> supplier){
-        return new BaseServiceOutput<>(CODE_SUCCESS,message("success"),supplier);
+    public BaseServiceOutput(int code, String message, T payload) {
+        this(code, message);
+        this.payload = payload;
     }
 
-    public static <T> BaseServiceOutput<T> ofSuccess(T data){
-        return new BaseServiceOutput<>(CODE_SUCCESS,message("success"),data);
+    public BaseServiceOutput(int code, String message, Supplier<T> supplier) {
+        this(code, message);
+        if (supplier != null)
+            this.payload = supplier.get();
     }
 
-    public static <T> BaseServiceOutput<T> ofFail(String message){
-        return new BaseServiceOutput<>(CODE_FAIL,message);
+    public BaseServiceOutput(int code, MessageTools.MessageInfo messageInfo) {
+        this(code, messageInfo.getMessage());
+        this.messageCode = messageInfo.getMessageCode();
+        this.messageArgs = messageInfo.getArgs();
     }
 
-    public static <T> BaseServiceOutput<T> ofFail(String message,T data){
-        return new BaseServiceOutput<>(CODE_FAIL,message,data);
+    public BaseServiceOutput(int code, MessageTools.MessageInfo messageInfo, T payload) {
+        this(code, messageInfo);
+        this.payload = payload;
     }
 
-    public static <T> BaseServiceOutput<T> ofException(String message){
-        return new BaseServiceOutput<>(CODE_EXCEPTION,message);
+    public BaseServiceOutput(int code, MessageTools.MessageInfo messageInfo, Supplier<T> supplier) {
+        this(code, messageInfo);
+        if (supplier != null)
+            this.payload = supplier.get();
     }
 
-    public static <T> BaseServiceOutput<T> ofException(String message,T data){
-        return new BaseServiceOutput<>(CODE_EXCEPTION,message,data);
+    public static <T> BaseServiceOutput<T> ofSuccess(Supplier<T> supplier) {
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), supplier);
     }
 
-    public <R> R ifSuccess(Function<T, R> function) {
-        return function.apply(data);
+    public static <T> BaseServiceOutput<T> ofSuccess(T data) {
+        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofFail(String message) {
+        return new BaseServiceOutput<>(CODE_FAIL, message);
+    }
+
+    public static <T> BaseServiceOutput<T> ofFail(MessageTools.MessageInfo message) {
+        return new BaseServiceOutput<>(CODE_FAIL, message);
+    }
+
+    public static <T> BaseServiceOutput<T> ofFail(String message, T data) {
+        return new BaseServiceOutput<>(CODE_FAIL, message, data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofFail(MessageTools.MessageInfo message, T data) {
+        return new BaseServiceOutput<>(CODE_FAIL, message, data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofException(String message) {
+        return new BaseServiceOutput<>(CODE_EXCEPTION, message);
+    }
+
+    public static <T> BaseServiceOutput<T> ofException(MessageTools.MessageInfo message) {
+        return new BaseServiceOutput<>(CODE_EXCEPTION, message);
+    }
+
+    public static <T> BaseServiceOutput<T> ofException(String message, T data) {
+        return new BaseServiceOutput<>(CODE_EXCEPTION, message, data);
+    }
+
+    public static <T> BaseServiceOutput<T> ofException(MessageTools.MessageInfo message, T data) {
+        return new BaseServiceOutput<>(CODE_EXCEPTION, message, data);
+    }
+
+    public <R> Optional<R> ifSuccess(Function<T, R> function) {
+        if (success())
+            return Optional.ofNullable(function.apply(payload));
+        else return Optional.empty();
     }
 
     public void ifSuccess(Consumer<T> consumer) {
-        consumer.accept(data);
+        consumer.accept(payload);
     }
 
-    public boolean isSuccess() {
+    public boolean success() {
         return code == CODE_SUCCESS;
     }
 
-    public boolean isFail() {
+    public boolean fail() {
         return code == CODE_FAIL;
     }
 
-    public boolean isException() {
+    public boolean exception() {
         return code == CODE_EXCEPTION;
+    }
+
+    public void setMessage(MessageTools.MessageInfo info) {
+        this.messageArgs = info.getArgs();
+        this.message = info.getMessage();
+        this.messageCode = info.getMessageCode();
     }
 }

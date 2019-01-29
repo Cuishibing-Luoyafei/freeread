@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.*;
 import static com.wooread.wooreadbase.tools.MessageTools.message;
@@ -80,7 +82,7 @@ public class RoleServiceImpl implements RoleService {
         char[] chars = roleIds.toCharArray();
         for (char c : chars) {
             if (!Character.isDigit(c) && c != ',') {
-                result.setData(false);
+                result.setPayload(false);
                 result.setMessage(message("invalid-role-ids"));
                 return result;
             }
@@ -91,7 +93,7 @@ public class RoleServiceImpl implements RoleService {
         allRole.forEach((role) -> roleIdSet.add(role.getRoleId()));
         for (String idStr : splitIds) {
             if (!roleIdSet.contains(Integer.parseInt(idStr))) {
-                result.setData(false);
+                result.setPayload(false);
                 result.setMessage(message("no-such", "role id"));
                 return result;
             }

@@ -40,14 +40,17 @@ public class NovelHeadServiceImpl implements NovelHeadService {
                 "novelName", input.getNovelName())).size() > 0) {
             return ofFail(message("duplicate", "novel"));
         }
-        if (!userService.existUser(input.getUserId()).getData()) {
-            return ofFail(message("no-such", "author"));
-        }
-        return ofSuccess(() -> {
-            NovelHead novelHead = new NovelHead();
-            BeanUtils.copyProperties(input, novelHead);
-            return novelHeadCommonRepository.save(novelHead);
-        });
+        return userService.existUser(input.getUserId()).ifSuccess(isExist -> {
+            if (isExist) {
+                return ofSuccess(() -> {
+                    NovelHead novelHead = new NovelHead();
+                    BeanUtils.copyProperties(input, novelHead);
+                    return novelHeadCommonRepository.save(novelHead);
+                });
+            } else {
+                return ofFail(message("no-such", "author"), (NovelHead) null);
+            }
+        }).orElse(ofFail("error"));
     }
 
     @Override
@@ -55,7 +58,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
         if (novelHeadCommonRepository.findAll(Specifications.equal("novelName", input.getNovelName())).size() > 0) {
             return ofFail(message("duplicate", "novel name"));
         }
-        if (!userService.existUser(input.getUserId()).getData()) {
+        if (!userService.existUser(input.getUserId()).getPayload()) {
             return ofFail(message("no-such", "author"));
         }
         return novelHeadCommonRepository.findById(input.getNovelId()).map(novelHead -> {

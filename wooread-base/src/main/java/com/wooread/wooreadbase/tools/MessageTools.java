@@ -1,5 +1,8 @@
 package com.wooread.wooreadbase.tools;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -20,19 +23,39 @@ public class MessageTools {
         messageTools = this;
     }
 
-    public static String message(String code, String... args) {
-        return messageTools.messageSource.getMessage(code, args, Locale.getDefault());
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MessageInfo {
+        private String messageCode;
+        private String message;
+        private Object args;
     }
 
-    public static String message(String code, Object... args) {
-        return messageTools.messageSource.getMessage(code, args, Locale.getDefault());
+    public static MessageInfo message(String code, String... args) {
+        String message = messageTools.messageSource.getMessage(code, args, "", Locale.getDefault());
+        return new MessageInfo(code, message, args);
     }
 
-    public static String message(FieldError fieldError) {
-        if (fieldError != null)
-            return messageTools.messageSource.getMessage(fieldError.getCode(), new Object[]{fieldError.getField()},
+    public static MessageInfo message(String code, Object... args) {
+        String message = messageTools.messageSource.getMessage(code, args, "", Locale.getDefault());
+        return new MessageInfo(code, message, args);
+    }
+
+    public static MessageInfo message(FieldError fieldError) {
+        String message = "";
+        String messageCode = "";
+        Object args = null;
+        if (fieldError != null) {
+            messageCode = fieldError.getCode();
+            if (messageCode == null)
+                messageCode = "";
+            args = fieldError.getField();
+            message = messageTools.messageSource.getMessage(messageCode, new Object[]{args},
                     fieldError.getField() + ":" + fieldError.getDefaultMessage(), Locale.getDefault());
-        return "";
+
+        }
+        return new MessageInfo(messageCode, message, args);
     }
 
 }
