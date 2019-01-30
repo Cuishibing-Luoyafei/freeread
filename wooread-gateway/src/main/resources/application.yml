@@ -30,6 +30,13 @@ spring:
               - StripPrefix=1
               - JwtToken
 
+        globalcors:
+          corsConfigurations:
+            '[/**]':
+              allowedOrigins: "http://localhost:8093"
+              allowedHeaders: "content-type"
+              allowedMethods:
+              - POST
 eureka:
   client:
     service-url:

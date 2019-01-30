@@ -6,26 +6,39 @@
     <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+    <style>
+        html,body{
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-<div id="app">
-    <card style="width:350px">
+<div id="login_page">
+    <card style="width:400px;margin-left: 50%;position:absolute;top: 20%;">
         <p slot="title">
-            <icon type="md-body" size="20px"></icon>请登录
+            请登录
         </p>
-        <i-form :model="formItem" :label-width="80">
-            <form-item label="asfasf">
-                <i-input v-model="formItem.input" placeholder="Enter something..."></i-input>
+        <i-form :model="formItem" :label-width="70">
+            <form-item label="用户名:">
+                <i-input v-model="formItem.userName" placeholder="请输入用户名"></i-input>
+            </form-item>
+            <form-item label="密码:">
+                <i-input type="password" v-model="formItem.password" placeholder="请输入密码"></i-input>
+            </form-item>
+            <form-item>
+                <i-button type="primary">登录</i-button>
+                <a href="/register" style="margin-left: 15px;font-size: 12px">没有账号，去注册</a>
             </form-item>
         </i-form>
     </card>
 </div>
 <script>
-    new Vue({
-        el: '#app',
+    var login = new Vue({
+        el: '#login_page',
         data: {
             formItem:{
-                input:'cuishibing'
+                userName:'',
+                password:''
             }
         },
         methods: {
