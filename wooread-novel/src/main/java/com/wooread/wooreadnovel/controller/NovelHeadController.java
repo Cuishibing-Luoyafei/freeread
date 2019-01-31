@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
@@ -20,7 +21,7 @@ public class NovelHeadController {
     private NovelHeadService novelHeadService;
 
     @PostMapping("createNovelHead")
-    public BaseServiceOutput<NovelHead> createNovelHead(@Validated NovelHeadServiceInput.CreateNovelHeadInput input,
+    public BaseServiceOutput<NovelHead> createNovelHead(@RequestBody @Validated NovelHeadServiceInput.CreateNovelHeadInput input,
                                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ofFail(message(bindingResult.getFieldError()));
@@ -29,7 +30,7 @@ public class NovelHeadController {
     }
 
     @PostMapping("updateNovelHead")
-    public BaseServiceOutput<NovelHead> updateNovelHead(@Validated NovelHeadServiceInput.UpdateNovelHeadInput input,
+    public BaseServiceOutput<NovelHead> updateNovelHead(@RequestBody @Validated NovelHeadServiceInput.UpdateNovelHeadInput input,
                                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ofFail(message(bindingResult.getFieldError()));

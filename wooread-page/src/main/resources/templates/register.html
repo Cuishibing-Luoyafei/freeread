@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>WOOREAD INDEX</title>
-    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
-    <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
-    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
-    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/iview/iview.css">
+    <script src="/vue/vue.js"></script>
+    <script src="/iview/iview.min.js"></script>
+    <script src="/vue/vue-resource.min.js"></script>
     <style>
         html, body {
             height: 100%;
@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-<div id="register_page">
+<div id="register">
     <card style="width:400px;margin-left: 50%;position:absolute;left:-200px;top: 20%;">
         <p slot="title">
             请填写注册信息
@@ -33,7 +33,7 @@
                 <i-input type="phone" v-model="formItem.phone" placeholder="请输入电话"></i-input>
             </form-item>
             <form-item label="性别:">
-                <radio-group v-model="formItem.sex">
+                <radio-group v-model="formItem.gender">
                     <radio label="1"><span>男</span></radio>
                     <radio label="2"><span>女</span></radio>
                 </radio-group>
@@ -45,26 +45,42 @@
     </card>
 </div>
 <script>
-    var register = new Vue({
-        el: '#register_page',
-        data: {
-            formItem: {
-                userName: '',
-                password: '',
-                email: '',
-                phone: '',
-                sex: ''
+    window.onload = function () {
+        new Vue({
+            el: '#register',
+            data: {
+                formItem: {
+                    userName: '',
+                    password: '',
+                    email: '',
+                    phone: '',
+                    gender: ''
+                }
+            },
+            methods: {
+                handleRegister(name) {
+                    console.info(name);
+                    this.$http.post('http://localhost:8092/wooread-user/createUser', this.formItem).then(res => {
+                        let data = res.data;
+                        if (data.code == 2) {// 成功
+                            this.$Notice.success({
+                                title: '注册成功',
+                                desc: ''
+                            });
+                            setTimeout(() => {
+                                window.location.href = '/index.html'
+                            }, 1000)
+                        } else {
+                            this.$Notice.error({
+                                title: '注册失败,' + data.message,
+                                desc: ''
+                            });
+                        }
+                    })
+                }
             }
-        },
-        methods: {
-            handleRegister(name) {
-                console.info(name)
-                this.$http.post('http://localhost:8092/wooread-user/createUser',this.formItem).then(function (res) {
-                    console.info(res)
-                })
-            }
-        }
-    });
+        });
+    };
 </script>
 </body>
 </html>

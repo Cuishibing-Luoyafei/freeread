@@ -14,6 +14,13 @@ spring:
             filters:
               - StripPrefix=1
 
+          - id: register
+            uri: lb://wooread-user
+            predicates:
+              - Path=/wooread-user/createUser
+            filters:
+              - StripPrefix=1
+
           - id: wooread-novel
             uri: lb://wooread-novel
             predicates:
@@ -29,17 +36,14 @@ spring:
             filters:
               - StripPrefix=1
               - JwtToken
-
-        globalcors:
-          corsConfigurations:
-            '[/**]':
-              allowedOrigins: "http://localhost:8093"
-              allowedHeaders: "content-type"
-              allowedMethods:
-              - POST
-eureka:
-  client:
-    service-url:
-      default-zone: http:localhost:8761/eureka/
-  instance:
-    hostname: localhost
+# 这个配置在当前的spring gateway版本中有问题，使用Java配置在启动类中了
+#        globalcors:
+#          corsConfigurations:
+#            '[/**]':
+#              allowedOrigins: "*"
+  eureka:
+    client:
+      service-url:
+        default-zone: http:localhost:8761/eureka/
+    instance:
+      hostname: localhost

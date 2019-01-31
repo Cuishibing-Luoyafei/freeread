@@ -8,10 +8,7 @@ import com.wooread.wooreadnovel.service.NovelChapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
 import static com.wooread.wooreadbase.tools.MessageTools.message;
@@ -24,7 +21,7 @@ public class NovelChapterController {
 
     @PostMapping("createNovelChapter")
     public BaseServiceOutput<NovelChapter> createNovelChapter(
-            @Validated NovelChapterServiceInput.CreateNovelChapterInput input,
+            @RequestBody @Validated NovelChapterServiceInput.CreateNovelChapterInput input,
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors())
@@ -35,7 +32,7 @@ public class NovelChapterController {
 
     @PostMapping("updateNovelChapter")
     public BaseServiceOutput<NovelChapter> updateNovelChapter(
-            @Validated NovelChapterServiceInput.UpdateNovelChapterInput input,
+            @RequestBody @Validated NovelChapterServiceInput.UpdateNovelChapterInput input,
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors())

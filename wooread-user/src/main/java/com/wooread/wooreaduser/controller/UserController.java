@@ -10,10 +10,7 @@ import com.wooread.wooreaduser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,16 +41,16 @@ public class UserController {
         return userService.findUserByName(name);
     }
 
-    @PostMapping("createUser")
-    public BaseServiceOutput<User> createUser(@Validated UserServiceInput.CreateUserInput input, BindingResult bindingResult) {
+    @PostMapping(value = "createUser")
+    public BaseServiceOutput<User> createUser(@RequestBody @Validated UserServiceInput.CreateUserInput input, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ofFail(message(bindingResult.getFieldError()));
         }
         return userService.createUser(input);
     }
 
-    @PostMapping("updateUserInfo")
-    public BaseServiceOutput<UserInfo> updateUserInfo(@Validated UserServiceInput.UpdateUserInfoInput input, BindingResult bindingResult) {
+    @PostMapping(value = "updateUserInfo")
+    public BaseServiceOutput<UserInfo> updateUserInfo(@RequestBody @Validated UserServiceInput.UpdateUserInfoInput input, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ofFail(message(bindingResult.getFieldError()));
         }
@@ -61,7 +58,7 @@ public class UserController {
     }
 
     @PostMapping("generateJwtToken")
-    public BaseServiceOutput<String> generateJwtToken(@Validated LoginServiceInput.GenerateJwtTokenInput input,
+    public BaseServiceOutput<String> generateJwtToken(@RequestBody @Validated LoginServiceInput.GenerateJwtTokenInput input,
                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ofFail(message(bindingResult.getFieldError()));
