@@ -1,5 +1,6 @@
 package com.wooread.wooreadbase.tools;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Component

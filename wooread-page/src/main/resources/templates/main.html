@@ -14,50 +14,17 @@
     </style>
 </head>
 <body>
-<div id="index">
-    <card style="width:400px;margin-left: 50%;position:absolute;top: 20%;">
-        <p slot="title">
-            请登录
-        </p>
-        <i-form ref="loginForm" :model="formItem" :label-width="70">
-            <form-item label="用户名:">
-                <i-input v-model="formItem.userName" placeholder="请输入用户名"></i-input>
-            </form-item>
-            <form-item label="密码:">
-                <i-input type="password" v-model="formItem.password" placeholder="请输入密码"></i-input>
-            </form-item>
-            <form-item>
-                <i-button type="primary" @click="handleLogin('loginForm')">登录</i-button>
-                <a href="/register.html" style="margin-left: 15px;font-size: 12px">没有账号，去注册</a>
-            </form-item>
-        </i-form>
-    </card>
+<div id="main">
+
 </div>
 <script>
     new Vue({
-        el: '#index',
+        el: '#main',
         data: {
-            formItem:{
-                userName:'',
-                password:''
-            }
+
         },
         methods: {
-            handleLogin(formName) {
-                this.$http.post('http://localhost:8092/wooread-user/generateJwtToken', this.formItem).then(res => {
-                    let data = res.data;
-                    if (data.code == 2) {// 成功
-                        this.$Message.success('登录成功');
-                        localStorage.setItem('wooread-token', data.payload);
-                        console.log("token:%s", localStorage.getItem('wooread-token'));
-                        setTimeout(() => {
-                            window.location.href = '/index.html'
-                        }, 1000)
-                    } else {
-                        this.$Message.error(data.message);
-                    }
-                })
-            }
+
         }
     });
 </script>
