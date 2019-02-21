@@ -54,7 +54,7 @@
                             window.location.href = '/index.html'
                         }, 1000)
                     } else {
-                        this.$Message.error(data.message);
+                        this.$Message.error(data.args+":"+data.message);
                     }
                 })
             }

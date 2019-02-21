@@ -5,11 +5,11 @@ import com.wooread.wooreadnovel.dto.NovelHeadServiceInput;
 import com.wooread.wooreadnovel.model.NovelHead;
 import com.wooread.wooreadnovel.service.NovelHeadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
 import static com.wooread.wooreadbase.tools.MessageTools.message;
@@ -36,6 +36,13 @@ public class NovelHeadController {
             return ofFail(message(bindingResult.getFieldError()));
         }
         return novelHeadService.updateNovelHead(input);
+    }
+
+    @GetMapping("findByLikeName")
+    public BaseServiceOutput<Page<NovelHead>> findByLikeName(@RequestParam("name") String name, Pageable pageable){
+        String a = "";
+        a = a + null;
+        return novelHeadService.findByLikeName(name,pageable);
     }
 
 }

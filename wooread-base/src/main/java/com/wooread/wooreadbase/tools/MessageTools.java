@@ -55,7 +55,7 @@ public class MessageTools {
                 messageCode = "";
             args = fieldError.getField();
             message = messageTools.messageSource.getMessage(messageCode, new Object[]{args},
-                    fieldError.getField() + ":" + fieldError.getDefaultMessage(), Locale.getDefault());
+                    fieldError.getDefaultMessage(), Locale.getDefault());
 
         }
         return new MessageInfo(messageCode, message, args);
