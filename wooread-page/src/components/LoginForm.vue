@@ -1,0 +1,76 @@
+<template>
+  <Card class="hv-center" style="width:420px">
+    <i-form :model="formItem" :label-width="100">
+      <Form-item label="用户名" prop="userName">
+        <i-input v-model="formItem.userName" placeholder="请输入"></i-input>
+      </Form-item>
+      <Form-item label="密码" prop="s">
+        <i-input v-model="formItem.password" type="password" placeholder="请输入"></i-input>
+      </Form-item>
+      <Form-item>
+        <i-button @click="login()" type="primary">登录</i-button>
+        <i-button @click="goRegister()" style="margin-left: 8px">去注册</i-button>
+      </Form-item>
+    </i-form>
+  </Card>
+</template>
+<script>
+import userApi from "../api/user-api";
+import token from "../token/token";
+export default {
+  data() {
+    return {
+      formItem: {
+        userName: '',
+        password: ''
+      }
+    };
+  },
+  methods: {
+    goRegister() {
+      console.log("go register");
+      this.$router.push("/RegisterForm");
+    },
+    login() {
+      console.log("login")
+      userApi
+        .login(this.formItem)
+        .then(
+          data => {
+            token.setToken(data.payload);
+            this.$Message.info("登录成功！");
+          },
+          fail => {
+            this.$Message.warning(fail.message);
+          }
+        )
+        .catch(error => {
+          this.$Message.error(error);
+        });
+    }
+  }
+};
+</script>
+
+
+<style>
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.hv-center {
+  width: 100%;
+  margin: 0 auto; /*水平居中*/
+  position: relative;
+  top: 50%; /*偏移*/
+  transform: translateY(-50%);
+}
+
+#app {
+  height: 100%;
+}
+</style>

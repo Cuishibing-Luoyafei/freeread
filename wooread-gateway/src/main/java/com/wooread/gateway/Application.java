@@ -39,7 +39,7 @@ public class Application extends BaseApplication {
     public CorsConfiguration corsConfiguration(RoutePredicateHandlerMapping routePredicateHandlerMapping) {
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         Arrays.asList(HttpMethod.OPTIONS, HttpMethod.PUT, HttpMethod.GET, HttpMethod.DELETE, HttpMethod.POST).forEach(m -> corsConfiguration.addAllowedMethod(m));
-        corsConfiguration.addAllowedOrigin("http://localhost:8093");
+        corsConfiguration.addAllowedOrigin("http://localhost:8081");
         routePredicateHandlerMapping.setCorsConfigurations(new HashMap<String, CorsConfiguration>() {{
             put("/**", corsConfiguration);
         }});

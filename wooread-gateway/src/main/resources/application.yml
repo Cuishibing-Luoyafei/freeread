@@ -41,9 +41,9 @@ spring:
 #          corsConfigurations:
 #            '[/**]':
 #              allowedOrigins: "*"
-  eureka:
-    client:
-      service-url:
-        default-zone: http:localhost:8761/eureka/
-    instance:
-      hostname: localhost
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://www.wooread.com:8761/eureka/
+  instance:
+    hostname: localhost
