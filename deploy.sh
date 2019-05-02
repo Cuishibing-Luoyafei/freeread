@@ -1,5 +1,8 @@
 #!/bin/bash
 
+old_build_id=$BUILD_ID
+BUILD_ID=dontKillMe
+
 ## deploy jar to this computer
 target_path=$1
 jar_package=$2
@@ -18,3 +21,5 @@ fi
 
 nohup java -jar $jar_package &
 echo $! > pid
+
+BUILD_ID=$old_build_id
