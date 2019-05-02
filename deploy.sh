@@ -2,7 +2,7 @@
 
 ## deploy jar to this computer
 target_path=$1
-jar_file=$2
+jar_package=$2
 
 if [ ! -d ${target_path} ];then
     mkdir -p ${target_path}
