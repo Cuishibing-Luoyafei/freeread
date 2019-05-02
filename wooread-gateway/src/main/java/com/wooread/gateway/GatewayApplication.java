@@ -18,9 +18,9 @@ import java.util.HashMap;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
-public class Application extends BaseApplication {
+public class GatewayApplication extends BaseApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 
     @Bean

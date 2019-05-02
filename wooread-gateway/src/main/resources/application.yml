@@ -44,6 +44,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://www.wooread.com:8761/eureka/
+      defaultZone: http://192.168.1.9:8761/eureka/
   instance:
     hostname: localhost
