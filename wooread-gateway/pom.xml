@@ -10,7 +10,7 @@
 
     <groupId>com.wooread</groupId>
     <artifactId>wooread-gateway</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <name>wooread-gateway</name>
     <url>http://www.example.com</url>
