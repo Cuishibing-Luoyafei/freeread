@@ -4,12 +4,16 @@
 target_path=$1
 jar_file=$2
 
+if [ ! -d ${target_path} ];then
+    mkdir -p ${target_path}
+fi
+
 cp $jar_package $target_path
 
 cd $target_path
 
-if -e pid
-then kill -9 `cat pid`
+if [ -e pid ];then
+    kill -9 `cat pid`
 fi
 
 nohup java -jar $jar_package &
