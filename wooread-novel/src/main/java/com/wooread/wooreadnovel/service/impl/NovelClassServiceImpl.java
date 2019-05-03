@@ -42,6 +42,6 @@ public class NovelClassServiceImpl implements NovelClassService {
 
     @Override
     public List<NovelClass> findAll() {
-        return novelClassCommonRepository.findAll(Specifications.equal("removed", "0"));
+        return novelClassCommonRepository.findAll(Specifications.equal("removed", false));
     }
 }
