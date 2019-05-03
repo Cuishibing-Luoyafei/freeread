@@ -1,3 +1,4 @@
+import router from '@/router/index'
 const postProcessRequest = function (resp) {
     return new Promise((resolve, reject) => {
         if (resp.ok) {
@@ -9,6 +10,10 @@ const postProcessRequest = function (resp) {
                     resolve(d);
                 } else if (d.code == 4) {
                     console.info("fail")
+                    if (d.messageCode == 'no-token' || d.messageCode=='expire-token' || d.messageCode == 'invalid-token') {
+                        console.info("no-token")
+                        router.push("/LoginForm");
+                    }
                     reject(d);
                 } else {
                     console.info("exception")

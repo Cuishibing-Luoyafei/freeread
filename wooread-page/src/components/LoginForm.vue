@@ -29,7 +29,7 @@ export default {
   methods: {
     goRegister() {
       console.log("go register");
-      this.$router.push("/RegisterForm");
+      this.$router.replace("/RegisterForm");
     },
     login() {
       console.log("login")
@@ -39,6 +39,7 @@ export default {
           data => {
             token.setToken(data.payload);
             this.$Message.info("登录成功！");
+            this.$router.replace("/");
           },
           fail => {
             this.$Message.warning(fail.message);
@@ -53,24 +54,12 @@ export default {
 </script>
 
 
-<style>
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
+<style scoped>
 .hv-center {
   width: 100%;
   margin: 0 auto; /*水平居中*/
   position: relative;
   top: 50%; /*偏移*/
   transform: translateY(-50%);
-}
-
-#app {
-  height: 100%;
 }
 </style>

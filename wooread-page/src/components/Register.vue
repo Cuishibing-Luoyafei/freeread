@@ -38,6 +38,7 @@ export default {
       userApi.register(this.formItem).then(
         data => {
           this.$Message.info("注册成功！");
+           this.$router.replace("/LoginForm");
         },
         fail => {
           this.$Message.warning(fail.message);
@@ -52,24 +53,12 @@ export default {
 </script>
 
 
-<style>
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
+<style scoped>
 .hv-center {
   width: 100%;
   margin: 0 auto; /*水平居中*/
   position: relative;
   top: 50%; /*偏移*/
   transform: translateY(-50%);
-}
-
-#app {
-  height: 100%;
 }
 </style>
