@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class NovelClassServiceImpl implements NovelClassService {
 
-    @Resource("NovelClass")
+    @Resource(name = "NovelClass")
     private CommonRepository<NovelClass, Integer> novelClassCommonRepository;
 
     @Override
