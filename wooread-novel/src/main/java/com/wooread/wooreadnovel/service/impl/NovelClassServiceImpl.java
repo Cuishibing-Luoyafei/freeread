@@ -1,21 +1,20 @@
 package com.wooread.wooreadnovel.service.impl;
 
 import com.wooread.wooreadbase.dto.BaseServiceOutput;
-import com.wooread.wooreadbase.tools.MessageTools;
 import com.wooread.wooreadnovel.model.NovelClass;
 import com.wooread.wooreadnovel.service.NovelClassService;
 import cui.shibing.commonrepository.CommonRepository;
 import cui.shibing.commonrepository.Specifications;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class NovelClassServiceImpl implements NovelClassService {
 
-    @Autowired
+    @Resource("NovelClass")
     private CommonRepository<NovelClass, Integer> novelClassCommonRepository;
 
     @Override
