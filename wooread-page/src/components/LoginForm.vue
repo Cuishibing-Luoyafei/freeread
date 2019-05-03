@@ -4,7 +4,7 @@
       <Form-item label="用户名" prop="userName">
         <i-input v-model="formItem.userName" placeholder="请输入"></i-input>
       </Form-item>
-      <Form-item label="密码" prop="s">
+      <Form-item label="密码" prop="password">
         <i-input v-model="formItem.password" type="password" placeholder="请输入"></i-input>
       </Form-item>
       <Form-item>
@@ -15,8 +15,8 @@
   </Card>
 </template>
 <script>
-import userApi from "../api/user-api";
-import token from "../token/token";
+import userApi from "@/api/user-api";
+import token from "@/token/token";
 export default {
   data() {
     return {

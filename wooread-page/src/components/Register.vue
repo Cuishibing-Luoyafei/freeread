@@ -1,25 +1,27 @@
 <template>
   <Card class="hv-center" style="width:420px">
-    <i-form class="login-form" :model="formItem" :label-width="110">
-      <Form-item label="用户名">
-        <i-input :value.sync="formItem.userName" placeholder="请输入"></i-input>
+    <i-form :model="formItem" :label-width="100">
+      <Form-item label="用户名" prop="userName">
+        <i-input v-model="formItem.userName" placeholder="请输入"></i-input>
       </Form-item>
-      <Form-item label="密码">
-        <i-input :value.sync="formItem.password" type="password" placeholder="请输入"></i-input>
+      <Form-item label="密码" prop="password">
+        <i-input v-model="formItem.password" type="password" placeholder="请输入"></i-input>
       </Form-item>
-      <Form-item label="再次输入密码">
-        <i-input :value.sync="formItem.rePassword" type="password" placeholder="请输入"></i-input>
+      <Form-item label="再次输入密码" prop="password">
+        <i-input v-model="formItem.rePassword" type="password" placeholder="请输入"></i-input>
       </Form-item>
-      <Form-item label="手机号码">
-        <i-input :value.sync="formItem.phone" placeholder="请输入"></i-input>
+      <Form-item label="电话" prop="phone">
+        <i-input v-model="formItem.phone" type="phone" placeholder="请输入"></i-input>
       </Form-item>
       <Form-item>
-        <i-button type="primary">提交</i-button>
+        <i-button @click="submit()" type="primary">注册</i-button>
+        <i-button @click="reset()" style="margin-left: 8px">重置</i-button>
       </Form-item>
     </i-form>
   </Card>
 </template>
 <script>
+import userApi from "../api/user-api";
 export default {
   data() {
     return {
@@ -30,6 +32,21 @@ export default {
         phone: ""
       }
     };
+  },
+  methods: {
+    submit() {
+      userApi.register(this.formItem).then(
+        data => {
+          this.$Message.info("注册成功！");
+        },
+        fail => {
+          this.$Message.warning(fail.message);
+        }
+      );
+    },
+    reset() {
+      this.formItem = {};
+    }
   }
 };
 </script>

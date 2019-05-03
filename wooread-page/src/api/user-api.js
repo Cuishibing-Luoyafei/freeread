@@ -1,31 +1,26 @@
-const URL = "http://localhost:8092";
+import requestPostProcess from './request-common';
+const URL = "http://192.168.1.9:8092/wooread-user";
 const api = {
     login: function (param) {
-        return fetch(URL+"/wooread-user/generateJwtToken", {
+        return fetch(URL + "/generateJwtToken", {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(param)
         }).then(resp => {
-            return new Promise((resolve, reject) => {
-                if (resp.ok) {
-                    resolve(resp.json())
-                } else {
-                    reject('request_error')
-                }
-            });
-        }).then(data => {
-            const code = data.code;
-            return new Promise((resolve,reject)=>{
-                if(code == 2) {
-                    resolve(data);
-                }else if(code == 4) {
-                    reject(data);
-                }else {
-                    throw new Error(data.message);
-                }
-            });
+            return requestPostProcess(resp);
+        });
+    },
+    register: function (param) {
+        return fetch(URL + "/createUser", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(param)
+        }).then(resp => {
+            return requestPostProcess(resp);
         });
     }
 };
