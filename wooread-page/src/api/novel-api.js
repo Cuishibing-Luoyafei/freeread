@@ -1,8 +1,11 @@
-import requestPostProcess from './request-common';
-const URL = "http://192.168.1.9:8092/wooread-novel";
+import requestPostProcess from '@/api/request-common';
 import token from "@/token/token";
+import {API_ADDRESS} from './request-common';
+console.log("API_ADDRESS:%s",API_ADDRESS);
+const URL = API_ADDRESS+"/wooread-novel";
 const api = {
-    getNovelClasses:function(param) {
+    getNovelClasses:function() {
+        console.log("url:%s",JSON.stringify(API_ADDRESS))
         return fetch(URL + "/novelClasses", {
             method: "get",
             headers: token.addAuthHeader()
@@ -28,6 +31,17 @@ const api = {
                 "Content-Type": "application/json"
             }),
             body: JSON.stringify({})
+        }).then(resp => {
+            return requestPostProcess(resp);
+        });
+    },
+    putNovelHead:function(param) {
+        return fetch(URL + '/novelHead/', {
+            method: "put",
+            headers: token.addAuthHeader({
+                "Content-Type": "application/json"
+            }),
+            body: JSON.stringify(param)
         }).then(resp => {
             return requestPostProcess(resp);
         });

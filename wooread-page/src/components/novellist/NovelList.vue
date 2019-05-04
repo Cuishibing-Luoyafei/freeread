@@ -7,25 +7,22 @@
       </div>
     </div>
     <div v-else style="text-align:center">
-      <Card style="width:280px;display:inline-block;margin:10px;">
-        <div style>
-          <img style="width:248px;height:128px" src="@/assets/logo.png">
-          <Alert type="warning">没有更多的内容了~</Alert>
-        </div>
-      </Card>
+      <NoConcent></NoConcent>
     </div>
   </div>
 </template>
 
 <script>
-import NovelListItem from "./NovelListItem";
+import NovelListItem from "@/components/novellist/NovelListItem";
+import NoConcent from "@/components/nocontent/NoContent";
 export default {
   props: ["novels"],
   data() {
     return {};
   },
   components: {
-    NovelListItem: NovelListItem
+    NovelListItem: NovelListItem,
+    NoConcent: NoConcent
   }
 };
 </script>

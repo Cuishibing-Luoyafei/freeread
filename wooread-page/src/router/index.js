@@ -4,6 +4,7 @@ import LoginForm from '@/components/LoginForm'
 import RegisterForm from '@/components/Register'
 import Main from '@/components/Main'
 import NovelList from '@/components/novellist/NovelList'
+import NewNovelHead from '@/components/novelhead/NewNovelHead'
 Vue.use(Router)
 
 export default new Router({
@@ -14,6 +15,11 @@ export default new Router({
       redirect:'/NovelList',
       component: Main,
       children: [
+        {
+          path: '/NewNovelHead',
+          name : 'NewNovelHead',
+          component: NewNovelHead
+        },
         {
           path: '/NovelList',
           name: 'NovelList',

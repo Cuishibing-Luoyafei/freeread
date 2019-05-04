@@ -1,5 +1,6 @@
 import requestPostProcess from './request-common';
-const URL = "http://192.168.1.9:8092/wooread-user";
+import {API_ADDRESS} from './request-common';
+const URL = API_ADDRESS + "/wooread-user";
 const api = {
     login: function (param) {
         return fetch(URL + "/generateJwtToken", {

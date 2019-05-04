@@ -1,4 +1,7 @@
-import router from '@/router/index'
+import router from '@/router/index';
+
+const API_ADDRESS = 'http://localhost:8092';
+
 const postProcessRequest = function (resp) {
     return new Promise((resolve, reject) => {
         if (resp.ok) {
@@ -26,5 +29,5 @@ const postProcessRequest = function (resp) {
         }
     });
 }
-
+export { API_ADDRESS };
 export default postProcessRequest;

@@ -2,7 +2,7 @@
   <div>
     <Menu mode="horizontal" theme="dark" @on-select="onMenuSelect">
       <Row>
-        <Col span="20">
+        <Col span="16">
           <MenuItem name="-1">
             <span class="logo">WOO READ</span>
           </MenuItem>
@@ -12,7 +12,13 @@
             v-for="novelClass in novelClasses"
           >{{novelClass.className}}</MenuItem>
         </Col>
-        <Col span="4">
+        <Col span="8">
+          <Submenu name="user-center">
+            <template slot="title">
+              <Icon type="ios-analytics"/>个人中心
+            </template>
+            <MenuItem name="AddNovel">添加小说</MenuItem>
+          </Submenu>
           <MenuItem>
             <Input suffix="ios-search" placeholder="Enter text" style="width: auto"/>
           </MenuItem>
@@ -32,11 +38,13 @@ export default {
   },
   methods: {
     onMenuSelect: function(name) {
-      if(name == '-1') {
-        console.info('go home')
-        this.$router.replace('/NovelList');
-      }else {
-        this.$router.replace({path:'/NovelList',query:{classId:name}});
+      if (name == "-1") {
+        console.info("go home");
+        this.$router.replace("/NovelList");
+      } else if (name == "AddNovel") {
+        this.$router.push('/NewNovelHead');
+      } else {
+        this.$router.replace({ path: "/NovelList", query: { classId: name } });
       }
     }
   },
