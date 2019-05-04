@@ -10,8 +10,8 @@ public interface NovelChapterInfoService {
 
     BaseServiceOutput<NovelChapterInfo> updateNovelChapterInfo(NovelChapterInfoServiceInput.UpdateChapterInfoInput infoInput);
 
-    BaseServiceOutput<NovelChapterInfo> findByChapterInfoId(Integer chapterInfoId);
+    BaseServiceOutput<NovelChapterInfo> findByChapterInfoId(String chapterInfoId);
 
-    BaseServiceOutput<Page<NovelChapterInfo>> findChapterInfoPageByNovelId(Integer novelId, Pageable pageable);
+    BaseServiceOutput<Page<NovelChapterInfo>> findChapterInfoPageByNovelId(String novelId, Pageable pageable);
 
 }

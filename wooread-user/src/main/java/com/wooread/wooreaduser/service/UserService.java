@@ -12,7 +12,7 @@ public interface UserService {
 
     BaseServiceOutput<User> updateUser(UserServiceInput.UpdateUserInput input);
 
-    BaseServiceOutput<UserInfo> findUserInfo(Integer userId);
+    BaseServiceOutput<UserInfo> findUserInfo(String userId);
 
     BaseServiceOutput<UserInfo> updateUserInfo(UserServiceInput.UpdateUserInfoInput input);
 
@@ -20,5 +20,5 @@ public interface UserService {
 
     BaseServiceOutput<User> findUserByName(String userName);
 
-    BaseServiceOutput<User> findUserById(Integer userId);
+    BaseServiceOutput<User> findUserById(String userId);
 }

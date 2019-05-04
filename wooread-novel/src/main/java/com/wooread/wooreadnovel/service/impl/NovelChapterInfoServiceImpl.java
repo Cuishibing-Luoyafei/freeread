@@ -24,10 +24,10 @@ import static com.wooread.wooreadbase.tools.MessageTools.message;
 public class NovelChapterInfoServiceImpl implements NovelChapterInfoService {
 
     @Resource(name = "NovelChapterInfo")
-    private CommonRepository<NovelChapterInfo, Integer> chapterInfoCommonRepo;
+    private CommonRepository<NovelChapterInfo, String> chapterInfoCommonRepo;
 
     @Resource(name = "NovelHead")
-    private CommonRepository<NovelHead,Integer> novelHeadCommonRepository;
+    private CommonRepository<NovelHead,String> novelHeadCommonRepository;
 
     @Override
     public BaseServiceOutput<NovelChapterInfo> updateNovelChapterInfo(
@@ -39,12 +39,12 @@ public class NovelChapterInfoServiceImpl implements NovelChapterInfoService {
     }
 
     @Override
-    public BaseServiceOutput<NovelChapterInfo> findByChapterInfoId(Integer chapterInfoId) {
+    public BaseServiceOutput<NovelChapterInfo> findByChapterInfoId(String chapterInfoId) {
         return ofSuccess(chapterInfoCommonRepo.findById(chapterInfoId).orElse(null));
     }
 
     @Override
-    public BaseServiceOutput<Page<NovelChapterInfo>> findChapterInfoPageByNovelId(Integer novelId, Pageable pageable) {
+    public BaseServiceOutput<Page<NovelChapterInfo>> findChapterInfoPageByNovelId(String novelId, Pageable pageable) {
         if(!novelHeadCommonRepository.existsById(novelId))
             return ofFail(message("no-such","novel"));
         return ofSuccess(() -> chapterInfoCommonRepo.findAll(Specifications.equal("novelId", novelId), pageable));

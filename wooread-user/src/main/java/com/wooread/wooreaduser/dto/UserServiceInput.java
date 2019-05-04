@@ -36,7 +36,7 @@ public class UserServiceInput {
     @AllArgsConstructor
     public static class UpdateUserInput {
         @NotNull
-        private Integer userId;
+        private String userId;
         @NotNull
         @Length(min = 5,max = 50)
         private String userName;
@@ -51,7 +51,7 @@ public class UserServiceInput {
     @AllArgsConstructor
     public static class UpdateUserInfoInput{
         @NotNull
-        private Integer userId;
+        private String userId;
         @Email
         private String email;
         @Phone

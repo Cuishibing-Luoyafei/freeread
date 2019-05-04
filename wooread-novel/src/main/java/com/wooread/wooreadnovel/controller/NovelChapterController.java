@@ -42,7 +42,7 @@ public class NovelChapterController {
 
     @GetMapping("findNovelChapterByChapterId")
     public BaseServiceOutput<NovelChapter> findNovelChapterByChapterId(
-            @RequestParam("novelChapterId") Integer novelChapterId, JwtUtils.DecodedToken token) {
+            @RequestParam("novelChapterId") String novelChapterId, JwtUtils.DecodedToken token) {
 
         return novelChapterService.findNovelChapterByChapterId(novelChapterId);
     }

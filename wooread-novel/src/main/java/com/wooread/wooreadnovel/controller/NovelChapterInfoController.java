@@ -31,13 +31,13 @@ public class NovelChapterInfoController {
 
     @GetMapping("findByChapterInfoId")
     public BaseServiceOutput<NovelChapterInfo> findByChapterInfoId(
-            @RequestParam("chapterInfoId") Integer chapterInfoId) {
+            @RequestParam("chapterInfoId") String chapterInfoId) {
         return chapterInfoService.findByChapterInfoId(chapterInfoId);
     }
 
     @GetMapping("findChapterInfoPageByNovelId")
     public BaseServiceOutput<Page<NovelChapterInfo>> findChapterInfoPageByNovelId(
-            @RequestParam("novelId") Integer novelId, Pageable pageable) {
+            @RequestParam("novelId") String novelId, Pageable pageable) {
         return chapterInfoService.findChapterInfoPageByNovelId(novelId, pageable);
     }
 

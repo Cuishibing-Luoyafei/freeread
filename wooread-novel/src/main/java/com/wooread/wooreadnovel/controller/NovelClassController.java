@@ -27,7 +27,7 @@ public class NovelClassController {
     }
 
     @DeleteMapping("novelClass/{id}")
-    public BaseServiceOutput<Boolean> removeNovelClass(@PathVariable("id") Integer classId) {
+    public BaseServiceOutput<Boolean> removeNovelClass(@PathVariable("id") String classId) {
         return novelClassService.remove(classId);
     }
 }

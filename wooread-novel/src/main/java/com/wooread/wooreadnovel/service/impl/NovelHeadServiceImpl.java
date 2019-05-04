@@ -26,10 +26,10 @@ import static com.wooread.wooreadbase.tools.MessageTools.message;
 public class NovelHeadServiceImpl implements NovelHeadService {
 
     @Resource(name = "NovelHead")
-    private CommonRepository<NovelHead, Integer> novelHeadCommonRepository;
+    private CommonRepository<NovelHead, String> novelHeadCommonRepository;
 
     @Resource(name = "NovelChapter")
-    private CommonRepository<NovelChapter, Integer> novelChapterCommonRepository;
+    private CommonRepository<NovelChapter, String> novelChapterCommonRepository;
 
     @Autowired
     private UserService userService;
@@ -68,7 +68,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     }
 
     @Override
-    public BaseServiceOutput<Boolean> deleteNovelHead(Integer novelId) {
+    public BaseServiceOutput<Boolean> deleteNovelHead(String novelId) {
         return novelHeadCommonRepository.findById(novelId).map(novelHead -> {
             return ofSuccess(() -> {
                 novelHeadCommonRepository.delete(novelHead);

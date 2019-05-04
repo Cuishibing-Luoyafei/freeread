@@ -7,15 +7,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @Entity
 public class NovelChapterInfo implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer chapterInfoId;
-    private Integer chapterId;
-    private Integer novelId;
+    private String chapterInfoId = UUID.randomUUID().toString().replace("-","");
+    private String chapterId;
+    private String novelId;
 
     private String title;
     private Integer wordCount;// 字数

@@ -21,7 +21,7 @@ import static com.wooread.wooreadbase.tools.MessageTools.message;
 public class NovelClassServiceImpl implements NovelClassService {
 
     @Resource(name = "NovelClass")
-    private CommonRepository<NovelClass, Integer> novelClassCommonRepository;
+    private CommonRepository<NovelClass, String> novelClassCommonRepository;
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
@@ -45,7 +45,7 @@ public class NovelClassServiceImpl implements NovelClassService {
     }
 
     @Override
-    public BaseServiceOutput<Boolean> remove(Integer classId) {
+    public BaseServiceOutput<Boolean> remove(String classId) {
         if (classId == null) {
             return BaseServiceOutput.ofSuccess(true);
         }

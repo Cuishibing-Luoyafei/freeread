@@ -1,6 +1,7 @@
 package com.wooread.wooreadnovel.controller;
 
 import com.wooread.wooreadbase.dto.BaseServiceOutput;
+import com.wooread.wooreadbase.jwt.JwtUtils;
 import com.wooread.wooreadnovel.dto.NovelHeadServiceInput;
 import com.wooread.wooreadnovel.model.NovelHead;
 import com.wooread.wooreadnovel.service.NovelHeadService;
@@ -20,12 +21,15 @@ public class NovelHeadController {
     @Autowired
     private NovelHeadService novelHeadService;
 
-    @PostMapping("createNovelHead")
+    @PutMapping("novelHead")
     public BaseServiceOutput<NovelHead> createNovelHead(@RequestBody @Validated NovelHeadServiceInput.CreateNovelHeadInput input,
-                                                        BindingResult bindingResult) {
+                                                        BindingResult bindingResult,
+                                                        JwtUtils.DecodedToken token) {
         if (bindingResult.hasErrors()) {
             return ofFail(message(bindingResult.getFieldError()));
         }
+        input.setUserId(token.getUserId());
+        input.setCanShow(true);
         return novelHeadService.createNovelHead(input);
     }
 
@@ -40,8 +44,6 @@ public class NovelHeadController {
 
     @GetMapping("findByLikeName")
     public BaseServiceOutput<Page<NovelHead>> findByLikeName(@RequestParam("name") String name, Pageable pageable){
-        String a = "";
-        a = a + null;
         return novelHeadService.findByLikeName(name,pageable);
     }
 

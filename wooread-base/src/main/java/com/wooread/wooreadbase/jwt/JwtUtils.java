@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -91,10 +92,10 @@ public class JwtUtils {
             return decode.getSubject();
         }
 
-        public <T> T getSubject(Class<T> clazz) {
-            return new Gson().fromJson(getSubject(), clazz);
+        public String getUserId() {
+            Map map = new Gson().fromJson(getSubject(), Map.class);
+            return map.get("userId").toString();
         }
-
     }
 
 }

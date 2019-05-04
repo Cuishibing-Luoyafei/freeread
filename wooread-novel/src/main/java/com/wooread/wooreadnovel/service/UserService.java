@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserService {
 
     @GetMapping("existUser")
-    BaseServiceOutput<Boolean> existUser(@RequestParam("userId") Integer userId);
+    BaseServiceOutput<Boolean> existUser(@RequestParam("userId") String userId);
 
 }

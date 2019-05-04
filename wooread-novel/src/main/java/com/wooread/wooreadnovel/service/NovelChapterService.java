@@ -11,6 +11,6 @@ public interface NovelChapterService {
 
     BaseServiceOutput<NovelChapter> updateNovelChapter(NovelChapterServiceInput.UpdateNovelChapterInput input);
 
-    BaseServiceOutput<NovelChapter> findNovelChapterByChapterId(Integer chapterId);
+    BaseServiceOutput<NovelChapter> findNovelChapterByChapterId(String chapterId);
 
 }

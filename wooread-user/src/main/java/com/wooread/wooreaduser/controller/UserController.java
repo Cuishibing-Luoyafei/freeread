@@ -27,7 +27,7 @@ public class UserController {
     private LoginService loginService;
 
     @GetMapping("existUser")
-    public BaseServiceOutput<Boolean> existUser(@RequestParam("userId") Integer userId) {
+    public BaseServiceOutput<Boolean> existUser(@RequestParam("userId") String userId) {
         return ofSuccess(() -> userService.findUserById(userId).getPayload() != null);
     }
 

@@ -11,7 +11,7 @@ public class NovelChapterInfoServiceInput {
     @Data
     public static class UpdateChapterInfoInput {
         @NotNull
-        private Integer chapterInfoId;
+        private String chapterInfoId;
         @NotEmpty
         private String title;
         @NotNull

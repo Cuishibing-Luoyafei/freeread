@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,9 +16,8 @@ import java.io.Serializable;
 @Entity
 public class NovelChapter implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer chapterId;
-    private Integer novelId;
+    private String chapterId = UUID.randomUUID().toString().replace("-","");
+    private String novelId;
 
     @Column(columnDefinition = "text")
     private String content;

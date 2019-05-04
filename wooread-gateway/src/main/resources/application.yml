@@ -6,36 +6,36 @@ spring:
     name: wooread-gateway
   cloud:
     gateway:
-        routes:
-          - id: generate-token
-            uri: lb://wooread-user
-            predicates:
-              - Path=/wooread-user/generateJwtToken
-            filters:
-              - StripPrefix=1
+      routes:
+        - id: generate-token
+          uri: lb://wooread-user
+          predicates:
+            - Path=/wooread-user/generateJwtToken
+          filters:
+            - StripPrefix=1
 
-          - id: register
-            uri: lb://wooread-user
-            predicates:
-              - Path=/wooread-user/createUser
-            filters:
-              - StripPrefix=1
+        - id: register
+          uri: lb://wooread-user
+          predicates:
+            - Path=/wooread-user/createUser
+          filters:
+            - StripPrefix=1
 
-          - id: wooread-novel
-            uri: lb://wooread-novel
-            predicates:
-              - Path=/wooread-novel/**
-            filters:
-              - StripPrefix=1
-              - JwtToken
+        - id: wooread-novel
+          uri: lb://wooread-novel
+          predicates:
+            - Path=/wooread-novel/**
+          filters:
+            - StripPrefix=1
+            - JwtToken
 
-          - id: wooread-user
-            uri: lb://wooread-user
-            predicates:
-              - Path=/wooread-user/**
-            filters:
-              - StripPrefix=1
-              - JwtToken
+        - id: wooread-user
+          uri: lb://wooread-user
+          predicates:
+            - Path=/wooread-user/**
+          filters:
+            - StripPrefix=1
+            - JwtToken
 # 这个配置在当前的spring gateway版本中有问题，使用Java配置在启动类中了
 #        globalcors:
 #          corsConfigurations:
@@ -44,6 +44,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.1.9:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
   instance:
-    hostname: 192.168.1.9
+    hostname: localhost

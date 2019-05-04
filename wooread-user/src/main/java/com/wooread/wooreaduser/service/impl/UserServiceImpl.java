@@ -26,10 +26,10 @@ import static com.wooread.wooreadbase.tools.MessageTools.message;
 public class UserServiceImpl implements UserService {
 
     @Resource(name = "User")
-    private CommonRepository<User, Integer> userCommonRepository;
+    private CommonRepository<User, String> userCommonRepository;
 
     @Resource(name = "UserInfo")
-    private CommonRepository<UserInfo, Integer> userInfoCommonRepository;
+    private CommonRepository<UserInfo, String> userInfoCommonRepository;
 
     @Autowired
     private RoleService roleService;
@@ -100,12 +100,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseServiceOutput<UserInfo> findUserInfo(Integer userId) {
+    public BaseServiceOutput<UserInfo> findUserInfo(String userId) {
         return ofSuccess(() -> userInfoCommonRepository.findOne(Specifications.equal("userId", userId)).orElse(null));
     }
 
     @Override
-    public BaseServiceOutput<User> findUserById(Integer userId) {
+    public BaseServiceOutput<User> findUserById(String userId) {
         return ofSuccess(() -> userCommonRepository.findById(userId).orElse(null));
     }
 }

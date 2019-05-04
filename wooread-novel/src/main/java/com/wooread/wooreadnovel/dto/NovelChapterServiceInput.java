@@ -11,7 +11,7 @@ public class NovelChapterServiceInput {
     @Data
     public static class CreateNovelChapterInput {
         @NotNull
-        private Integer novelId;
+        private String novelId;
         @NotEmpty
         @Length(max = 30000)
         private String content;
@@ -24,7 +24,7 @@ public class NovelChapterServiceInput {
     @Data
     public static class UpdateNovelChapterInput {
         @NotNull
-        private Integer chapterId;
+        private String chapterId;
         @NotEmpty
         @Length(max = 30000)
         private String content;

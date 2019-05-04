@@ -16,13 +16,12 @@ public class NovelHeadServiceInput {
         @Length(max = 300)
         private String description;
         private Boolean canShow;
-        @NotNull
-        private Integer userId;
+        private String userId;
     }
 
     @Data
     public static class UpdateNovelHeadInput extends CreateNovelHeadInput {
         @NotNull
-        private Integer novelId;
+        private String novelId;
     }
 }

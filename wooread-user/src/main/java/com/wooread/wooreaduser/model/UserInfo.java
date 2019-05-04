@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,9 +18,8 @@ import java.io.Serializable;
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = -2889451560871791473L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userInfoId;
-    private Integer userId;
+    private String userInfoId = UUID.randomUUID().toString().replace("-","");;
+    private String userId;
     private String email;
     private String phone;
     private Byte gender;

@@ -1,5 +1,6 @@
 package com.wooread.wooreadbase.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wooread.wooreadbase.tools.MessageTools;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -140,6 +141,7 @@ public class BaseServiceOutput<T> implements Serializable {
         return code == CODE_EXCEPTION;
     }
 
+    @JsonIgnore
     public void setMessage(MessageTools.MessageInfo info) {
         this.messageArgs = info.getArgs();
         this.message = info.getMessage();

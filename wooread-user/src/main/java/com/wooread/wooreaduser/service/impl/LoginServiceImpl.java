@@ -7,6 +7,7 @@ import com.wooread.wooreaduser.dto.LoginServiceInput;
 import com.wooread.wooreaduser.model.User;
 import com.wooread.wooreaduser.service.LoginService;
 import cui.shibing.commonrepository.CommonRepository;
+import cui.shibing.commonrepository.Specifications;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +32,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public BaseServiceOutput<String> generateJwtToken(LoginServiceInput.GenerateJwtTokenInput input) {
-        User example = new User();
-        example.setUserName(input.getUserName());
-        return userCommonRepository.findOne(Example.of(example)).map(user -> {
+        return userCommonRepository.findOne(Specifications.equal("userName",input.getUserName())).map(user -> {
             if (!user.getPassword().equals(input.getPassword())) {
                 return ofFail(message("wrong-password"), (String) null);
             }

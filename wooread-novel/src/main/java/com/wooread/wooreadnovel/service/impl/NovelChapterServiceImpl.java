@@ -24,13 +24,13 @@ import static com.wooread.wooreadbase.tools.MessageTools.message;
 public class NovelChapterServiceImpl implements NovelChapterService {
 
     @Resource(name = "NovelChapter")
-    private CommonRepository<NovelChapter, Integer> novelChapterCommonRepository;
+    private CommonRepository<NovelChapter, String> novelChapterCommonRepository;
 
     @Resource(name = "NovelHead")
-    private CommonRepository<NovelHead, Integer> novelHeadCommonRepository;
+    private CommonRepository<NovelHead, String> novelHeadCommonRepository;
 
     @Resource(name = "NovelChapterInfo")
-    private CommonRepository<NovelChapterInfo, Integer> chapterInfoCommonRepository;
+    private CommonRepository<NovelChapterInfo, String> chapterInfoCommonRepository;
 
     @Override
     public BaseServiceOutput<NovelChapter> createNovelChapter(
@@ -70,7 +70,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     }
 
     @Override
-    public BaseServiceOutput<NovelChapter> findNovelChapterByChapterId(Integer chapterId) {
+    public BaseServiceOutput<NovelChapter> findNovelChapterByChapterId(String chapterId) {
         return ofSuccess(novelChapterCommonRepository.findById(chapterId).orElse(null));
     }
 }

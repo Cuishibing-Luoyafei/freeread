@@ -10,5 +10,5 @@ public interface NovelClassService {
 
     BaseServiceOutput<Boolean> add(NovelClass novelClass);
 
-    BaseServiceOutput<Boolean> remove(Integer classId);
+    BaseServiceOutput<Boolean> remove(String classId);
 }
