@@ -42,11 +42,14 @@ public class NovelHeadServiceImpl implements NovelHeadService {
         }
         return userService.existUser(input.getUserId()).ifSuccess(isExist -> {
             if (isExist) {
-                return ofSuccess(() -> {
-                    NovelHead novelHead = new NovelHead();
-                    BeanUtils.copyProperties(input, novelHead);
-                    return novelHeadCommonRepository.save(novelHead);
-                });
+                NovelHead novelHead = new NovelHead();
+                BeanUtils.copyProperties(input, novelHead);
+                try {
+                    return ofSuccess(novelHeadCommonRepository.save(novelHead));
+                } catch (Exception e) {
+                    // 捕捉重复小说名
+                    return ofFail(message("duplicate", "novelName"), (NovelHead) null);
+                }
             } else {
                 return ofFail(message("no-such", "author"), (NovelHead) null);
             }
@@ -56,7 +59,7 @@ public class NovelHeadServiceImpl implements NovelHeadService {
     @Override
     public BaseServiceOutput<NovelHead> updateNovelHead(NovelHeadServiceInput.UpdateNovelHeadInput input) {
         if (novelHeadCommonRepository.findAll(Specifications.equal("novelName", input.getNovelName())).size() > 0) {
-            return ofFail(message("duplicate", "novel name"));
+            return ofFail(message("duplicate", "novelName"));
         }
         if (!userService.existUser(input.getUserId()).getPayload()) {
             return ofFail(message("no-such", "author"));
