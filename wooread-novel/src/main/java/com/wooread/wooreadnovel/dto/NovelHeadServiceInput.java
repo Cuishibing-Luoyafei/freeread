@@ -17,6 +17,9 @@ public class NovelHeadServiceInput {
         private String description;
         private Boolean canShow;
         private String userId;
+        // 小说类别id
+        @NotEmpty
+        private String classId;
     }
 
     @Data

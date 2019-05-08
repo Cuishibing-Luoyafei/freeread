@@ -25,4 +25,5 @@ public class NovelHead implements Serializable {
     private String description;
     private Boolean canShow;
     private String userId;
+    private String classId;
 }
