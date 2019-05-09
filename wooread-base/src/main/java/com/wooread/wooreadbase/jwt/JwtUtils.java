@@ -58,6 +58,8 @@ public class JwtUtils {
 
     public static class DecodedToken {
 
+        private static final String USER_ID_KEY = "userId";
+
         private DecodedJWT decode;
 
         public DecodedToken(String token) {
@@ -94,7 +96,7 @@ public class JwtUtils {
 
         public String getUserId() {
             Map map = new Gson().fromJson(getSubject(), Map.class);
-            return map.get("userId").toString();
+            return map.get(USER_ID_KEY).toString();
         }
     }
 
