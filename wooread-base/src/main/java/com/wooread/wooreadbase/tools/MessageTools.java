@@ -35,11 +35,6 @@ public class MessageTools {
         private Object args;
     }
 
-    public static MessageInfo message(String code, String... args) {
-        String message = messageTools.messageSource.getMessage(code, args, "", Locale.getDefault());
-        return new MessageInfo(code, message, args);
-    }
-
     public static MessageInfo message(String code, Object... args) {
         String message = messageTools.messageSource.getMessage(code, args, "", Locale.getDefault());
         return new MessageInfo(code, message, args);

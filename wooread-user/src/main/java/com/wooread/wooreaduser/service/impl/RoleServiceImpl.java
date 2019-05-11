@@ -19,6 +19,7 @@ import java.util.Set;
 
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.*;
 import static com.wooread.wooreadbase.tools.MessageTools.message;
+import static com.wooread.wooreaduser.message.Msg.RoleMsg.*;
 
 @Service
 @Transactional
@@ -32,7 +33,7 @@ public class RoleServiceImpl implements RoleService {
     public BaseServiceOutput<Role> createRole(RoleServiceInput.CreateRoleInput input) {
         List<Role> roles = roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName()));
         if (roles.size() > 0)
-            return ofFail(message("duplicate", "role name"));
+            return ofFail(message(DUPLICATE_ROLE.toString(), input.getRoleName()));
 
         Role role = new Role();
         BeanUtils.copyProperties(input, role);
@@ -40,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
 
         if (roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName())).size() > 1) {
             roleCommonRepository.delete(role);
-            return ofFail(message("duplicate", "role name"));
+            return ofFail(message(DUPLICATE_ROLE.toString(), input.getRoleName()));
         }
         return ofSuccess(role);
     }
@@ -59,13 +60,13 @@ public class RoleServiceImpl implements RoleService {
             List<Role> allRoles = roleCommonRepository.findAll(Specifications.equal("roleName", input.getRoleName()));
             for (Role r : allRoles) {
                 if (r.getRoleName().equals(input.getRoleName()) && !r.getRoleId().equals(role.getRoleId())) {
-                    return ofFail(message("duplicate", "role name"), (Role) null);
+                    return ofFail(message(DUPLICATE_ROLE.toString(), input.getRoleName()), (Role) null);
                 }
             }
             BeanUtils.copyProperties(input, role);
             role = roleCommonRepository.save(role);
             return ofSuccess(role);
-        }).orElse(ofFail(message("no-such", "role")));
+        }).orElse(ofFail(message(NO_SUCH_ROLE.toString(), input.getRoleName())));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public BaseServiceOutput<Boolean> isValidRoleId(String roleIds) {
-        BaseServiceOutput<Boolean> result = new BaseServiceOutput<>(CODE_SUCCESS, message("success"), true);
+        BaseServiceOutput<Boolean> result = new BaseServiceOutput<>(CODE_SUCCESS, message(MSG_SUCCESS), true);
         if (StringUtils.isEmpty(roleIds)) {
             return result;
         }
@@ -83,7 +84,7 @@ public class RoleServiceImpl implements RoleService {
         for (char c : chars) {
             if (!Character.isDigit(c) && c != ',') {
                 result.setPayload(false);
-                result.setMessage(message("invalid-role-ids"));
+                result.setMessage(message(INVALID_ROLE_ID.toString()));
                 return result;
             }
         }
@@ -94,7 +95,7 @@ public class RoleServiceImpl implements RoleService {
         for (String idStr : splitIds) {
             if (!roleIdSet.contains(Integer.parseInt(idStr))) {
                 result.setPayload(false);
-                result.setMessage(message("no-such", "role id"));
+                result.setMessage(message(NO_SUCH_ROLE.toString(), idStr));
                 return result;
             }
         }

@@ -24,6 +24,10 @@ public class BaseServiceOutput<T> implements Serializable {
     public static final int CODE_FAIL = 1 << 2;
     public static final int CODE_EXCEPTION = 1 << 3;
 
+    public static final String MSG_SUCCESS = "success";
+    public static final String MSG_FAIL = "fail";
+    public static final String MSG_EXCEPTION = "exception";
+
     private int code;
     private String messageCode;
     private String message;
@@ -64,11 +68,11 @@ public class BaseServiceOutput<T> implements Serializable {
     }
 
     public static <T> BaseServiceOutput<T> ofSuccess(Supplier<T> supplier) {
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), supplier);
+        return new BaseServiceOutput<>(CODE_SUCCESS, message(MSG_SUCCESS), supplier);
     }
 
     public static <T> BaseServiceOutput<T> ofSuccess(T data) {
-        return new BaseServiceOutput<>(CODE_SUCCESS, message("success"), data);
+        return new BaseServiceOutput<>(CODE_SUCCESS, message(MSG_SUCCESS, data));
     }
 
     public static <T> BaseServiceOutput<T> ofFail(String message) {

@@ -20,11 +20,11 @@ import java.util.List;
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofSuccess;
 import static com.wooread.wooreadbase.tools.MessageTools.message;
+import static com.wooread.wooreaduser.message.Msg.UserMsg.*;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-
     @Resource(name = "User")
     private CommonRepository<User, String> userCommonRepository;
 
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     public BaseServiceOutput<User> createUser(UserServiceInput.CreateUserInput input) {
         List<User> users = userCommonRepository.findAll(Specifications.equal("userName", input.getUserName()));
         if (users.size() > 0)
-            return ofFail(message("duplicate", "user"));
+            return ofFail(message(DUPLICATE_USER.toString(), input.getUserName()));
 
         BaseServiceOutput<Boolean> validateResult = roleService.isValidRoleId(input.getUserRoleIds());
         if (!validateResult.getPayload())
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if (userName.size() > 1) {// 用户名重复
             // 把这条信息删除
             userCommonRepository.delete(user);
-            return ofFail(message("duplicate", "user"));
+            return ofFail(message(DUPLICATE_USER.toString(), input.getUserName()));
         }
 
         UserInfo userInfo = new UserInfo();
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(input, user);
             userCommonRepository.save(user);
             return ofSuccess(user);
-        }).orElse(ofFail(message("no-such", "user")));
+        }).orElse(ofFail(message(NO_SUCH_USER.toString(), input.getUserName())));
     }
 
     @Override
@@ -85,8 +85,8 @@ public class UserServiceImpl implements UserService {
                 BeanUtils.copyProperties(input, userInfo);
                 userInfoCommonRepository.save(userInfo);
                 return ofSuccess(userInfo);
-            }).orElse(ofFail(message("no-such", "user info")));
-        }).orElse(ofFail(message("no-such", "user")));
+            }).orElse(ofFail(message(NO_SUCH_USER_INFO.toString(), input.getUserId())));
+        }).orElse(ofFail(message(NO_SUCH_USER.toString(), input.getUserId())));
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.wooread.wooreaduser.model.User;
 import com.wooread.wooreaduser.service.LoginService;
 import cui.shibing.commonrepository.CommonRepository;
 import cui.shibing.commonrepository.Specifications;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +17,8 @@ import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofFail;
 import static com.wooread.wooreadbase.dto.BaseServiceOutput.ofSuccess;
 import static com.wooread.wooreadbase.jwt.JwtUtils.SUBJECT_JAVA_CLASS;
 import static com.wooread.wooreadbase.tools.MessageTools.message;
+import static com.wooread.wooreaduser.message.Msg.LoginMsg.WRONG_PASSWORD;
+import static com.wooread.wooreaduser.message.Msg.UserMsg.NO_SUCH_USER;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -34,13 +35,13 @@ public class LoginServiceImpl implements LoginService {
     public BaseServiceOutput<String> generateJwtToken(LoginServiceInput.GenerateJwtTokenInput input) {
         return userCommonRepository.findOne(Specifications.equal("userName",input.getUserName())).map(user -> {
             if (!user.getPassword().equals(input.getPassword())) {
-                return ofFail(message("wrong-password"), (String) null);
+                return ofFail(message(WRONG_PASSWORD.toString()),input.getPassword());
             }
             JwtUtils.TokenBuilder tokenBuilder = new JwtUtils.TokenBuilder();
             tokenBuilder.addSubject(new Gson().toJson(user));
             tokenBuilder.addExpTime(new Date(System.currentTimeMillis() + tokenExpTime));
             tokenBuilder.addClaim(SUBJECT_JAVA_CLASS, User.class.getName());
             return ofSuccess(tokenBuilder.sign());
-        }).orElse(ofFail(message("no-such", "user")));
+        }).orElse(ofFail(message(NO_SUCH_USER.toString(), input.getUserName())));
     }
 }

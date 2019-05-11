@@ -14,5 +14,5 @@ public class NovelClass {
     private String classId = UUID.randomUUID().toString().replace("-","");
     @Column(unique = true)
     private String className;
-    private Boolean removed = false;
+    private boolean removed = false;
 }
