@@ -72,7 +72,7 @@ public class BaseServiceOutput<T> implements Serializable {
     }
 
     public static <T> BaseServiceOutput<T> ofSuccess(T data) {
-        return new BaseServiceOutput<>(CODE_SUCCESS, message(MSG_SUCCESS, data));
+        return new BaseServiceOutput<>(CODE_SUCCESS, message(MSG_SUCCESS), data);
     }
 
     public static <T> BaseServiceOutput<T> ofFail(String message) {
