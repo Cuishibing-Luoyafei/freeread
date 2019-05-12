@@ -45,6 +45,17 @@ const api = {
         }).then(resp => {
             return requestPostProcess(resp);
         });
+    },
+    listNovelHead:function(param) {
+        return fetch(URL + `/novelHeads?page=${param.page}&size=${param.size}`,{
+            method: "post",
+            headers: token.addAuthHeader({
+                "Content-Type": "application/json"
+            }),
+            body :JSON.stringify(param)
+        }).then(resp=>{
+            return requestPostProcess(resp);
+        });
     }
 }
 

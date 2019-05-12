@@ -13,5 +13,5 @@ public interface NovelHeadService {
 
     BaseServiceOutput<Boolean> deleteNovelHead(String novelId);
 
-    BaseServiceOutput<Page<NovelHead>> findByLikeName(String name, Pageable pageable);
+    BaseServiceOutput<Page<NovelHead>> listNovelHeads(NovelHeadServiceInput.QueryNovelHeadInput input,Pageable pageable);
 }

@@ -2,16 +2,17 @@ package com.wooread.wooreadnovel;
 
 import com.wooread.wooreadnovel.model.NovelClass;
 import cui.shibing.commonrepository.CommonRepository;
-import cui.shibing.commonrepository.Specifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+import static cui.shibing.commonrepository.Specifications.equal;
 
 /**
  * 启动时插入默认的小说类别
@@ -21,30 +22,26 @@ import java.util.Optional;
 @ConfigurationProperties(prefix = "novel.class")
 public class DefaultNovelClassInitor implements CommandLineRunner {
     private List<String> defaultClass = new ArrayList<>();
-    private Boolean clear = false;
+    private Boolean clear;
     @Resource(name = "NovelClass")
     private CommonRepository<NovelClass, String> novelClassCommonRepository;
 
     @Override
     public void run(String... args) throws Exception {
         log.info("init default novel class start");
-        if (clear) {
-            log.info("clear all novel class");
-            novelClassCommonRepository.findAll(Specifications.equal("removed",false)).forEach(novelClass -> {
-                novelClass.setRemoved(true);
-                novelClassCommonRepository.save(novelClass);
-            });
-        }
+        if(clear)
+            novelClassCommonRepository.deleteAll();
         if (defaultClass != null) {
-            defaultClass.forEach(novelClass->{
-                Optional<NovelClass> className = novelClassCommonRepository.findOne(Specifications.equal("className", novelClass));
-                if (!className.isPresent()) {
-                    // if not present
-                    NovelClass newClass = new NovelClass();
-                    newClass.setRemoved(false);
-                    newClass.setClassName(novelClass);
-                    novelClassCommonRepository.save(newClass);
-                }
+            defaultClass.forEach(novelClass -> {
+                Specification<NovelClass> deleteQuery = equal("className", novelClass);
+                log.info("delete exist novel class");
+                List<NovelClass> allClass = novelClassCommonRepository.findAll(deleteQuery);
+                novelClassCommonRepository.deleteAll(allClass);
+
+                NovelClass newClass = new NovelClass();
+                newClass.setRemoved(false);
+                newClass.setClassName(novelClass);
+                novelClassCommonRepository.save(newClass);
             });
         }
         log.info("init default novel class end");

@@ -42,7 +42,7 @@ export default {
             this.$router.replace("/");
           },
           fail => {
-            this.$Message.warning(fail.message);
+            this.$Message.warning(fail.messageCode);
           }
         )
         .catch(error => {

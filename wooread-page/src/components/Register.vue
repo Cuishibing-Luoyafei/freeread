@@ -41,7 +41,7 @@ export default {
            this.$router.replace("/LoginForm");
         },
         fail => {
-          this.$Message.warning(fail.message);
+          this.$Message.warning(fail.messageCode);
         }
       );
     },

@@ -7,7 +7,7 @@
             <span class="logo">WOO READ</span>
           </MenuItem>
           <MenuItem
-            v-bind:name="novelClass.classId"
+            v-bind:name="novelClass.className"
             v-bind:key="novelClass.classId"
             v-for="novelClass in novelClasses"
           >{{novelClass.className}}</MenuItem>
@@ -38,13 +38,16 @@ export default {
   },
   methods: {
     onMenuSelect: function(name) {
+      if (name == undefined) {
+        return;
+      }
       if (name == "-1") {
         console.info("go home");
         this.$router.replace("/NovelList");
       } else if (name == "AddNovel") {
         this.$router.push('/NewNovelHead');
       } else {
-        this.$router.replace({ path: "/NovelList", query: { classId: name } });
+        this.$router.replace({ path: "/NovelList", query: { className: name } });
       }
     }
   },

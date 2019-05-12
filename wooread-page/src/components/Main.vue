@@ -6,10 +6,10 @@
         </Header>
         <Content style="height:100%">
           <router-view></router-view>
-        </Content>
-        <Footer>
+          <Footer>
           <div style="text-align:center">WOOREAD</div>
         </Footer>
+        </Content>
     </Layout>
     </div>
    

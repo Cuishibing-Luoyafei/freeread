@@ -42,9 +42,13 @@ public class NovelHeadController {
         return novelHeadService.updateNovelHead(input);
     }
 
-    @GetMapping("findByLikeName")
-    public BaseServiceOutput<Page<NovelHead>> findByLikeName(@RequestParam("name") String name, Pageable pageable){
-        return novelHeadService.findByLikeName(name,pageable);
+    @PostMapping("novelHeads")
+    public BaseServiceOutput<Page<NovelHead>> listNovelHeads(@RequestBody @Validated NovelHeadServiceInput.QueryNovelHeadInput input,
+                                                             BindingResult bindingResult,
+                                                             Pageable pageable) {
+        if (bindingResult.hasErrors()) {
+            return ofFail(message(bindingResult.getFieldError()));
+        }
+        return novelHeadService.listNovelHeads(input, pageable);
     }
-
 }

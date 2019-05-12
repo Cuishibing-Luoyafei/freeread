@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -25,5 +26,8 @@ public class NovelHead implements Serializable {
     private String description;
     private Boolean canShow;
     private String userId;
-    private String classId;
+    /**
+     * use class name
+     * */
+    private String className;
 }

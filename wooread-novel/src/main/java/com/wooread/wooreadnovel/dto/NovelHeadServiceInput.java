@@ -17,14 +17,21 @@ public class NovelHeadServiceInput {
         private String description;
         private Boolean canShow;
         private String userId;
-        // 小说类别id
+        // 小说类别名称
         @NotEmpty
-        private String classId;
+        private String className;
     }
 
     @Data
     public static class UpdateNovelHeadInput extends CreateNovelHeadInput {
         @NotNull
         private String novelId;
+    }
+
+    @Data
+    public static class QueryNovelHeadInput {
+        private String className;
+        private String novelId;
+        private String novelName;
     }
 }
